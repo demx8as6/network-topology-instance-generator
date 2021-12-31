@@ -1,0 +1,13 @@
+{
+  "network": {
+    "name": "Test network",
+    "pattern": {
+      "smo": 1,
+      "near-rt-ric": 2,
+      "o-cu": 2,
+      "o-du": 2,
+      "o-ru:": 2,
+      "ue": 3
+    }
+  }
+}
