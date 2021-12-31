@@ -4,15 +4,15 @@
   "title": "Configuration",
   "description": "This schema validates the initial configuration for the network topology instance generator. ",
   "type": "object",
-  "properties": {
-    "network": {
-      "description": "Defines the network and its topology to be generated.",
-      "$ref": "#$defs/network"
-    }
-  },
   "required": [
     "network"
   ],
+  "properties": {
+    "network": {
+      "description": "Defines the network and its topology to be generated.",
+      "$ref": "#/$defs/network"
+    }
+  },
   "$defs": {
     "count": {
       "type": "number",
@@ -20,39 +20,35 @@
       "exclusiveMaximum": 100
     },
     "pattern": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "/schemas/pattern",
       "type": "object",
       "properties": {
         "smo": {
           "description": "Number of Service Management and Orchestrion (SMO) instances to be generated. SMO is a root network topology node.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         },
         "near-rt-ric": {
           "description": "Number of Near real-time RAN Intelligent Controller (Near-RT-RIC) instances to be generated per SMO.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         },
         "o-cu": {
           "description": "Number of O-RAN Centralized Units (O-CU) instances to be generated per Near-RT-RIC.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         },
         "o-du": {
           "description": "Number of O-RAN Distributed Units (O-DU) instances to be generated per O-CU.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         },
         "o-ru": {
           "description": "Number of O-RAN Radio Units (O-RU) instances to be generated per O-DU.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         },
         "ue": {
           "description": "Number of User Equipment (UE) instances to be generated per O-RU.",
-          "$ref": "#$defs/count"
+          "$ref": "#/$defs/count"
         }
       }
     },
     "network": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "/schemas/network",
       "type": "object",
       "properties": {
         "name": {

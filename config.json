@@ -1,6 +1,6 @@
 {
   "network": {
-    "name": "Test network",
+    "name": "TestNetwork",
     "pattern": {
       "smo": 1,
       "near-rt-ric": 2,
