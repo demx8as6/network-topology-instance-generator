@@ -22,3 +22,5 @@ validator = ParameterValidator(sys.argv)
 if validator.isValid():
   print('configFile:', validator.getConfigFile())
   print('configuration:', validator.getConfiguration())
+else:
+  print(validator.getError())

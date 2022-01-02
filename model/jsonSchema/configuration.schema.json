@@ -52,7 +52,7 @@
       "type": "object",
       "properties": {
         "name": {
-          "description": "The name as identification for humans. For the pattern explanation, please see: https: //regex101.com/r/3ER25H/1",
+          "description": "The name as identification for humans. For the pattern explanation, please see: https://regex101.com/r/3ER25H/1",
           "type": "string",
           "pattern": "^[a-zA-Z]{1}[\\S]{0,254}$"
         },

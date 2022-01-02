@@ -15,7 +15,6 @@
 #!/usr/bin/python
 import json
 import jsonschema
-from jsonschema import validate
 import os
 import os.path
 
@@ -25,7 +24,8 @@ class ParameterValidator:
   config = {}
   configSchemaFile = os.path.dirname(os.path.realpath(__file__)) + "/../model/jsonSchema/configuration.schema.json"
   configSchema = {}
-  valid = False;
+  error = ""
+  valid = False
 
   # constructor 
   def __init__(self,args):
@@ -40,7 +40,6 @@ class ParameterValidator:
       with open(self.configFile) as configFileContent:
         self.config = json.load(configFileContent)
 
-    print (self.configSchemaFile)
     if os.path.isfile(self.configSchemaFile) is False:
       print("File", self.configSchemaFile, "does not exist.")
     else:
@@ -49,10 +48,8 @@ class ParameterValidator:
 
     # print(self.configSchema)
     # print(self.config)
-    validate(instance=self.config, schema=self.configSchema)
-    # self.valid = self.isJsonValid(self.config, self.configSchema)
-    
-  # getter
+    # jsonschema.validate(instance=self.config, schema=self.configSchema)
+    self.valid = self.__isJsonValid(self.config, self.configSchema)
 
   def getConfigFile(self):
     return self.configFile
@@ -63,11 +60,17 @@ class ParameterValidator:
   def isValid(self):
     return self.valid
 
+  def getError(self):
+    return self.error
+
   # private
 
-  def isJsonValid(jsonData, jsonSchema):
+  def __isJsonValid(self, jsonData, jsonSchema):
     try:
-        validate(instance=jsonData, schema=jsonSchema)
+        jsonschema.validate(instance=jsonData, schema=jsonSchema)
+        self.error = "";
     except jsonschema.exceptions.ValidationError as err:
+        self.error = err
         return False
     return True
+
