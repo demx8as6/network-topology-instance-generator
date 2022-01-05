@@ -24,8 +24,10 @@ class TapiTopology:
         self.topology = {
             "uuid": str(uuid.uuid4()),
             "name": [{
-                "value-name": "slice-name",
-                "value": "Public Safety"}]}
+                "value-name": "network-name",
+                "value": config['network']['name']}],
+            "node": [],
+            "link": []}
 
     # getter
     def get(self):
