@@ -16,11 +16,25 @@
 import sys
 
 from controller.parameterValidator import ParameterValidator
+from controller.networkGenerator import TopologyGenerator
+from view.networkViewer import NetworkViewer
 
 validator = ParameterValidator(sys.argv)
 
 if validator.isValid():
-  print('configFile:', validator.getConfigFile())
-  print('configuration:', validator.getConfiguration())
+  config = validator.getConfiguration()
+  generator = TopologyGenerator(config)
+  generator.generate()
+  print('   configFile:', validator.getConfigFile())
+  print('configuration:', generator.getConfiguration())
+
+  viewer = NetworkViewer(generator.getTopology())
+
+  filename = "output/network.json"
+  if config['network']['name']:
+    filename = "output/" + config['network']['name'] + ".json"
+  viewer.json().save(filename)
+  viewer.json().show()
+
 else:
   print(validator.getError())
