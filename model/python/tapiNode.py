@@ -28,7 +28,7 @@ class TapiNode:
             "name": [
                 {
                     "value-name": "topology-node-name",
-                    "value": config['node']['type'] + "-" + config['node']['localId']
+                    "value": config['node']['type'] + "-" + str(config['node']['localId'])
                 },
                 {
                     "value-name": "topology-node-local-id",
@@ -39,9 +39,7 @@ class TapiNode:
             "administrative-state": "LOCKED",
             "operational-state": "ENABLED",
             "lifecycle-state": "INSTALLED",
-            "layer-protocol-name": [
-                "ETH"
-            ],
+            "layer-protocol-name": ["ETH"],
             "cost-characteristic": [
                 {
                     "cost-name": "cost",

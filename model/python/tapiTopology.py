@@ -14,6 +14,8 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.tapiNodeSmo import TapiNodeSmo
+
 
 class TapiTopology:
 
@@ -28,12 +30,53 @@ class TapiTopology:
                 "value": config['network']['name']}],
             "node": [],
             "link": []}
+        topoStructure = config['network']['pattern']
+        for networkFunctionType, count in config['network']['pattern'].items():
+            print(networkFunctionType, count)
+            if networkFunctionType == "smo":
+                self.createSmos(topoStructure, count)
+            elif networkFunctionType == "near-rt-ric":
+                self.createNearRtRics(topoStructure, count)
+            elif networkFunctionType == "o-cu":
+                self.createOCus(topoStructure, count)
+            elif networkFunctionType == "o-du":
+                self.createODus(topoStructure, count)
+            elif networkFunctionType == "o-ru":
+                self.createORus(topoStructure, count)
+            elif networkFunctionType == "ue":
+                self.createUes(topoStructure, count)
+            else:
+                print("Unknown network function type", networkFunctionType)
 
     # getter
     def get(self):
         return self.topology
 
     # methods
-    def add(self, config):
-        # self.context["tapi-common:context"]['tapi-topology:topology-context']=TapiTopologyContext().get()
+    def add(self, node):
+        self.topology["node"].append(node)
+        return self
+
+    def createSmos(self, topoStructure, count):
+        for localId in range(count):
+            config = {"node": {"localId": localId,
+                               "type": "smo",
+                               "function": "o-ran-common-identity-refs:smo-function"}}
+            node = TapiNodeSmo(config).get()
+            self.add(node)
+        return self
+
+    def createNearRtRics(self, topoStructure, count):
+        return self
+
+    def createOCus(self, topoStructure, count):
+        return self
+
+    def createODus(self, topoStructure, count):
+        return self
+
+    def createORus(self, topoStructure, count):
+        return self
+
+    def createUes(self, topoStructure, count):
         return self

@@ -25,8 +25,6 @@ if validator.isValid():
   config = validator.getConfiguration()
   generator = TopologyGenerator(config)
   generator.generate()
-  print('   configFile:', validator.getConfigFile())
-  print('configuration:', generator.getConfiguration())
 
   viewer = NetworkViewer(generator.getTopology())
 
