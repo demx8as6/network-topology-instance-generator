@@ -64,7 +64,10 @@ class TapiTopology:
         currentType = "smo"
         nextType = "near-rt-ric"
         for localId in range(count):
-            config = {"node": {"localId": localId,
+            prefix = ""
+            if parent != None:
+                prefix = parent["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeSmo(config).get()
@@ -80,7 +83,10 @@ class TapiTopology:
         currentType = "near-rt-ric"
         nextType = "o-cu"
         for localId in range(count):
-            config = {"node": {"localId": localId,
+            prefix = ""
+            if parent != None:
+                prefix = parent["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeNearRtRic(config).get()
@@ -93,17 +99,62 @@ class TapiTopology:
         return self
 
     def createOCus(self, parent, topoStructure, count):
-        print("###", parent, topoStructure, count)
+        currentType = "o-cu"
+        nextType = "o-du"
+        for localId in range(count):
+            prefix = ""
+            if parent != None:
+                prefix = parent["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(localId),
+                               "type": currentType,
+                               "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
+            node = TapiNodeNearRtRic(config).get()
+            self.add(node)
+            if nextType in topoStructure:
+                structure = topoStructure.copy()
+                if currentType in structure:
+                    del structure[currentType]
+                self.createODus(node, structure, structure[nextType])
         return self
 
     def createODus(self, parent, topoStructure, count):
-        print("###", parent, topoStructure, count)
+        currentType = "o-du"
+        nextType = "o-ru"
+        for localId in range(count):
+            prefix = ""
+            if parent != None:
+                prefix = parent["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(localId),
+                               "type": currentType,
+                               "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
+            node = TapiNodeNearRtRic(config).get()
+            self.add(node)
+            if nextType in topoStructure:
+                structure = topoStructure.copy()
+                if currentType in structure:
+                    del structure[currentType]
+                self.createORus(node, structure, structure[nextType])
         return self
 
     def createORus(self, parent, topoStructure, count):
-        print("###", parent, topoStructure, count)
+        currentType = "o-ru"
+        nextType = "ue"
+        for localId in range(count):
+            prefix = ""
+            if parent != None:
+                prefix = parent["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(localId),
+                               "type": currentType,
+                               "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
+            node = TapiNodeNearRtRic(config).get()
+            self.add(node)
+            if nextType in topoStructure:
+                structure = topoStructure.copy()
+                if currentType in structure:
+                    del structure[currentType]
+                self.createUes(node, structure, structure[nextType])
         return self
 
     def createUes(self, parent, topoStructure, count):
-        print("###", parent, topoStructure, count)
+        print("### UE?", count)
         return self
