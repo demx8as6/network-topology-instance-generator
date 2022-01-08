@@ -86,5 +86,6 @@ class TapiNode:
             return self.getFunction()
 
     # methods
-    def add(self, config):
+    def add(self, nep):
+        self.node['owned-node-edge-point'].append(nep)
         return self

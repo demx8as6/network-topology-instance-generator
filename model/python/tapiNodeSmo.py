@@ -15,9 +15,34 @@
 #!/usr/bin/python
 import uuid
 from model.python.tapiNode import TapiNode
+from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
+
 
 class TapiNodeSmo(TapiNode):
 
     # constructor
     def __init__(self, config):
         super().__init__(config)
+        # add A1 consumer interface
+        a1ConsumerConfig = {"nodeEdgePoint": {
+            "interface": "a1",  "protocol": "REST", "role": "consumer"}}
+        a1Consumer = TapiNodeEdgePoint(a1ConsumerConfig).get()
+        self.add(a1Consumer)
+
+        # add O1/OAM NetConf Consumer interface
+        o1NcConsumerConfig = {"nodeEdgePoint": {
+            "interface": "o1", "protocol": "NETCONF", "role": "consumer"}}
+        o1NcConsumer = TapiNodeEdgePoint(o1NcConsumerConfig).get()
+        self.add(o1NcConsumer)
+
+        # add O1 VES Provider interface
+        o1VesProviderConfig = {"nodeEdgePoint": {
+            "interface": "o1", "protocol": "VES", "role": "provider"}}
+        o1VesProvider = TapiNodeEdgePoint(o1VesProviderConfig).get()
+        self.add(o1VesProvider)
+
+        # add O1 File Transfer Consumer interface
+        o1FileConsumerConfig = {"nodeEdgePoint": {
+            "interface": "o1", "protocol": "FILE", "role": "consumer"}}
+        o1FileConsumer = TapiNodeEdgePoint(o1FileConsumerConfig).get()
+        self.add(o1FileConsumer)

@@ -15,10 +15,13 @@
 #!/usr/bin/python
 import uuid
 
+
 class TapiNodeEdgePoint:
 
     nodeEdgePoint = {}
-    config = {}
+    config = {"nodeEdgePoint": {"interface": "unknown-interface",
+                                "protocol": "unknown-protocol",
+                                "role": "consumer"}}
 
     # constructor
     def __init__(self, config):
@@ -27,7 +30,7 @@ class TapiNodeEdgePoint:
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "interface-name",
-                "value": config['nodeEdgePoint']['interface']
+                "value": self.getName()
             }],
             "administrative-state": "LOCKED",
             "operational-state": "ENABLED",
@@ -37,7 +40,9 @@ class TapiNodeEdgePoint:
             "supported-cep-layer-protocol-qualifier": [
                 "tapi-dsr:DIGITAL_SIGNAL_TYPE_GigE"
             ],
-            "link-port-direction": "BIDIRECTIONAL"
+            "link-port-direction": "BIDIRECTIONAL",
+            "termination-state": self.getTerminationState(),
+            "termination-direction": self.getTerminationDirection()
         }
 
     # getter
@@ -45,6 +50,24 @@ class TapiNodeEdgePoint:
     def get(self):
         return self.nodeEdgePoint
 
-    # methods
-    def add(self, config):
-        return self
+    def getConfiguration(self):
+        return self.config
+
+    def getName(self):
+        items = (self.config['nodeEdgePoint']['interface'],
+                 self.config['nodeEdgePoint']['protocol'],
+                 self.config['nodeEdgePoint']['role'])
+        return "-".join(items).lower()
+
+    def getTerminationDirection(self):
+        value = "BIDIRECTIONAL"
+        map = {
+            "consumer": "SINK",
+            "provider": "SOURCE"
+        }
+        if self.config['nodeEdgePoint']['role'].lower() in map:
+            return map[self.config['nodeEdgePoint']['role'].lower()]        
+        return value
+
+    def getTerminationState(self):
+        return "PERMANENTLY_TERMINATED"
