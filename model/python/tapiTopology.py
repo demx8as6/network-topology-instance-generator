@@ -14,6 +14,7 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.tapiNodeNearRtRic import TapiNodeNearRtRic
 from model.python.tapiNodeSmo import TapiNodeSmo
 
 
@@ -30,23 +31,25 @@ class TapiTopology:
                 "value": config['network']['name']}],
             "node": [],
             "link": []}
+
         topoStructure = config['network']['pattern']
-        for networkFunctionType, count in config['network']['pattern'].items():
-            print(networkFunctionType, count)
-            if networkFunctionType == "smo":
-                self.createSmos(topoStructure, count)
-            elif networkFunctionType == "near-rt-ric":
-                self.createNearRtRics(topoStructure, count)
-            elif networkFunctionType == "o-cu":
-                self.createOCus(topoStructure, count)
-            elif networkFunctionType == "o-du":
-                self.createODus(topoStructure, count)
-            elif networkFunctionType == "o-ru":
-                self.createORus(topoStructure, count)
-            elif networkFunctionType == "ue":
-                self.createUes(topoStructure, count)
-            else:
-                print("Unknown network function type", networkFunctionType)
+        networkFunctionType = next(iter(topoStructure))
+        count = config['network']['pattern'][networkFunctionType]
+
+        if networkFunctionType == "smo":
+            self.createSmos(None, topoStructure, count)
+        elif networkFunctionType == "near-rt-ric":
+            self.createNearRtRics(None, topoStructure, count)
+        elif networkFunctionType == "o-cu":
+            self.createOCus(None, topoStructure, count)
+        elif networkFunctionType == "o-du":
+            self.createODus(None, topoStructure, count)
+        elif networkFunctionType == "o-ru":
+            self.createORus(None, topoStructure, count)
+        elif networkFunctionType == "ue":
+            self.createUes(None, topoStructure, count)
+        else:
+            print("Unknown network function type", networkFunctionType)
 
     # getter
     def get(self):
@@ -57,26 +60,50 @@ class TapiTopology:
         self.topology["node"].append(node)
         return self
 
-    def createSmos(self, topoStructure, count):
+    def createSmos(self, parent, topoStructure, count):
+        currentType = "smo"
+        nextType = "near-rt-ric"
         for localId in range(count):
             config = {"node": {"localId": localId,
-                               "type": "smo",
-                               "function": "o-ran-common-identity-refs:smo-function"}}
+                               "type": currentType,
+                               "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeSmo(config).get()
             self.add(node)
+            if nextType in topoStructure:
+                structure = topoStructure.copy()
+                if currentType in structure:
+                    del structure[currentType]
+                self.createNearRtRics(node, structure, structure[nextType])
         return self
 
-    def createNearRtRics(self, topoStructure, count):
+    def createNearRtRics(self, parent, topoStructure, count):
+        currentType = "near-rt-ric"
+        nextType = "o-cu"
+        for localId in range(count):
+            config = {"node": {"localId": localId,
+                               "type": currentType,
+                               "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
+            node = TapiNodeNearRtRic(config).get()
+            self.add(node)
+            if nextType in topoStructure:
+                structure = topoStructure.copy()
+                if currentType in structure:
+                    del structure[currentType]
+                self.createOCus(node, structure, structure[nextType])
         return self
 
-    def createOCus(self, topoStructure, count):
+    def createOCus(self, parent, topoStructure, count):
+        print("###", parent, topoStructure, count)
         return self
 
-    def createODus(self, topoStructure, count):
+    def createODus(self, parent, topoStructure, count):
+        print("###", parent, topoStructure, count)
         return self
 
-    def createORus(self, topoStructure, count):
+    def createORus(self, parent, topoStructure, count):
+        print("###", parent, topoStructure, count)
         return self
 
-    def createUes(self, topoStructure, count):
+    def createUes(self, parent, topoStructure, count):
+        print("###", parent, topoStructure, count)
         return self
