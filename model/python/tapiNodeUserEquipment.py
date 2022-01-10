@@ -18,20 +18,14 @@ from model.python.tapiNode import TapiNode
 from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
 
 
-class TapiNodeORu(TapiNode):
+class TapiNodeUserEquipment(TapiNode):
 
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
-        # add OFHM/OAM NetConf Provider interface
-        o1NcProviderConfig = {"nodeEdgePoint": {
-            "interface": "open-fronthaul-m-plane", "protocol": "NETCONF", "role": "provider"}}
-        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig).get()
-        self.add(o1NcProvider)
-
-        # add air provider interface
-        airProviderConfig = {"nodeEdgePoint": {
-            "interface": "air", "protocol": "unknown", "role": "provider"}}
-        airProvider = TapiNodeEdgePoint(airProviderConfig).get()
-        self.add(airProvider)
+        # add air consumer interface
+        airConsumerConfig = {"nodeEdgePoint": {
+            "interface": "air", "protocol": "unknown", "role": "consumer"}}
+        airConsumer = TapiNodeEdgePoint(airConsumerConfig).get()
+        self.add(airConsumer)

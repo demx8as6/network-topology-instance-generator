@@ -21,8 +21,8 @@ from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
 class TapiNodeSmo(TapiNode):
 
     # constructor
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self, parent, config):
+        super().__init__(parent, config)
         # add A1 consumer interface
         a1ConsumerConfig = {"nodeEdgePoint": {
             "interface": "a1",  "protocol": "REST", "role": "consumer"}}

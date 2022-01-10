@@ -15,13 +15,16 @@
 #!/usr/bin/python
 import uuid
 
+parent = None
+
 class TapiNode:
 
     node = {}
     config = {}
 
     # constructor
-    def __init__(self, config):
+    def __init__(self, parent, config):
+        self.parent = parent
         self.config = config
         self.node = {
             "uuid": str(uuid.uuid4()),
@@ -84,6 +87,9 @@ class TapiNode:
             return map[self.getFunction()]
         else:
             return self.getFunction()
+
+    def getParent(self):
+        return self.getParent
 
     # methods
     def add(self, nep):
