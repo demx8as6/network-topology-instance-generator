@@ -30,21 +30,16 @@ class TapiLink(Top):
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "topology-link-name",
-                "value": self.getLinkName(config['link'])
+                "value": config['link']['name']
             }],
             "administrative-state": "LOCKED",
             "operational-state": "ENABLED",
             "direction": "BIDIRECTIONAL",
             "lifecycle-state": "INSTALLED",
-            "node-edge-point": [{
-                "topology-uuid": self.getTopologyIdByNepId(config['link']['a']),
-                "node-uuid": self.getNodeIdByNepId(config['link']['a']),
-                "node-edge-point-uuid": config['link']['a']
-            }, {
-                "topology-uuid": self.getTopologyIdByNepId(config['link']['z']),
-                "node-uuid": self.getNodeIdByNepId(config['link']['z']),
-                "node-edge-point-uuid": config['link']['z']
-            }],
+            "node-edge-point": [
+                config['link']['a'], 
+                config['link']['z']
+            ],
             "latency-characteristic": [{
                 "traffic-property-name": "property-1",
                 "queing-latency-characteristic": "queue-1",
@@ -78,10 +73,4 @@ class TapiLink(Top):
         return self.data
 
     def getLinkName(self, link):
-        return "TODO"
-
-    def getNodeIdByNepId(self, nepUuid):
-        return "TODO"
-
-    def getTopologyIdByNepId(self, nepUuid):
         return "TODO"

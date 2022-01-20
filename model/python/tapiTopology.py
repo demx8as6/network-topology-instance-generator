@@ -120,15 +120,16 @@ class TapiTopology(Top):
             
             # add links
             a1LinkConfig = {"link":{
+                "name": "A1:|" + parent.getName() + "|<->|" + node.getName() + "|",
                 "a":{
-                    "topology":self.data["uuid"],
-                    "node": parent.getData()["uuid"],
-                    "node-edge-point": parent.getNodeEdgePointByInterfaceName("a1-rest-consumer")
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": parent.getData()["uuid"],
+                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("a1-rest-consumer")
                 },
                 "z":{
-                    "topology":self.data["uuid"],
-                    "node": node.getData()["uuid"],
-                    "node-edge-point": node.getNodeEdgePointByInterfaceName("a1-rest-provider")
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": node.getData()["uuid"],
+                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("a1-rest-provider")
                 }
             }}
             a1Link =  TapiLink(a1LinkConfig)

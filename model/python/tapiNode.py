@@ -32,7 +32,7 @@ class TapiNode(Top):
             "name": [
                 {
                     "value-name": "topology-node-name",
-                    "value": config['node']['type'] + "-" + str(config['node']['localId'])
+                    "value": self.getName()
                 },
                 {
                     "value-name": "topology-node-local-id",
@@ -67,15 +67,20 @@ class TapiNode(Top):
         }
 
     # getter
+    def getConfig(self):
+        return self.config
+
     def getData(self):
         return self.data
 
+    def getName(self):
+        return self.config['node']['type'] + "-" + str(self.config['node']['localId'])
+
     def getNodeEdgePointByInterfaceName(self, ifName):
         result = "not found"
-        # self.node["owned-node-edge-point"]
-
-        # for nep in self.data["owned-node-edge-point"]:
-        #     print(nep)
+        for nep in self.data["owned-node-edge-point"]:
+            if nep.getName() == ifName:
+                result = nep.getData()["uuid"]
 
         return result
 
