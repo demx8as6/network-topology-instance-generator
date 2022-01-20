@@ -28,7 +28,7 @@ class NetworkViewer:
         return self.network
     
     def showAsJson(self):
-      print(self.network)
+      print(self.network.toJson())
 
     # json format
     def json(self):
@@ -39,4 +39,5 @@ class NetworkViewer:
 
     def save(self, filename):
         with open(filename, "w", encoding='utf-8') as jsonFile:
-            json.dump(self.network, jsonFile, ensure_ascii=False, indent=2)
+            json.dump(self.network.toJson(), jsonFile, ensure_ascii=False, indent=2)
+            print(filename, "saved!")

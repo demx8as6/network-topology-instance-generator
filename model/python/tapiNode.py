@@ -14,19 +14,20 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.top import Top
 
 parent = None
 
-class TapiNode:
+class TapiNode(Top):
 
-    node = {}
+    data = {}
     config = {}
 
     # constructor
     def __init__(self, parent, config):
         self.parent = parent
         self.config = config
-        self.node = {
+        self.data = {
             "uuid": str(uuid.uuid4()),
             "name": [
                 {
@@ -66,8 +67,17 @@ class TapiNode:
         }
 
     # getter
-    def get(self):
-        return self.node
+    def getData(self):
+        return self.data
+
+    def getNodeEdgePointByInterfaceName(self, ifName):
+        result = "not found"
+        # self.node["owned-node-edge-point"]
+
+        # for nep in self.data["owned-node-edge-point"]:
+        #     print(nep)
+
+        return result
 
     def getFunction(self):
         return self.config['node']['function']
@@ -93,5 +103,12 @@ class TapiNode:
 
     # methods
     def add(self, nep):
-        self.node['owned-node-edge-point'].append(nep)
+        self.data['owned-node-edge-point'].append(nep)
         return self
+    
+    def toJson(self):
+        result = self.getData().copy()
+        result['owned-node-edge-point'] = []
+        for nep in self.data['owned-node-edge-point']:
+            result['owned-node-edge-point'].append(nep.toJson())
+        return result

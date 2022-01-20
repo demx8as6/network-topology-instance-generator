@@ -14,20 +14,22 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.top import Top
 from model.python.tapiNodeSmo import TapiNodeSmo
 from model.python.tapiNodeNearRtRic import TapiNodeNearRtRic
 from model.python.tapiNodeOCu import TapiNodeOCu
 from model.python.tapiNodeODu import TapiNodeODu
 from model.python.tapiNodeORu import TapiNodeORu
 from model.python.tapiNodeUserEquipment import TapiNodeUserEquipment
+from model.python.tapiLink import TapiLink
 
-class TapiTopology:
+class TapiTopology(Top):
 
-    topology = {}
+    data = {}
 
     # constructor
     def __init__(self, config):
-        self.topology = {
+        self.data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "network-name",
@@ -55,13 +57,32 @@ class TapiTopology:
             print("Unknown network function type", networkFunctionType)
 
     # getter
-    def get(self):
-        return self.topology
+    def getData(self):
+        return self.data
 
     # methods
-    def add(self, node):
-        self.topology["node"].append(node)
+    def addNode(self, node):
+        self.data["node"].append(node)
         return self
+
+    def addLink(self, link):
+        self.data["link"].append(link)
+        return self
+
+    def toJson(self):
+        result = self.getData().copy()
+
+        # nodes handling
+        result["node"] = []
+        for node in self.data["node"]:
+            result["node"].append(node.toJson())
+
+        # link handling 
+        result["link"] = []
+        for link in self.data["link"]:
+            result["link"].append(link.toJson())
+
+        return result
 
     def createSmos(self, parent, topoStructure, count):
         currentType = "smo"
@@ -70,12 +91,12 @@ class TapiTopology:
             prefix = ""
 
             if parent != None:
-                prefix = parent["name"][1]["value"]
+                prefix = parent.getData()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeSmo(parent, config).get()
-            self.add(node)
+            node = TapiNodeSmo(parent, config)
+            self.addNode(node)
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -87,19 +108,39 @@ class TapiTopology:
         currentType = "near-rt-ric"
         nextType = "o-cu"
         for localId in range(count):
+            # add node
             prefix = ""
             if parent != None:
-                prefix = parent["name"][1]["value"]
-            config = {"node": {"localId": prefix + str(localId),
+                prefix = parent.getData()["name"][1]["value"]
+            nodeConfig = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeNearRtRic(parent, config).get()
-            self.add(node)
+            node = TapiNodeNearRtRic(parent, nodeConfig)
+            self.addNode(node)
+            
+            # add links
+            a1LinkConfig = {"link":{
+                "a":{
+                    "topology":self.data["uuid"],
+                    "node": parent.getData()["uuid"],
+                    "node-edge-point": parent.getNodeEdgePointByInterfaceName("a1-rest-consumer")
+                },
+                "z":{
+                    "topology":self.data["uuid"],
+                    "node": node.getData()["uuid"],
+                    "node-edge-point": node.getNodeEdgePointByInterfaceName("a1-rest-provider")
+                }
+            }}
+            a1Link =  TapiLink(a1LinkConfig)
+            self.addLink(a1Link)
+
+            # continue
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
                     del structure[currentType]
                 self.createOCus(node, structure, structure[nextType])
+            
         return self
 
     def createOCus(self, parent, topoStructure, count):
@@ -108,12 +149,12 @@ class TapiTopology:
         for localId in range(count):
             prefix = ""
             if parent != None:
-                prefix = parent["name"][1]["value"]
+                prefix = parent.getData()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeOCu(parent, config).get()
-            self.add(node)
+            node = TapiNodeOCu(parent, config)
+            self.addNode(node)
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -127,12 +168,12 @@ class TapiTopology:
         for localId in range(count):
             prefix = ""
             if parent != None:
-                prefix = parent["name"][1]["value"]
+                prefix = parent.getData()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeODu(parent, config).get()
-            self.add(node)
+            node = TapiNodeODu(parent, config)
+            self.addNode(node)
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -146,12 +187,12 @@ class TapiTopology:
         for localId in range(count):
             prefix = ""
             if parent != None:
-                prefix = parent["name"][1]["value"]
+                prefix = parent.getData()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeORu(parent, config).get()
-            self.add(node)
+            node = TapiNodeORu(parent, config)
+            self.addNode(node)
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -164,10 +205,10 @@ class TapiTopology:
         for localId in range(count):
             prefix = ""
             if parent != None:
-                prefix = parent["name"][1]["value"]
+                prefix = parent.getData()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(localId),
                                "type": currentType,
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
-            node = TapiNodeUserEquipment(parent, config).get()
-            self.add(node)
+            node = TapiNodeUserEquipment(parent, config)
+            self.addNode(node)
         return self

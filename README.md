@@ -61,3 +61,8 @@ network
      +-- o-ru-22
      +-- o-ru-23
 ```
+## Usage
+
+```
+python topo-gen.py config.json
+```

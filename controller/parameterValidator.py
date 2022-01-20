@@ -45,10 +45,6 @@ class ParameterValidator:
     else:
       with open(self.configSchemaFile) as configSchemaFileContent:
         self.configSchema = json.load(configSchemaFileContent)
-
-    # print(self.configSchema)
-    # print(self.config)
-    # jsonschema.validate(instance=self.config, schema=self.configSchema)
     self.valid = self.__isJsonValid(self.config, self.configSchema)
 
   def getConfigFile(self):

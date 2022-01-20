@@ -14,24 +14,28 @@
 
 #!/usr/bin/python
 from model.python.tapiTopology import TapiTopology
+from model.python.top import Top
 
 
-class TapiTopologyContext:
+class TapiTopologyContext(Top):
 
-  topoContext = {}
+  data = None
   configuration = {}
 
   # constructor
   def __init__(self):
-    self.topoContext = {
+    self.data = {
       "tapi-topology:topology-context": {
           "topology": []}}
 
   # getter
-  def get(self):
-      return self.topoContext
+  def getData(self):
+      return self.data
+
+  def toJson(self):
+      return self.getData()
 
   # methods
   def add(self,config):
-    self.topoContext["tapi-topology:topology-context"]["topology"].append(TapiTopology(config).get())
+    self.data["tapi-topology:topology-context"]["topology"].append(TapiTopology(config).toJson())
     return self

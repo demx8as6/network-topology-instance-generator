@@ -27,11 +27,11 @@ class TapiNodeORu(TapiNode):
         # add OFHM/OAM NetConf Provider interface
         o1NcProviderConfig = {"nodeEdgePoint": {
             "interface": "open-fronthaul-m-plane", "protocol": "NETCONF", "role": "provider"}}
-        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig).get()
+        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig)
         self.add(o1NcProvider)
 
         # add air provider interface
         airProviderConfig = {"nodeEdgePoint": {
             "interface": "air", "protocol": "unknown", "role": "provider"}}
-        airProvider = TapiNodeEdgePoint(airProviderConfig).get()
+        airProvider = TapiNodeEdgePoint(airProviderConfig)
         self.add(airProvider)

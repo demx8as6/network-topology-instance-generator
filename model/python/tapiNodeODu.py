@@ -27,23 +27,23 @@ class TapiNodeODu(TapiNode):
         # add E2 Provider interface
         e2ProviderConfig = {"nodeEdgePoint": {
             "interface": "e2", "protocol": "REST", "role": "provider"}}
-        e2Provider = TapiNodeEdgePoint(e2ProviderConfig).get()
+        e2Provider = TapiNodeEdgePoint(e2ProviderConfig)
         self.add(e2Provider)
 
         # add O1/OAM NetConf Provider interface
         o1NcProviderConfig = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "NETCONF", "role": "provider"}}
-        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig).get()
+        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig)
         self.add(o1NcProvider)
 
         # add O1 VES Consumer interface
         o1VesConsumerConfig = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "VES", "role": "consumer"}}
-        o1VesConsumer = TapiNodeEdgePoint(o1VesConsumerConfig).get()
+        o1VesConsumer = TapiNodeEdgePoint(o1VesConsumerConfig)
         self.add(o1VesConsumer)
 
         # add O1 File Transfer Provider interface
         o1FileProviderConfig = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "FILE", "role": "provider"}}
-        o1FileProvider = TapiNodeEdgePoint(o1FileProviderConfig).get()
+        o1FileProvider = TapiNodeEdgePoint(o1FileProviderConfig)
         self.add(o1FileProvider)

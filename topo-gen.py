@@ -32,7 +32,7 @@ if validator.isValid():
   if config['network']['name']:
     filename = "output/" + config['network']['name'] + ".json"
   viewer.json().save(filename)
-  viewer.json().show()
+  # viewer.json().showAsJson()
 
 else:
   print(validator.getError())

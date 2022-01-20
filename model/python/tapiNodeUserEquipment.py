@@ -17,7 +17,6 @@ import uuid
 from model.python.tapiNode import TapiNode
 from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
 
-
 class TapiNodeUserEquipment(TapiNode):
 
     # constructor
@@ -27,5 +26,5 @@ class TapiNodeUserEquipment(TapiNode):
         # add air consumer interface
         airConsumerConfig = {"nodeEdgePoint": {
             "interface": "air", "protocol": "unknown", "role": "consumer"}}
-        airConsumer = TapiNodeEdgePoint(airConsumerConfig).get()
+        airConsumer = TapiNodeEdgePoint(airConsumerConfig)
         self.add(airConsumer)

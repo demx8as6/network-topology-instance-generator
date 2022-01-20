@@ -31,24 +31,28 @@
 #!/usr/bin/python
 import uuid
 from model.python.tapiTopologyContext import TapiTopologyContext
+from model.python.top import Top
 
-class TapiCommonContext:
+class TapiCommonContext(Top):
 
-  context = {}
+  data = {}
 
   # constructor
   def __init__(self):
-    self.context = {
+    self.data = {
       "tapi-common:context": {
           "uuid": str(uuid.uuid4()),
           "name": [{"value-name": "context-name",
                     "value": "Generated Topology"}]}}
 
   # getter
-  def get(self):
-      return self.context
+  def getData(self):
+      return self.data
+  
+  def toJson(self):
+      return self.data
 
   # methods
   def add(self,config):
-    self.context["tapi-common:context"].update( TapiTopologyContext().add(config).get())
+    self.data["tapi-common:context"].update( TapiTopologyContext().add(config).toJson())
     return self

@@ -15,16 +15,18 @@
 #!/usr/bin/python
 import uuid
 
+from model.python.top import Top
 
-class TapiLink:
 
-    link = {}
+class TapiLink(Top):
+
+    data = {}
     config = {}
 
     # constructor
     def __init__(self, config):
         self.config = config
-        self.link = {
+        self.data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "topology-link-name",
@@ -69,8 +71,11 @@ class TapiLink:
         }
 
     # getter
-    def get(self):
-        return self.link
+    def getData(self):
+        return self.data
+
+    def toJson(self):
+        return self.data
 
     def getLinkName(self, link):
         return "TODO"

@@ -14,11 +14,12 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.top import Top
 
 
-class TapiNodeEdgePoint:
+class TapiNodeEdgePoint(Top):
 
-    nodeEdgePoint = {}
+    data = {}
     config = {"nodeEdgePoint": {"interface": "unknown-interface",
                                 "protocol": "unknown-protocol",
                                 "role": "consumer"}}
@@ -26,7 +27,7 @@ class TapiNodeEdgePoint:
     # constructor
     def __init__(self, config):
         self.config = config
-        self.nodeEdgePoint = {
+        self.data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "interface-name",
@@ -47,8 +48,8 @@ class TapiNodeEdgePoint:
 
     # getter
 
-    def get(self):
-        return self.nodeEdgePoint
+    def getData(self):
+        return self.data
 
     def getConfiguration(self):
         return self.config
@@ -71,3 +72,6 @@ class TapiNodeEdgePoint:
 
     def getTerminationState(self):
         return "PERMANENTLY_TERMINATED"
+
+    def toJson(self):
+        return self.getData()

@@ -13,28 +13,6 @@
 # limitations under the License.
 
 #!/usr/bin/python
-import uuid
-from model.python.tapiCommonContext import TapiCommonContext
-
-class TopologyGenerator:
-
-    configuration = {}
-    topology = {}
-
-    # constructor
-    def __init__(self, configuration):
-        self.configuration = configuration
-
-    # getter
-    def getConfiguration(self):
-        return self.configuration
-
-    def getTopology(self):
-        return self.topology
-
-    # methods
-
-    # returns a JSON serializable object
-    def generate(self):
-        self.topology = TapiCommonContext().add(self.configuration)
-        return self.topology
+class Top:
+    def toJson(self):
+        raise NotImplementedError('subclasses must override toJson()!')
