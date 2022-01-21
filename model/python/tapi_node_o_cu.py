@@ -13,37 +13,37 @@
 # limitations under the License.
 
 #!/usr/bin/python
-import uuid
-from model.python.tapiNode import TapiNode
-from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
+"""
+Module containing a class representing an O-RAN Centralized Unit as TAPI Node.
+"""
+from model.python.tapi_node import TapiNode
+from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
 
-class TapiNodeODu(TapiNode):
-
+class TapiNodeOCu(TapiNode):
+    """
+    Class representing a O-RAN Centralized Unit as TAPI Node.
+    """
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
         # add E2 Provider interface
-        e2ProviderConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "e2", "protocol": "REST", "role": "provider"}}
-        e2Provider = TapiNodeEdgePoint(e2ProviderConfig)
-        self.add(e2Provider)
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1/OAM NetConf Provider interface
-        o1NcProviderConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "NETCONF", "role": "provider"}}
-        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig)
-        self.add(o1NcProvider)
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 VES Consumer interface
-        o1VesConsumerConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "VES", "role": "consumer"}}
-        o1VesConsumer = TapiNodeEdgePoint(o1VesConsumerConfig)
-        self.add(o1VesConsumer)
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 File Transfer Provider interface
-        o1FileProviderConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "FILE", "role": "provider"}}
-        o1FileProvider = TapiNodeEdgePoint(o1FileProviderConfig)
-        self.add(o1FileProvider)
+        self.add(TapiNodeEdgePoint(nep_configuration))

@@ -13,27 +13,28 @@
 # limitations under the License.
 
 #!/usr/bin/python
-
 """
 Provides functions to convert the Network into different formats
 """
 
 import json
 
+from model.python.tapi_common_context import TapiCommonContext
+
 
 class NetworkViewer:
     """
     This class contains all functions converting the Network into different formats
     """
-    network = {}
+    __network: TapiCommonContext
 
     # constructor
-    def __init__(self, network):
-        self.network = network
+    def __init__(self, network: TapiCommonContext):
+        self.__network = network
 
 
     # json format
-    def json(self):
+    def json(self) -> 'NetworkViewer':
         """
         Getter returns the class as json object
 
@@ -41,19 +42,19 @@ class NetworkViewer:
         """
         return self
 
-    def show_as_json(self):
+    def show_as_json(self) -> dict:
         """
         Method printing the class in json format.
         """
-        print(self.network.toJson())
+        print(self.__network.json())
 
     def show(self):
         """
         Method printing the newtwork
         """
-        print(self.network())
+        print(self.__network())
 
-    def save(self, filename):
+    def save(self, filename: str):
         """
         Method saving the class content to a file in json format.
 
@@ -61,10 +62,10 @@ class NetworkViewer:
         :type filename: string
         """
         with open(filename, "w", encoding='utf-8') as json_file:
-            json.dump(self.network.toJson(), json_file,
+            json.dump(self.__network.json(), json_file,
                       ensure_ascii=False, indent=2)
             for key in ["Node", "Link"]:
-                print(key + "s:", len(self.network.toJson()
+                print(key + "s:", len(self.__network.json()
                                       ["tapi-common:context"]
                                       ["tapi-topology:topology-context"]
                                       ["topology"][0][key.lower()]))

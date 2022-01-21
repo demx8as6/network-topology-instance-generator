@@ -16,7 +16,7 @@
 """
 Module containing the Generator class.
 """
-from model.python.tapiCommonContext import TapiCommonContext
+from model.python.tapi_common_context import TapiCommonContext
 
 class TopologyGenerator:
     """
@@ -24,11 +24,11 @@ class TopologyGenerator:
     The generation process is influenced by a configuration in json format.
     """
 
-    __configuration = {}
-    __topology = {}
+    __configuration: dict = {}
+    __topology: dict = {}
 
     # constructor
-    def __init__(self, configuration):
+    def __init__(self, configuration: dict):
         self.__configuration = configuration
 
     # getters

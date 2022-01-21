@@ -13,32 +13,37 @@
 # limitations under the License.
 
 #!/usr/bin/python
+"""
+Module for the class representing a TAPI Link
+"""
 import uuid
-
 from model.python.top import Top
 
 
 class TapiLink(Top):
+    """
+    Class representing a TAPI Link object.
+    """
 
-    data = {}
-    config = {}
+    __data: dict = {}
+    __configuration: dict = {}
 
     # constructor
-    def __init__(self, config):
-        self.config = config
-        self.data = {
+    def __init__(self, configuration: dict):
+        self.__configuration = configuration
+        self.__data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "topology-link-name",
-                "value": config['link']['name']
+                "value": configuration['link']['name']
             }],
             "administrative-state": "LOCKED",
             "operational-state": "ENABLED",
             "direction": "BIDIRECTIONAL",
             "lifecycle-state": "INSTALLED",
             "node-edge-point": [
-                config['link']['a'], 
-                config['link']['z']
+                configuration['link']['a'],
+                configuration['link']['z']
             ],
             "latency-characteristic": [{
                 "traffic-property-name": "property-1",
@@ -64,11 +69,23 @@ class TapiLink(Top):
         }
 
     # getter
-    def getData(self):
-        return self.data
+    def data(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Link.
+        :return TAPI Link as json object.
+        """
+        return self.__data
 
-    def toJson(self):
-        return self.data
+    def json(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Link.
+        :return TAPI Link as json object.
+        """
+        return self.data()
 
-    def getLinkName(self, link):
-        return "TODO"
+    def name(self) -> str:
+        """
+        Getter for TAPI Link name.
+        :return TAPI Link as json object.
+        """
+        return self.__configuration['link']['name']

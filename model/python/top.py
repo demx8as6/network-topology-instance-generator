@@ -21,7 +21,7 @@ class Top:
     """
     The abstract "Top" class adds common functions
     """
-    def json(self):
+    def json(self) -> 'Top':
         """
         Returns the class content in json format.
         """

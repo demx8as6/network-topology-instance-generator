@@ -19,9 +19,6 @@ Module containing a class for parameter validation
 import os
 import os.path
 import json
-from typing import Dict
-from xml.dom.minicompat import StringTypes
-from xmlrpc.client import Boolean
 import jsonschema
 
 
@@ -30,13 +27,13 @@ class ParameterValidator:
     Class validating the configuration as input for the generator.
     """
 
-    __config_file = "config.json"
-    __configuration = {}
-    __configuration_schema_file = os.path.dirname(os.path.realpath(
+    __config_file: str = "config.json"
+    __configuration: dict = {}
+    __configuration_schema_file: str = os.path.dirname(os.path.realpath(
         __file__)) + "/../model/jsonSchema/configuration.schema.json"
-    __config_schema = {}
-    __error_messsage = ""
-    __is_valid = False
+    __config_schema: dict = {}
+    __error_messsage: str = ""
+    __is_valid: bool = False
 
     # constructor
     def __init__(self, args):
@@ -59,28 +56,28 @@ class ParameterValidator:
         self.__is_valid = self.__is_json_valid(
             self.__configuration, self.__config_schema)
 
-    def configuration_file(self) -> StringTypes:
+    def configuration_file(self) -> str:
         """
         Getter for the configuration filename.
         :return Filename (path) for the init configuration.
         """
         return self.__config_file
 
-    def configuration(self) -> Dict:
+    def configuration(self) -> dict:
         """
         Getter for the configuration as input parameter.
         :return Init configuration as Dict.
         """
         return self.__configuration
 
-    def is_valid(self) -> Boolean:
+    def is_valid(self) -> bool:
         """
         Getter for the validation result.
         :return Init configuration as Dict.
         """
         return self.__is_valid
 
-    def error_message(self) -> StringTypes:
+    def error_message(self) -> str:
         """
         Getter for the error message after validation process or an empty sting,
         when configuration is valid.
@@ -90,7 +87,7 @@ class ParameterValidator:
 
     # private
 
-    def __is_json_valid(self, json_data, json_schema):
+    def __is_json_valid(self, json_data, json_schema) -> bool:
         """
         Method validating json against a schema
         """

@@ -23,16 +23,16 @@ from controller.parameter_validator import ParameterValidator
 from controller.network_generator import TopologyGenerator
 from view.network_viewer import NetworkViewer
 
-validator = ParameterValidator(sys.argv)
+validator: ParameterValidator = ParameterValidator(sys.argv)
 
 if validator.is_valid():
-    config = validator.configuration()
-    generator = TopologyGenerator(config)
+    config: dict = validator.configuration()
+    generator: TopologyGenerator = TopologyGenerator(config)
     generator.generate()
 
-    viewer = NetworkViewer(generator.topology())
+    viewer: NetworkViewer = NetworkViewer(generator.topology())
 
-    FILENAME = "output/network.json"
+    filename: str = "output/network.json"
     if config['network']['name']:
         filename = "output/" + config['network']['name'] + ".json"
     viewer.json().save(filename)

@@ -13,36 +13,37 @@
 # limitations under the License.
 
 #!/usr/bin/python
-import uuid
-from model.python.tapiNode import TapiNode
-from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
+"""
+Module containing a class representing a SMO as TAPI Node.
+"""
+from model.python.tapi_node import TapiNode
+from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
 
 class TapiNodeSmo(TapiNode):
+    """
+    Class representing a SMO as TAPI Node
+    """
 
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
         # add A1 consumer interface
-        a1ConsumerConfig = {"nodeEdgePoint": {
-            "interface": "a1",  "protocol": "REST", "role": "consumer"}}
-        a1Consumer = TapiNodeEdgePoint(a1ConsumerConfig)
-        self.add(a1Consumer)
+        nep_configuration = {"nodeEdgePoint": {
+            "interface": "a1", "protocol": "REST", "role": "consumer"}}
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1/OAM NetConf Consumer interface
-        o1NcConsumerConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "NETCONF", "role": "consumer"}}
-        o1NcConsumer = TapiNodeEdgePoint(o1NcConsumerConfig)
-        self.add(o1NcConsumer)
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 VES Provider interface
-        o1VesProviderConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "VES", "role": "provider"}}
-        o1VesProvider = TapiNodeEdgePoint(o1VesProviderConfig)
-        self.add(o1VesProvider)
+        self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 File Transfer Consumer interface
-        o1FileConsumerConfig = {"nodeEdgePoint": {
+        nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "FILE", "role": "consumer"}}
-        o1FileConsumer = TapiNodeEdgePoint(o1FileConsumerConfig)
-        self.add(o1FileConsumer)
+        self.add(TapiNodeEdgePoint(nep_configuration))

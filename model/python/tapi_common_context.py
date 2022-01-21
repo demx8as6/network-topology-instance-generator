@@ -29,30 +29,47 @@
 # limitations under the License.
 
 #!/usr/bin/python
+"""
+Module for a class representing a TAPI Common Context
+"""
 import uuid
-from model.python.tapiTopologyContext import TapiTopologyContext
+from model.python.tapi_topology_context import TapiTopologyContext
 from model.python.top import Top
 
+
 class TapiCommonContext(Top):
+    """
+    Class representing a TAPI Common Context object.
+    """
 
-  data = {}
+    __data: dict = {
+        "tapi-common:context": {
+            "uuid": str(uuid.uuid4()),
+            "name": [{"value-name": "context-name",
+                      "value": "Generated Topology"}]}}
 
-  # constructor
-  def __init__(self):
-    self.data = {
-      "tapi-common:context": {
-          "uuid": str(uuid.uuid4()),
-          "name": [{"value-name": "context-name",
-                    "value": "Generated Topology"}]}}
+    # getter
+    def data(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Topology Context.
+        :return TAPI Common Context as json object.
+        """
+        return self.__data
 
-  # getter
-  def getData(self):
-      return self.data
-  
-  def toJson(self):
-      return self.data
+    def json(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Topology Context.
+        :return TAPI Common Context as json object.
+        """
+        return self.data()
 
-  # methods
-  def add(self,config):
-    self.data["tapi-common:context"].update( TapiTopologyContext().add(config).toJson())
-    return self
+    # methods
+    def add(self, configuration: dict):
+        """
+        Adds a TAPI Topology Context to the TAPI Common Context
+        :param configuration: An input parameter as json object.
+        :return This object.
+        """
+        self.data()["tapi-common:context"].update(
+            TapiTopologyContext().add(configuration).json())
+        return self

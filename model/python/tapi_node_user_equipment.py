@@ -13,25 +13,22 @@
 # limitations under the License.
 
 #!/usr/bin/python
-import uuid
-from model.python.tapiNode import TapiNode
-from model.python.tapiNodeEdgePoint import TapiNodeEdgePoint
+"""
+Module containing a class representing a User Equipment as TAPI Node.
+"""
+from model.python.tapi_node import TapiNode
+from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
-
-class TapiNodeORu(TapiNode):
+class TapiNodeUserEquipment(TapiNode):
+    """
+    Class representing a User Equipment as TAPI Node
+    """
 
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
-        # add OFHM/OAM NetConf Provider interface
-        o1NcProviderConfig = {"nodeEdgePoint": {
-            "interface": "open-fronthaul-m-plane", "protocol": "NETCONF", "role": "provider"}}
-        o1NcProvider = TapiNodeEdgePoint(o1NcProviderConfig)
-        self.add(o1NcProvider)
-
-        # add air provider interface
-        airProviderConfig = {"nodeEdgePoint": {
-            "interface": "uu", "protocol": "unknown", "role": "provider"}}
-        airProvider = TapiNodeEdgePoint(airProviderConfig)
-        self.add(airProvider)
+        # add air consumer interface
+        nep_configuration = {"nodeEdgePoint": {
+            "interface": "uu", "protocol": "unknown", "role": "consumer"}}
+        self.add(TapiNodeEdgePoint(nep_configuration))

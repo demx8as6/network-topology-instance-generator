@@ -1,0 +1,409 @@
+# Copyright 2022 highstreet technologies GmbH
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#!/usr/bin/python
+"""
+Module containing the main class for this project for a TAPI Topology.
+"""
+import uuid
+from model.python.link_config import LinkConfig
+from model.python.tapi_node import TapiNode
+from model.python.top import Top
+from model.python.tapi_node_smo import TapiNodeSmo
+from model.python.tapi_node_near_rt_ric import TapiNodeNearRtRic
+from model.python.tapi_node_o_cu import TapiNodeOCu
+from model.python.tapi_node_o_du import TapiNodeODu
+from model.python.tapi_node_o_ru import TapiNodeORu
+from model.python.tapi_node_user_equipment import TapiNodeUserEquipment
+from model.python.tapi_link import TapiLink
+
+
+class TapiTopology(Top):
+    """
+    Class representing a TAPI Topology
+    """
+
+    __data: dict = None
+
+    # constructor
+    def __init__(self, configuration: dict):
+        self.__data = {
+            "uuid": str(uuid.uuid4()),
+            "name": [{
+                "value-name": "network-name",
+                "value": configuration['network']['name']}],
+            "node": [],
+            "link": []}
+
+        topology_structure: dict = configuration['network']['pattern']
+        network_function_type: str = next(iter(topology_structure))
+        count: int = configuration['network']['pattern'][network_function_type]
+
+        if network_function_type == "smo":
+            self.__create_smos(None, topology_structure, count)
+        elif network_function_type == "near-rt-ric":
+            self.__create_near_rt_rics(None, topology_structure, count)
+        elif network_function_type == "o-cu":
+            self.__create_o_cus(None, topology_structure, count)
+        elif network_function_type == "o-du":
+            self.__create_o_dus(None, topology_structure, count)
+        elif network_function_type == "o-ru":
+            self.__create_o_rus(None, topology_structure, count)
+        elif network_function_type == "ue":
+            self.__create_ues(None, topology_structure, count)
+        else:
+            print("Unknown network function type", network_function_type)
+
+    # getter
+    def data(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Topology.
+        :return TAPI Topology as json object.
+        """
+        return self.__data
+
+    def json(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Topology Context.
+        :return TAPI Topology Context as json object.
+        """
+        result = self.data().copy()
+
+        # nodes handling
+        result["node"] = []
+        for node in self.__data["node"]:
+            result["node"].append(node.json())
+
+        # link handling
+        result["link"] = []
+        for link in self.__data["link"]:
+            result["link"].append(link.json())
+
+        return result
+
+    # methods
+    def add_node(self, node: TapiNode):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :return TAPI Topology object.
+        """
+        self.__data["node"].append(node)
+        return self
+
+    def add_link(self, link: TapiLink):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :return TAPI Topology object.
+        """
+        self.__data["link"].append(link)
+        return self
+
+    def __create_smos(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "smo"
+        next_type = "near-rt-ric"
+        for local_id in range(count):
+            prefix = ""
+
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+            node = TapiNodeSmo(parent, config)
+            self.add_node(node)
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
+                self.__create_near_rt_rics(
+                    node, structure, structure[next_type])
+        return self
+
+    def __create_near_rt_rics(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "near-rt-ric"
+        next_type = "o-cu"
+        for local_id in range(count):
+            # add node
+            prefix = ""
+            if parent is not None:
+                prefix = parent.json()["name"][1]["value"]
+            function = "o-ran-common-identity-refs:"+current_type+"-function"
+            node_configuration = {"node": {"localId": prefix + str(local_id),
+                                           "type": current_type,
+                                           "function": function}}
+            node = TapiNodeNearRtRic(parent, node_configuration)
+            self.add_node(node)
+
+            # add links
+            # A1
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="a1-rest",
+                provider=node,
+                consumer=parent
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 NETCONF
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-netconf",
+                provider=node,
+                consumer=parent
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 FILE
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-file",
+                provider=node,
+                consumer=parent
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 VES
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-ves",
+                provider=parent,
+                consumer=node
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # continue
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
+                self.__create_o_cus(node, structure, structure[next_type])
+
+        return self
+
+    def __create_o_cus(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "o-cu"
+        next_type = "o-du"
+        for local_id in range(count):
+            prefix = ""
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+            node = TapiNodeOCu(parent, config)
+            self.add_node(node)
+
+            # add links
+            # E2
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="e2-rest",
+                provider=node,
+                consumer=parent
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 NETCONF
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-netconf",
+                provider=node,
+                consumer=parent.parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 FILE
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-file",
+                provider=node,
+                consumer=parent.parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 VES
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-ves",
+                provider=parent.parent(),
+                consumer=node
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # continue
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
+                self.__create_o_dus(node, structure, structure[next_type])
+        return self
+
+    def __create_o_dus(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "o-du"
+        next_type = "o-ru"
+        for local_id in range(count):
+            prefix = ""
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+            node = TapiNodeODu(parent, config)
+            self.add_node(node)
+
+            # add links
+            # E2
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="e2-rest",
+                provider=node,
+                consumer=parent.parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 NETCONF
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-netconf",
+                provider=node,
+                consumer=parent.parent().parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 FILE
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-file",
+                provider=node,
+                consumer=parent.parent().parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # O1 VES
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="o1-ves",
+                provider=parent.parent().parent(),
+                consumer=node
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # continue
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
+                self.__create_o_rus(node, structure, structure[next_type])
+        return self
+
+    def __create_o_rus(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "o-ru"
+        next_type = "user-equipment"
+        for local_id in range(count):
+            prefix = ""
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+            node = TapiNodeORu(parent, config)
+            self.add_node(node)
+
+            # add links
+
+            # O1 NETCONF
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="open-fronthaul-m-plane-netconf",
+                provider=node,
+                consumer=parent.parent().parent().parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # continue
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
+                self.__create_ues(node, structure, structure[next_type])
+        return self
+
+    def __create_ues(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "user-equipment"
+        for local_id in range(count):
+            prefix = ""
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+            node = TapiNodeUserEquipment(parent, config)
+            self.add_node(node)
+
+            # add links
+            # Uu unknown
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="uu-unknown",
+                provider=parent,
+                consumer=node
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            if "key" in topology_structure:
+                print("Implement missing topology level.")
+
+        return self
