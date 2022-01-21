@@ -64,5 +64,5 @@ network
 ## Usage
 
 ```
-python topo-gen.py config.json
+python tapi_topology_generator.py config.json
 ```

@@ -13,26 +13,30 @@
 # limitations under the License.
 
 #!/usr/bin/python
+
+"""
+Module as entry point to generatate a TAPI topology json
+"""
 import sys
 
-from controller.parameterValidator import ParameterValidator
-from controller.networkGenerator import TopologyGenerator
-from view.networkViewer import NetworkViewer
+from controller.parameter_validator import ParameterValidator
+from controller.network_generator import TopologyGenerator
+from view.network_viewer import NetworkViewer
 
 validator = ParameterValidator(sys.argv)
 
-if validator.isValid():
-  config = validator.getConfiguration()
-  generator = TopologyGenerator(config)
-  generator.generate()
+if validator.is_valid():
+    config = validator.configuration()
+    generator = TopologyGenerator(config)
+    generator.generate()
 
-  viewer = NetworkViewer(generator.getTopology())
+    viewer = NetworkViewer(generator.topology())
 
-  filename = "output/network.json"
-  if config['network']['name']:
-    filename = "output/" + config['network']['name'] + ".json"
-  viewer.json().save(filename)
-  # viewer.json().showAsJson()
+    FILENAME = "output/network.json"
+    if config['network']['name']:
+        filename = "output/" + config['network']['name'] + ".json"
+    viewer.json().save(filename)
+    # viewer.json().showAsJson()
 
 else:
-  print(validator.getError())
+    print(validator.error_message())

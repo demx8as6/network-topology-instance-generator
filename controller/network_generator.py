@@ -13,28 +13,37 @@
 # limitations under the License.
 
 #!/usr/bin/python
-import uuid
+"""
+Module containing the Generator class.
+"""
 from model.python.tapiCommonContext import TapiCommonContext
 
 class TopologyGenerator:
+    """
+    Class containing all methods to generate a TAPI topology.
+    The generation process is influenced by a configuration in json format.
+    """
 
-    configuration = {}
-    topology = {}
+    __configuration = {}
+    __topology = {}
 
     # constructor
     def __init__(self, configuration):
-        self.configuration = configuration
+        self.__configuration = configuration
 
-    # getter
-    def getConfiguration(self):
-        return self.configuration
-
-    def getTopology(self):
-        return self.topology
-
-    # methods
+    # getters
+    def topology(self) -> TapiCommonContext:
+        """
+        Getter returning the topology
+        :return A TapiCommonContext Object
+        """
+        return self.__topology
 
     # returns a JSON serializable object
-    def generate(self):
-        self.topology = TapiCommonContext().add(self.configuration)
-        return self.topology
+    def generate(self) -> TapiCommonContext:
+        """
+        Method to start the generation process.
+        :return The TapiCommonContext object.
+        """
+        self.__topology = TapiCommonContext().add(self.__configuration)
+        return self.__topology

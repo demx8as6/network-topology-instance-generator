@@ -13,4 +13,6 @@
 # limitations under the License.
 
 __pycache__
+.vscode
+.pylintrc
 output

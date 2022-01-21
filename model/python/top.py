@@ -13,6 +13,16 @@
 # limitations under the License.
 
 #!/usr/bin/python
+"""
+Module for an abstract class called "Top".
+This calls should be inherited for common functions
+"""
 class Top:
-    def toJson(self):
-        raise NotImplementedError('subclasses must override toJson()!')
+    """
+    The abstract "Top" class adds common functions
+    """
+    def json(self):
+        """
+        Returns the class content in json format.
+        """
+        raise NotImplementedError('subclasses must override json()!')
