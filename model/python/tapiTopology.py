@@ -120,7 +120,7 @@ class TapiTopology(Top):
             
             # add links
             a1LinkConfig = {"link":{
-                "name": "A1:|" + parent.getName() + "|<->|" + node.getName() + "|",
+                "name": "A1:|" + parent.getName() + "|->|" + node.getName() + "|",
                 "a":{
                     "topology-uuid":self.data["uuid"],
                     "node-uuid": parent.getData()["uuid"],
@@ -134,6 +134,54 @@ class TapiTopology(Top):
             }}
             a1Link =  TapiLink(a1LinkConfig)
             self.addLink(a1Link)
+
+            o1ncLinkConfig = {"link":{
+                "name": "O1-NETCONF:|" + parent.getName() + "|->|" + node.getName() + "|",
+                "a":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": parent.getData()["uuid"],
+                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-netconf-consumer")
+                },
+                "z":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": node.getData()["uuid"],
+                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-netconf-provider")
+                }
+            }}
+            o1ncLink =  TapiLink(o1ncLinkConfig)
+            self.addLink(o1ncLink)
+
+            o1fileLinkConfig = {"link":{
+                "name": "O1-FILE:|" + parent.getName() + "|->|" + node.getName() + "|",
+                "a":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": parent.getData()["uuid"],
+                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-file-consumer")
+                },
+                "z":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": node.getData()["uuid"],
+                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-file-provider")
+                }
+            }}
+            o1fileLink =  TapiLink(o1fileLinkConfig)
+            self.addLink(o1fileLink)
+
+            o1vesLinkConfig = {"link":{
+                "name": "O1-VES:|" + parent.getName() + "|<-|" + node.getName() + "|",
+                "a":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": parent.getData()["uuid"],
+                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-ves-provider")
+                },
+                "z":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": node.getData()["uuid"],
+                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-ves-consumer")
+                }
+            }}
+            o1vesLink =  TapiLink(o1vesLinkConfig)
+            self.addLink(o1vesLink)
 
             # continue
             if nextType in topoStructure:
@@ -156,6 +204,24 @@ class TapiTopology(Top):
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeOCu(parent, config)
             self.addNode(node)
+
+            # add links
+            e2LinkConfig = {"link":{
+                "name": "E2:|" + parent.getName() + "|->|" + node.getName() + "|",
+                "a":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": parent.getData()["uuid"],
+                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("e2-rest-consumer")
+                },
+                "z":{
+                    "topology-uuid":self.data["uuid"],
+                    "node-uuid": node.getData()["uuid"],
+                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("e2-rest-provider")
+                }
+            }}
+            e2Link =  TapiLink(e2LinkConfig)
+            self.addLink(e2Link)
+
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:

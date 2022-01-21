@@ -60,9 +60,7 @@ class TapiLink(Top):
                 "cost-name": "cost",
                 "cost-algorithm": "alg1",
                 "cost-value": "value-1"}],
-            "transitioned-layer-protocol-name": [
-                "layer-protocol-2---should-it-be-an-uuid?",
-                "layer-protocol-1---should-it-be-an-uuid?"]
+            "transitioned-layer-protocol-name": ["ETH"]
         }
 
     # getter

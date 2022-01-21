@@ -22,6 +22,7 @@ class TapiNode(Top):
 
     data = {}
     config = {}
+    parent = {}
 
     # constructor
     def __init__(self, parent, config):
@@ -70,6 +71,9 @@ class TapiNode(Top):
     def getConfig(self):
         return self.config
 
+    def getParent(self):
+        return self.parent
+
     def getData(self):
         return self.data
 
@@ -81,6 +85,8 @@ class TapiNode(Top):
         for nep in self.data["owned-node-edge-point"]:
             if nep.getName() == ifName:
                 result = nep.getData()["uuid"]
+        if result == "not found":
+            print(ifName, result)
 
         return result
 
