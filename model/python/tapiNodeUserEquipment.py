@@ -25,6 +25,6 @@ class TapiNodeUserEquipment(TapiNode):
 
         # add air consumer interface
         airConsumerConfig = {"nodeEdgePoint": {
-            "interface": "air", "protocol": "unknown", "role": "consumer"}}
+            "interface": "uu", "protocol": "unknown", "role": "consumer"}}
         airConsumer = TapiNodeEdgePoint(airConsumerConfig)
         self.add(airConsumer)

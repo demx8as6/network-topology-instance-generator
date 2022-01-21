@@ -324,4 +324,15 @@ class TapiTopology(Top):
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeUserEquipment(parent, config)
             self.addNode(node)
+
+            # add links
+            ## Uu unknown
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="uu-unknown",
+                provider=parent,
+                consumer=node
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
         return self

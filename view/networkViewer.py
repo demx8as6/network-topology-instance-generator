@@ -40,4 +40,6 @@ class NetworkViewer:
     def save(self, filename):
         with open(filename, "w", encoding='utf-8') as jsonFile:
             json.dump(self.network.toJson(), jsonFile, ensure_ascii=False, indent=2)
-            print(filename, "saved!")
+            for key in ["Node", "Link"]:
+              print(key + "s:", len(self.network.toJson()["tapi-common:context"]["tapi-topology:topology-context"]["topology"][0][key.lower()]))
+            print("File '" + filename + "' saved!")

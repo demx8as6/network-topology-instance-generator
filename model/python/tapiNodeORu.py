@@ -32,6 +32,6 @@ class TapiNodeORu(TapiNode):
 
         # add air provider interface
         airProviderConfig = {"nodeEdgePoint": {
-            "interface": "air", "protocol": "unknown", "role": "provider"}}
+            "interface": "uu", "protocol": "unknown", "role": "provider"}}
         airProvider = TapiNodeEdgePoint(airProviderConfig)
         self.add(airProvider)
