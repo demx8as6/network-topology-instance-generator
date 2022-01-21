@@ -14,6 +14,7 @@
 
 #!/usr/bin/python
 import uuid
+from model.python.linkConfig import LinkConfig
 from model.python.top import Top
 from model.python.tapiNodeSmo import TapiNodeSmo
 from model.python.tapiNodeNearRtRic import TapiNodeNearRtRic
@@ -119,69 +120,41 @@ class TapiTopology(Top):
             self.addNode(node)
             
             # add links
-            a1LinkConfig = {"link":{
-                "name": "A1:|" + parent.getName() + "|->|" + node.getName() + "|",
-                "a":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": parent.getData()["uuid"],
-                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("a1-rest-consumer")
-                },
-                "z":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": node.getData()["uuid"],
-                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("a1-rest-provider")
-                }
-            }}
-            a1Link =  TapiLink(a1LinkConfig)
-            self.addLink(a1Link)
+            ## A1
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="a1-rest",
+                provider=node,
+                consumer=parent
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
 
-            o1ncLinkConfig = {"link":{
-                "name": "O1-NETCONF:|" + parent.getName() + "|->|" + node.getName() + "|",
-                "a":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": parent.getData()["uuid"],
-                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-netconf-consumer")
-                },
-                "z":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": node.getData()["uuid"],
-                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-netconf-provider")
-                }
-            }}
-            o1ncLink =  TapiLink(o1ncLinkConfig)
-            self.addLink(o1ncLink)
+            ## O1 NETCONF
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-netconf",
+                provider=node,
+                consumer=parent
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
 
-            o1fileLinkConfig = {"link":{
-                "name": "O1-FILE:|" + parent.getName() + "|->|" + node.getName() + "|",
-                "a":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": parent.getData()["uuid"],
-                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-file-consumer")
-                },
-                "z":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": node.getData()["uuid"],
-                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-file-provider")
-                }
-            }}
-            o1fileLink =  TapiLink(o1fileLinkConfig)
-            self.addLink(o1fileLink)
+            ## O1 FILE
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-file",
+                provider=node,
+                consumer=parent
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
 
-            o1vesLinkConfig = {"link":{
-                "name": "O1-VES:|" + parent.getName() + "|<-|" + node.getName() + "|",
-                "a":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": parent.getData()["uuid"],
-                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("o1-ves-provider")
-                },
-                "z":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": node.getData()["uuid"],
-                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("o1-ves-consumer")
-                }
-            }}
-            o1vesLink =  TapiLink(o1vesLinkConfig)
-            self.addLink(o1vesLink)
+            ## O1 VES
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-ves",
+                provider=parent,
+                consumer=node
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
 
             # continue
             if nextType in topoStructure:
@@ -206,22 +179,43 @@ class TapiTopology(Top):
             self.addNode(node)
 
             # add links
-            e2LinkConfig = {"link":{
-                "name": "E2:|" + parent.getName() + "|->|" + node.getName() + "|",
-                "a":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": parent.getData()["uuid"],
-                    "node-edge-point-uuid": parent.getNodeEdgePointByInterfaceName("e2-rest-consumer")
-                },
-                "z":{
-                    "topology-uuid":self.data["uuid"],
-                    "node-uuid": node.getData()["uuid"],
-                    "node-edge-point-uuid": node.getNodeEdgePointByInterfaceName("e2-rest-provider")
-                }
-            }}
-            e2Link =  TapiLink(e2LinkConfig)
-            self.addLink(e2Link)
+            ## E2
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="e2-rest",
+                provider=node,
+                consumer=parent
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
 
+            ## O1 NETCONF
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-netconf",
+                provider=node,
+                consumer=parent.getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            ## O1 FILE
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-file",
+                provider=node,
+                consumer=parent.getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            ## O1 VES
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-ves",
+                provider=parent.getParent(),
+                consumer=node
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            # continue
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -241,6 +235,45 @@ class TapiTopology(Top):
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeODu(parent, config)
             self.addNode(node)
+
+            # add links
+            ## E2
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="e2-rest",
+                provider=node,
+                consumer=parent.getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            ## O1 NETCONF
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-netconf",
+                provider=node,
+                consumer=parent.getParent().getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            ## O1 FILE
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-file",
+                provider=node,
+                consumer=parent.getParent().getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            ## O1 VES
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="o1-ves",
+                provider=parent.getParent().getParent(),
+                consumer=node
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            # continue
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:
@@ -260,6 +293,19 @@ class TapiTopology(Top):
                                "function": "o-ran-common-identity-refs:"+currentType+"-function"}}
             node = TapiNodeORu(parent, config)
             self.addNode(node)
+
+            # add links
+
+            ## O1 NETCONF
+            linkConfig = LinkConfig(
+                topoRef=self.getData()["uuid"],
+                namePrefix="open-fronthaul-m-plane-netconf",
+                provider=node,
+                consumer=parent.getParent().getParent().getParent()
+            )
+            self.addLink(TapiLink(linkConfig.toJson()))
+
+            # continue
             if nextType in topoStructure:
                 structure = topoStructure.copy()
                 if currentType in structure:

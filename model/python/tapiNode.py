@@ -87,7 +87,8 @@ class TapiNode(Top):
                 result = nep.getData()["uuid"]
         if result == "not found":
             print(ifName, result)
-
+            for nep in self.data["owned-node-edge-point"]:
+                print(nep.toJson())
         return result
 
     def getFunction(self):
@@ -110,7 +111,7 @@ class TapiNode(Top):
             return self.getFunction()
 
     def getParent(self):
-        return self.getParent
+        return self.parent
 
     # methods
     def add(self, nep):
