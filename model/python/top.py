@@ -17,12 +17,38 @@
 Module for an abstract class called "Top".
 This calls should be inherited for common functions
 """
+
+
 class Top:
     """
     The abstract "Top" class adds common functions
     """
-    def json(self) -> 'Top':
+    __configuration: dict
+    __data: dict
+
+    def __init__(self, configuration) -> None:
+        self.__configuration = configuration
+
+    def configuration(self) -> dict:
+        """
+        Returns the class date.
+        """
+        raise NotImplementedError('subclasses must override configuration()!')
+
+    def data(self) -> dict:
+        """
+        Returns the class date.
+        """
+        raise NotImplementedError('subclasses must override data()!')
+
+    def json(self) -> dict:
         """
         Returns the class content in json format.
         """
         raise NotImplementedError('subclasses must override json()!')
+
+    def name(self) -> str:
+        """
+        Returns the name of the class object.
+        """
+        raise NotImplementedError('subclasses must override name()!')

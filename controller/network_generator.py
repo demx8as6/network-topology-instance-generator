@@ -32,6 +32,13 @@ class TopologyGenerator:
         self.__configuration = configuration
 
     # getters
+    def configuration(self) -> dict:
+        """
+        Getter returning the object configuration
+        :return A TopologyGenerator configuration
+        """
+        return self.__configuration
+
     def topology(self) -> TapiCommonContext:
         """
         Getter returning the topology
@@ -45,5 +52,5 @@ class TopologyGenerator:
         Method to start the generation process.
         :return The TapiCommonContext object.
         """
-        self.__topology = TapiCommonContext().add(self.__configuration)
+        self.__topology = TapiCommonContext({}).add(self.configuration())
         return self.__topology

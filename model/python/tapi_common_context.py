@@ -42,6 +42,7 @@ class TapiCommonContext(Top):
     Class representing a TAPI Common Context object.
     """
 
+    __configuration: dict = {}
     __data: dict = {
         "tapi-common:context": {
             "uuid": str(uuid.uuid4()),
@@ -49,9 +50,16 @@ class TapiCommonContext(Top):
                       "value": "Generated Topology"}]}}
 
     # getter
+    def configuration(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Common Context.
+        :return TAPI Common Context as json object.
+        """
+        return self.__configuration
+
     def data(self) -> dict:
         """
-        Getter for a json object representing the TAPI Topology Context.
+        Getter for a json object representing the TAPI Common Context.
         :return TAPI Common Context as json object.
         """
         return self.__data
@@ -63,6 +71,14 @@ class TapiCommonContext(Top):
         """
         return self.data()
 
+    def name(self) -> str:
+        """
+        Getter for object name.
+        :return Human readable string as name.
+        """
+        return self.data()["tapi-common:context"]["name"][0]["value"]
+
+
     # methods
     def add(self, configuration: dict):
         """
@@ -71,5 +87,5 @@ class TapiCommonContext(Top):
         :return This object.
         """
         self.data()["tapi-common:context"].update(
-            TapiTopologyContext().add(configuration).json())
+            TapiTopologyContext({}).add(configuration).json())
         return self
