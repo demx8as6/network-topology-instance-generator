@@ -20,7 +20,7 @@ from model.python.tapi_node import TapiNode
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
 
-class TapiNodeOCu(TapiNode):
+class TapiNodeOCuCp(TapiNode):
     """
     Class representing a O-RAN Centralized Unit as TAPI Node.
     """
@@ -46,4 +46,14 @@ class TapiNodeOCu(TapiNode):
         # add O1 File Transfer Provider interface
         nep_configuration = {"nodeEdgePoint": {
             "interface": "o1", "protocol": "FILE", "role": "provider"}}
+        self.add(TapiNodeEdgePoint(nep_configuration))
+
+        # add F1 CP Consumer interface
+        nep_configuration = {"nodeEdgePoint": {
+            "interface": "f1-c", "protocol": "unknown", "role": "consumer"}}
+        self.add(TapiNodeEdgePoint(nep_configuration))
+
+        # add E1 Consumer interface
+        nep_configuration = {"nodeEdgePoint": {
+            "interface": "e1", "protocol": "unknown", "role": "consumer"}}
         self.add(TapiNodeEdgePoint(nep_configuration))

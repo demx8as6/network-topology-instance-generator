@@ -14,17 +14,16 @@
 
 #!/usr/bin/python
 """
-Module containing a class representing an O-RAN Distributed Unit as TAPI Node.
+Module containing a class representing an O-RAN Centralized Unit as TAPI Node.
 """
 from model.python.tapi_node import TapiNode
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
 
-class TapiNodeODu(TapiNode):
+class TapiNodeOCuUp(TapiNode):
     """
-    Class representing a O-RAN Distributed Unit as TAPI Node.
+    Class representing a O-RAN Centralized Unit as TAPI Node.
     """
-
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
@@ -49,12 +48,12 @@ class TapiNodeODu(TapiNode):
             "interface": "o1", "protocol": "FILE", "role": "provider"}}
         self.add(TapiNodeEdgePoint(nep_configuration))
 
-        # add F1 CP Provider interface
+        # add F1 UP Consumer interface
         nep_configuration = {"nodeEdgePoint": {
-            "interface": "f1-c", "protocol": "unknown", "role": "provider"}}
+            "interface": "f1-u", "protocol": "unknown", "role": "consumer"}}
         self.add(TapiNodeEdgePoint(nep_configuration))
 
-        # add F1 UP Provider interface
+        # add E1 Provider interface
         nep_configuration = {"nodeEdgePoint": {
-            "interface": "f1-u", "protocol": "unknown", "role": "provider"}}
+            "interface": "e1", "protocol": "unknown", "role": "provider"}}
         self.add(TapiNodeEdgePoint(nep_configuration))
