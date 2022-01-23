@@ -31,6 +31,7 @@ class TapiNode(Top):
 
     # constructor
     def __init__(self, parent: 'TapiNode', configuration: dict):
+        super().__init__(configuration)
         self.__parent = parent
         self.__configuration = configuration
         self.__data = {
@@ -93,6 +94,13 @@ class TapiNode(Top):
         :return TAPI Link as json object.
         """
         return self.__data
+
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI Node identifier.
+        :return Object identifier as UUID.
+        """
+        return self.__data["uuid"]
 
     def name(self) -> str:
         """

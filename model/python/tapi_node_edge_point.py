@@ -32,6 +32,7 @@ class TapiNodeEdgePoint(Top):
 
     # constructor
     def __init__(self, configuration: dict):
+        super().__init__(configuration)
         self.__configuration = configuration
         self.__data = {
             "uuid": str(uuid.uuid4()),
@@ -67,6 +68,13 @@ class TapiNodeEdgePoint(Top):
         :return TAPI Node Edge Point configuration as json object.
         """
         return self.__configuration
+
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI Node Edge Point identifier.
+        :return Object identifier as UUID.
+        """
+        return self.__data["uuid"]
 
     def name(self) -> str:
         """

@@ -71,6 +71,13 @@ class TapiCommonContext(Top):
         """
         return self.data()
 
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI common context identifier.
+        :return Object identifier as string
+        """
+        return self.__data["tapi-common:context"]["uuid"]
+
     def name(self) -> str:
         """
         Getter for object name.

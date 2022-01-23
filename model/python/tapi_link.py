@@ -30,6 +30,7 @@ class TapiLink(Top):
 
     # constructor
     def __init__(self, configuration: dict):
+        super().__init__(configuration)
         self.__configuration = configuration
         self.__data = {
             "uuid": str(uuid.uuid4()),
@@ -69,6 +70,13 @@ class TapiLink(Top):
         }
 
     # getter
+    def configuration(self) -> dict:
+        """
+        Getter for a json object representing the initial configuration of a TAPI Link.
+        :return TAPI Link configuration as json object.
+        """
+        return self.__configuration
+
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Link.
@@ -82,6 +90,13 @@ class TapiLink(Top):
         :return TAPI Link as json object.
         """
         return self.data()
+
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI Link identifier.
+        :return Object identifier as UUID.
+        """
+        return self.__data["uuid"]
 
     def name(self) -> str:
         """

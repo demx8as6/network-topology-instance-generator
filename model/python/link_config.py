@@ -16,6 +16,7 @@
 """
 Module to construct the input configuration for a TAPI link object.
 """
+from typing import Dict
 from model.python.tapi_node import TapiNode
 from model.python.top import Top
 
@@ -25,9 +26,10 @@ class LinkConfig(Top):
     Class containing  methods creating an link configuration object.
     """
 
+    __topology_reference = "unknown"
+    __name_prefix: str = "unknown"
     __consumer: TapiNode = None
     __provider: TapiNode = None
-    __name_prefix: str = "unknown"
 
     __data: dict = {"link": {
         "name": "noName",
@@ -38,9 +40,11 @@ class LinkConfig(Top):
     # constructor
     def __init__(self, topology_reference: str, name_prefix: str,
                  provider: TapiNode, consumer: TapiNode):
+        super().__init__({})
+        self.__topology_reference = topology_reference
+        self.__name_prefix = name_prefix
         self.__consumer = consumer
         self.__provider = provider
-        self.__name_prefix = name_prefix
 
         # exception for O-RAN Fronthaul Management plane to SMO
         consumer_name_prefix = name_prefix
@@ -64,6 +68,35 @@ class LinkConfig(Top):
                         name_prefix.lower() + "-provider")
             }
         }}
+
+    def configuration(self) -> Dict[str, Dict[str, Dict]]:
+        """
+        Getter returning the configuration.
+        :return Link identifier as string
+        """
+        return {"configuration": {
+            "topology-reference:": self.__topology_reference,
+            "name_prefix": self.__name_prefix,
+            "provider": self.__provider.json(),
+            "consumer": self.__consumer.json()
+        }}
+
+    def data(self) -> Dict[str, Dict]:
+        """
+        Getter returning the link configuration identifier of the link.
+        :return Link identifier as string
+        """
+        return self.__data
+
+    def identifier(self) -> str:
+        """
+        Getter returning the link configuration identifier of the link.
+        :return Link identifier as string
+        """
+        return "--".join([
+            self.__consumer.identifier(),
+            self.__provider.identifier(),
+        ])
 
     def name(self) -> str:
         """

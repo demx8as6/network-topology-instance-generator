@@ -47,8 +47,15 @@ class Top:
         """
         raise NotImplementedError('subclasses must override json()!')
 
-    def name(self) -> str:
+    def identifier(self) -> str:
         """
         Returns the name of the class object.
+        """
+        raise NotImplementedError('subclasses must override name()!')
+
+    def name(self) -> str:
+        """
+        Returns the identifier of the class object.
+        It is preferred a UUID according to RFC4122.
         """
         raise NotImplementedError('subclasses must override name()!')

@@ -30,12 +30,34 @@ class TapiTopologyContext(Top):
             "topology": []}}
 
     # getter
+    def configuration(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Topology Context initail
+        configuration.
+        :return TAPI Topology Context configuration as json object.
+        """
+        return self.__configuration
+
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Topology Context.
         :return TAPI Topology Context as json object.
         """
         return self.__data
+
+    def name(self) -> str:
+        """
+        Getter returning the container name.
+        :return Static string
+        """
+        return "tapi-topology:topology-context"
+
+    def identifier(self) -> str:
+        """
+        Getter returning the container name which acts as identifier
+        :return Static string
+        """
+        return self.name()
 
     def json(self) -> dict:
         """

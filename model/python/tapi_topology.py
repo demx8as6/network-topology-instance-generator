@@ -85,6 +85,13 @@ class TapiTopology(Top):
         """
         return self.__data
 
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI Topology identifier.
+        :return Object identifier as UUID.
+        """
+        return self.__data["uuid"]
+
     def name(self) -> str:
         """
         Getter for TAPI Topology name. The TAPI topology is a representation of
