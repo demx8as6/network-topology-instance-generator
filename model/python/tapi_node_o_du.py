@@ -31,7 +31,7 @@ class TapiNodeODu(TapiNode):
 
         # add E2 Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "e2", "protocol": "REST", "role": "provider"
             }
@@ -40,7 +40,7 @@ class TapiNodeODu(TapiNode):
 
         # add O1/OAM NetConf Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "NETCONF", "role": "provider"
             }
@@ -49,7 +49,7 @@ class TapiNodeODu(TapiNode):
 
         # add O1 VES Consumer interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "VES", "role": "consumer"
             }
@@ -58,7 +58,7 @@ class TapiNodeODu(TapiNode):
 
         # add O1 File Transfer Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "FILE", "role": "provider"
             }
@@ -67,7 +67,7 @@ class TapiNodeODu(TapiNode):
 
         # add F1 CP Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "f1-c", "protocol": "unknown", "role": "provider"
             }
@@ -76,7 +76,7 @@ class TapiNodeODu(TapiNode):
 
         # add F1 UP Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "f1-u", "protocol": "unknown", "role": "provider"
             }

@@ -31,7 +31,7 @@ class TapiNodeUserEquipment(TapiNode):
 
         # add air consumer interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "uu", "protocol": "unknown", "role": "consumer"
             }

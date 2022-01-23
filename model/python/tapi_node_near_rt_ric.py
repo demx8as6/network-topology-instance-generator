@@ -30,7 +30,7 @@ class TapiNodeNearRtRic(TapiNode):
         super().__init__(parent, config)
         # add A1 provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "a1", "protocol": "REST", "role": "provider"
             }
@@ -39,7 +39,7 @@ class TapiNodeNearRtRic(TapiNode):
 
         # add E2 Consumer interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "e2", "protocol": "REST", "role": "consumer"
             }
@@ -48,7 +48,7 @@ class TapiNodeNearRtRic(TapiNode):
 
         # add O1/OAM NetConf Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "NETCONF", "role": "Provider"
             }
@@ -57,7 +57,7 @@ class TapiNodeNearRtRic(TapiNode):
 
         # add O1 VES Consumer interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "VES", "role": "consumer"
             }
@@ -66,7 +66,7 @@ class TapiNodeNearRtRic(TapiNode):
 
         # add O1 File Transfer Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "FILE", "role": "provider"
             }

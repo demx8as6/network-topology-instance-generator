@@ -31,7 +31,7 @@ class TapiNodeORu(TapiNode):
 
         # add OpenFronthaul Management Plane/OAM NetConf Provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "open-fronthaul-m-plane", "protocol": "NETCONF", "role": "provider"
             }
@@ -40,7 +40,7 @@ class TapiNodeORu(TapiNode):
 
         # add air provider interface
         nep_configuration = {
-            "parent": parent.identifier(),
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "uu", "protocol": "unknown", "role": "provider"
             }

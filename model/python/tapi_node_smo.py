@@ -30,7 +30,7 @@ class TapiNodeSmo(TapiNode):
         super().__init__(parent, config)
         # add A1 consumer interface
         nep_configuration = {
-            "parent": "",
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "a1", "protocol": "REST", "role": "consumer"
             }
@@ -39,7 +39,7 @@ class TapiNodeSmo(TapiNode):
 
         # add O1/OAM NetConf Consumer interface
         nep_configuration = {
-            "parent": "",
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "NETCONF", "role": "consumer"
             }
@@ -48,7 +48,7 @@ class TapiNodeSmo(TapiNode):
 
         # add O1 VES Provider interface
         nep_configuration = {
-            "parent": "",
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "VES", "role": "provider"
             }
@@ -57,7 +57,7 @@ class TapiNodeSmo(TapiNode):
 
         # add O1 File Transfer Consumer interface
         nep_configuration = {
-            "parent": "",
+            "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "o1", "protocol": "FILE", "role": "consumer"
             }
