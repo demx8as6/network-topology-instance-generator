@@ -27,10 +27,14 @@ class TapiNodeEdgePoint(Top):
     """
 
     __data: dict = {}
-    __configuration: dict = {"parent": "unknown",
-                             "nodeEdgePoint": {"interface": "unknown-interface",
-                                               "protocol": "unknown-protocol",
-                                               "role": "consumer"}}
+    __configuration: dict = {
+        "parent": "unknown",
+        "nodeEdgePoint": {
+            "interface": "unknown-interface",
+            "protocol": "unknown-protocol",
+            "role": "consumer"
+        }
+    }
 
     # constructor
     def __init__(self, configuration: dict):
