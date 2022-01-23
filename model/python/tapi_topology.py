@@ -90,8 +90,28 @@ class TapiTopology(Top):
         result["elements"] = []
         for node in self.__data["node"]:
             result["elements"].append(node.cytoscape())
+            result["elements"].append({
+                "group": 'nodes',
+                "data": {
+                    "id": "base-" + node.identifier(),
+                    "parent": node.identifier(),
+                    "name": "base",
+                    "function": "base",
+                    "hide": "true"
+                }
+            })
             for nep in node.data()['owned-node-edge-point']:
                 result["elements"].append(nep.cytoscape())
+                result["elements"].append({
+                    "group": "edges",
+                    "data": {
+                        "id": "base-" + nep.name(),
+                        "name": "base-" + nep.name(),
+                        "source": nep.identifier(),
+                        "target": "base-" + node.identifier(),
+                        "hide": "true"
+                    }
+                })
 
         # link handling
         for link in self.__data["link"]:
