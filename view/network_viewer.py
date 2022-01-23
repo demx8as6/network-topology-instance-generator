@@ -70,3 +70,15 @@ class NetworkViewer:
                                       ["tapi-topology:topology-context"]
                                       ["topology"][0][key.lower()]))
             print("File '" + filename + "' saved!")
+
+    def cytoscape(self, filename: str):
+        """
+        Method saving the class content to a file in json format.
+
+        :param filename: A valid path to a file on the system.
+        :type filename: string
+        """
+        with open(filename, "w", encoding='utf-8') as json_file:
+            json.dump(self.__network.cytoscape(), json_file,
+                      ensure_ascii=False, indent=2)
+            print("File '" + filename + "' saved!")

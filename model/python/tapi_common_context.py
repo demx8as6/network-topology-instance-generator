@@ -1,17 +1,3 @@
-# Copyright 2022 highstreet technologies GmbH
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 #!/usr/bin/python
 
 # Copyright 2022 highstreet technologies GmbH
@@ -32,6 +18,7 @@
 """
 Module for a class representing a TAPI Common Context
 """
+from typing import Dict
 import uuid
 from model.python.tapi_topology_context import TapiTopologyContext
 from model.python.top import Top
@@ -43,6 +30,7 @@ class TapiCommonContext(Top):
     """
 
     __configuration: dict = {}
+    __context: TapiTopologyContext = None
     __data: dict = {
         "tapi-common:context": {
             "uuid": str(uuid.uuid4()),
@@ -50,12 +38,58 @@ class TapiCommonContext(Top):
                       "value": "Generated Topology"}]}}
 
     # getter
-    def configuration(self) -> dict:
+    def configuration(self) -> Dict[str, Dict]:
         """
         Getter for a json object representing the TAPI Common Context.
         :return TAPI Common Context as json object.
         """
         return self.__configuration
+
+    def cytoscape(self) -> Dict[str, str]:
+        """
+        Getter returning the object for topology visualization.
+        :return Cytoscape root.
+        """
+        result = {
+            "layout": {"name": "grid"},
+            "style": [
+                {
+                    "selector": "node",
+                    "style": {
+                        "background-color": "#2B65EC"
+                    }
+                },
+                {
+                    "selector": ":parent",
+                    "style": {
+                        "background-opacity": 0.333,
+                        "border-color": "#2B65EC"
+                    }
+                },
+                {
+                    "selector": "edge",
+                    "style": {
+                        "line-color": "#2B65EC"
+                    }
+                },
+                {
+                    "selector": "node:selected",
+                    "style": {
+                        "background-color": "#F08080",
+                        "border-color": "red"
+                    }
+                },
+                {
+                    "selector": "edge:selected",
+                    "style": {
+                        "line-color": "#F08080"
+                    }
+                }
+            ],
+            "elements": []
+        }
+        result.update(self.__context.cytoscape())
+        return result
 
     def data(self) -> dict:
         """
@@ -85,14 +119,14 @@ class TapiCommonContext(Top):
         """
         return self.data()["tapi-common:context"]["name"][0]["value"]
 
-
     # methods
+
     def add(self, configuration: dict):
         """
         Adds a TAPI Topology Context to the TAPI Common Context
         :param configuration: An input parameter as json object.
         :return This object.
         """
-        self.data()["tapi-common:context"].update(
-            TapiTopologyContext({}).add(configuration).json())
+        self.__context = TapiTopologyContext({}).add(configuration)
+        self.data()["tapi-common:context"].update(self.__context.json())
         return self

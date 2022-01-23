@@ -16,9 +16,11 @@
 """
 Module containing the class for a TAPI Node.
 """
+from typing import Dict, Union
 import uuid
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
+
 
 class TapiNode(Top):
     """
@@ -81,12 +83,19 @@ class TapiNode(Top):
         """
         return self.__configuration
 
-    def parent(self) -> 'TapiNode':
+    def cytoscape(self) -> Dict[str, Union[str, Dict[str, str]]]:
         """
-        Getter for a TAPI Node object representing the TAPI Node configuration.
-        :return TAPI Node configuration as json object.
+        Getter returning the object for topology visualization.
+        :return Cytoscape Element.
         """
-        return self.__parent
+        return {
+            "group": 'nodes',
+            "data": {
+                "id": self.identifier(),
+                "name": self.name(),
+                "function": self.function_label()
+            }
+        }
 
     def data(self) -> dict:
         """
@@ -94,40 +103,6 @@ class TapiNode(Top):
         :return TAPI Link as json object.
         """
         return self.__data
-
-    def identifier(self) -> str:
-        """
-        Getter returning the TAPI Node identifier.
-        :return Object identifier as UUID.
-        """
-        return self.__data["uuid"]
-
-    def name(self) -> str:
-        """
-        Getter for TAPI Node name.
-        :return TAPI Node as json object.
-        """
-        return "".join([
-            self.__configuration['node']['type'],
-            "-",
-            str(self.__configuration['node']['localId'])
-        ])
-
-    def node_edge_point_by_interface_name(self, interface_name) -> str:
-        """
-        Method returning a NEP based on a given interface name
-        :param interface_name: Search string
-        :return The NEP uuid or "not found"
-        """
-        result = "not found"
-        for nep in self.__data["owned-node-edge-point"]:
-            if nep.name() == interface_name:
-                result = nep.data()["uuid"]
-        if result == "not found":
-            print(interface_name, result)
-            for nep in self.__data["owned-node-edge-point"]:
-                print(nep.json())
-        return result
 
     def function(self) -> str:
         """
@@ -156,6 +131,13 @@ class TapiNode(Top):
         else:
             return self.function()
 
+    def identifier(self) -> str:
+        """
+        Getter returning the TAPI Node identifier.
+        :return Object identifier as UUID.
+        """
+        return self.__data["uuid"]
+
     def json(self) -> dict:
         """
         Getter for a json object representing the TAPI Node.
@@ -166,6 +148,40 @@ class TapiNode(Top):
         for nep in self.__data['owned-node-edge-point']:
             result['owned-node-edge-point'].append(nep.json())
         return result
+
+    def name(self) -> str:
+        """
+        Getter for TAPI Node name.
+        :return TAPI Node as json object.
+        """
+        return "".join([
+            self.__configuration['node']['type'],
+            "-",
+            str(self.__configuration['node']['localId'])
+        ])
+
+    def node_edge_point_by_interface_name(self, interface_name) -> str:
+        """
+        Method returning a NEP based on a given interface name
+        :param interface_name: Search string
+        :return The NEP uuid or "not found"
+        """
+        result = "not found"
+        for nep in self.__data["owned-node-edge-point"]:
+            if nep.name() == interface_name:
+                result = nep.identifier()
+        if result == "not found":
+            print(interface_name, result)
+            for nep in self.__data["owned-node-edge-point"]:
+                print(nep.json())
+        return result
+
+    def parent(self) -> 'TapiNode':
+        """
+        Getter for a TAPI Node object representing the TAPI Node configuration.
+        :return TAPI Node configuration as json object.
+        """
+        return self.__parent
 
     # methods
     def add(self, nep: TapiNodeEdgePoint) -> 'TapiNode':

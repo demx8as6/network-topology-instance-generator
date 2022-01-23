@@ -19,6 +19,7 @@ Module containing a class representing a User Equipment as TAPI Node.
 from model.python.tapi_node import TapiNode
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
+
 class TapiNodeUserEquipment(TapiNode):
     """
     Class representing a User Equipment as TAPI Node
@@ -29,6 +30,10 @@ class TapiNodeUserEquipment(TapiNode):
         super().__init__(parent, config)
 
         # add air consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "uu", "protocol": "unknown", "role": "consumer"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "uu", "protocol": "unknown", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))

@@ -3,11 +3,11 @@
     "name": "TestNetwork",
     "pattern": {
       "smo": 1,
-      "near-rt-ric": 2,
-      "o-cu": 2,
-      "o-du": 2,
-      "o-ru": 2,
-      "user-equipment": 3
+      "near-rt-ric": 1,
+      "o-cu": 1,
+      "o-du": 1,
+      "o-ru": 1,
+      "user-equipment": 1
     }
   }
 }

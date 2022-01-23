@@ -38,5 +38,10 @@ if validator.is_valid():
     viewer.json().save(filename)
     # viewer.json().showAsJson()
 
+    filename: str = "output/network.cy.json"
+    if config['network']['name']:
+        filename = "output/" + config['network']['name'] + ".cy.json"
+    viewer.json().cytoscape(filename)
+
 else:
     print(validator.error_message())

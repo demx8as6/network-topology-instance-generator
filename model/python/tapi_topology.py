@@ -78,6 +78,27 @@ class TapiTopology(Top):
         """
         return self.__configuration
 
+    def cytoscape(self) -> Dict[str, str]:
+        """
+        Getter for a json object representing the TAPI Topology for topology
+        representation.
+        :return TAPI Topology Context as json object.
+        """
+        result = {}
+
+        # nodes handling
+        result["elements"] = []
+        for node in self.__data["node"]:
+            result["elements"].append(node.cytoscape())
+            for nep in node.data()['owned-node-edge-point']:
+                result["elements"].append(nep.cytoscape())
+
+        # link handling
+        for link in self.__data["link"]:
+            result["elements"].append(link.cytoscape())
+
+        return result
+
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Topology.
@@ -103,7 +124,7 @@ class TapiTopology(Top):
 
     def json(self) -> dict:
         """
-        Getter for a json object representing the TAPI Topology Context.
+        Getter for a json object representing the TAPI Topology.
         :return TAPI Topology Context as json object.
         """
         result = self.data().copy()

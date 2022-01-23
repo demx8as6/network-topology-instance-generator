@@ -31,15 +31,16 @@ class Top:
 
     def configuration(self) -> dict:
         """
-        Returns the class date.
+        Returns the object initial configuration.
         """
         raise NotImplementedError('subclasses must override configuration()!')
 
-    def data(self) -> dict:
+    def cytoscape(self) -> dict:
         """
-        Returns the class date.
+        Returns the object content in json format for topology representation
+        for cytoscape platform.
         """
-        raise NotImplementedError('subclasses must override data()!')
+        raise NotImplementedError('subclasses must override cytoscape()!')
 
     def json(self) -> dict:
         """
@@ -47,11 +48,17 @@ class Top:
         """
         raise NotImplementedError('subclasses must override json()!')
 
+    def data(self) -> dict:
+        """
+        Returns the class data.
+        """
+        raise NotImplementedError('subclasses must override data()!')
+
     def identifier(self) -> str:
         """
         Returns the name of the class object.
         """
-        raise NotImplementedError('subclasses must override name()!')
+        raise NotImplementedError('subclasses must override identifier()!')
 
     def name(self) -> str:
         """

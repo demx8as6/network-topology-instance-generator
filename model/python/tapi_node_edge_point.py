@@ -16,6 +16,7 @@
 """
 Module containing a class representing a TAPI Node Edge Point
 """
+from typing import Dict, Union
 import uuid
 from model.python.top import Top
 
@@ -26,7 +27,8 @@ class TapiNodeEdgePoint(Top):
     """
 
     __data: dict = {}
-    __configuration: dict = {"nodeEdgePoint": {"interface": "unknown-interface",
+    __configuration: dict = {"parent": "unknown",
+                             "nodeEdgePoint": {"interface": "unknown-interface",
                                                "protocol": "unknown-protocol",
                                                "role": "consumer"}}
 
@@ -54,13 +56,6 @@ class TapiNodeEdgePoint(Top):
         }
 
     # getter
-    def data(self) -> dict:
-        """
-        Getter for a json object representing the TAPI Node Edge Point.
-        :return TAPI Node Edge Point as json object.
-        """
-        return self.__data
-
     def configuration(self) -> dict:
         """
         Getter for a json object representing the TAPI Node Edge Point intiail
@@ -69,12 +64,39 @@ class TapiNodeEdgePoint(Top):
         """
         return self.__configuration
 
+    def cytoscape(self) -> Dict[str, Union[str, Dict]]:
+        """
+        Getter returning the object for topology visualization.
+        :return Cytoscape Element.
+        """
+        return {
+            "group": "nodes",
+            "data": {
+                "id": self.identifier(),
+                "parent": self.parent()
+            }
+        }
+
+    def data(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Node Edge Point.
+        :return TAPI Node Edge Point as json object.
+        """
+        return self.__data
+
     def identifier(self) -> str:
         """
         Getter returning the TAPI Node Edge Point identifier.
         :return Object identifier as UUID.
         """
         return self.__data["uuid"]
+
+    def json(self) -> dict:
+        """
+        Getter for a json object representing the TAPI Node Edge Point.
+        :return TAPI Node Edge Point as json object.
+        """
+        return self.data()
 
     def name(self) -> str:
         """
@@ -85,6 +107,14 @@ class TapiNodeEdgePoint(Top):
                  self.__configuration['nodeEdgePoint']['protocol'],
                  self.__configuration['nodeEdgePoint']['role'])
         return "-".join(items).lower()
+
+    def parent(self) -> str:
+        """
+        Getter returning the identifier the the TAPI Node hosting the Node
+        Edge Point.
+        :return Identifier of the TAPI Node containing this NEP.
+        """
+        return self.__configuration["parent"]
 
     def termination_direction(self) -> str:
         """
@@ -106,10 +136,3 @@ class TapiNodeEdgePoint(Top):
         :return TAPI Node Edge Point state as String.
         """
         return "PERMANENTLY_TERMINATED"
-
-    def json(self) -> dict:
-        """
-        Getter for a json object representing the TAPI Node Edge Point.
-        :return TAPI Node Edge Point as json object.
-        """
-        return self.data()

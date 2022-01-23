@@ -16,6 +16,7 @@
 """
 Module for the TAPI Topology Context
 """
+from typing import Dict, List
 from model.python.tapi_topology import TapiTopology
 from model.python.top import Top
 
@@ -28,6 +29,7 @@ class TapiTopologyContext(Top):
     __data: dict = {
         "tapi-topology:topology-context": {
             "topology": []}}
+    __tapi_topology = []
 
     # getter
     def configuration(self) -> dict:
@@ -37,6 +39,17 @@ class TapiTopologyContext(Top):
         :return TAPI Topology Context configuration as json object.
         """
         return self.__configuration
+
+    def cytoscape(self) -> Dict[str, List]:
+        """
+        Getter returning the object for topology visualization.
+        :return Link configuration.
+        """
+        result = {"elements": []}
+        for instance in self.__tapi_topology:
+            # well, results in a singel topology only
+            result.update(instance.cytoscape())
+        return result
 
     def data(self) -> dict:
         """
@@ -73,6 +86,8 @@ class TapiTopologyContext(Top):
         :param configuration: An input parameter as json object.
         :return This object.
         """
+        topology = TapiTopology(configuration)
+        self.__tapi_topology.append(topology)
         self.__data["tapi-topology:topology-context"]["topology"].append(
-            TapiTopology(configuration).json())
+            topology.json())
         return self

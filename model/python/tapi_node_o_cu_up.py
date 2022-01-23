@@ -25,35 +25,60 @@ class TapiNodeOCuUp(TapiNode):
     Class representing a O-RAN Centralized Unit as TAPI Node.
     """
     # constructor
+
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
         # add E2 Provider interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "e2", "protocol": "REST", "role": "provider"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "e2", "protocol": "REST", "role": "provider"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1/OAM NetConf Provider interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "NETCONF", "role": "provider"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "NETCONF", "role": "provider"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 VES Consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "VES", "role": "consumer"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "VES", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 File Transfer Provider interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "FILE", "role": "provider"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "FILE", "role": "provider"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add F1 UP Consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "f1-u", "protocol": "unknown", "role": "consumer"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "f1-u", "protocol": "unknown", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add E1 Provider interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "e1", "protocol": "unknown", "role": "provider"}}
+        nep_configuration = {
+            "parent": parent.identifier(),
+            "nodeEdgePoint": {
+                "interface": "e1", "protocol": "unknown", "role": "provider"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))

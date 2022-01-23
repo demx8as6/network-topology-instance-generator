@@ -81,10 +81,17 @@ class LinkConfig(Top):
             "consumer": self.__consumer.json()
         }}
 
+    def cytoscape(self) -> Dict[str, str]:
+        """
+        Getter returning the object for topology visualization.
+        :return Link configuration.
+        """
+        return {"message": "not supported"}
+
     def data(self) -> Dict[str, Dict]:
         """
-        Getter returning the link configuration identifier of the link.
-        :return Link identifier as string
+        Getter returning the link data of the link.
+        :return Link confguation data as json object
         """
         return self.__data
 

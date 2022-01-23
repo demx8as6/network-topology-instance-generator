@@ -26,24 +26,40 @@ class TapiNodeSmo(TapiNode):
     """
 
     # constructor
-    def __init__(self, parent, config):
+    def __init__(self, parent: TapiNode, config):
         super().__init__(parent, config)
         # add A1 consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "a1", "protocol": "REST", "role": "consumer"}}
+        nep_configuration = {
+            "parent": "",
+            "nodeEdgePoint": {
+                "interface": "a1", "protocol": "REST", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1/OAM NetConf Consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "NETCONF", "role": "consumer"}}
+        nep_configuration = {
+            "parent": "",
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "NETCONF", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 VES Provider interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "VES", "role": "provider"}}
+        nep_configuration = {
+            "parent": "",
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "VES", "role": "provider"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))
 
         # add O1 File Transfer Consumer interface
-        nep_configuration = {"nodeEdgePoint": {
-            "interface": "o1", "protocol": "FILE", "role": "consumer"}}
+        nep_configuration = {
+            "parent": "",
+            "nodeEdgePoint": {
+                "interface": "o1", "protocol": "FILE", "role": "consumer"
+            }
+        }
         self.add(TapiNodeEdgePoint(nep_configuration))

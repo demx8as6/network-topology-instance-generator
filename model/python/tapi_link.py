@@ -16,6 +16,7 @@
 """
 Module for the class representing a TAPI Link
 """
+from typing import Dict, Union
 import uuid
 from model.python.top import Top
 
@@ -70,12 +71,27 @@ class TapiLink(Top):
         }
 
     # getter
-    def configuration(self) -> dict:
+    def configuration(self) -> Dict[str, Dict]:
         """
         Getter for a json object representing the initial configuration of a TAPI Link.
         :return TAPI Link configuration as json object.
         """
         return self.__configuration
+
+    def cytoscape(self) -> Dict[str, Union[str, Dict]]:
+        """
+        Getter returning the object for topology visualization.
+        :return Cytoscape Element.
+        """
+        return {
+            "group": "edges",
+            "data": {
+                "id": self.identifier(),
+                "name": self.name(),
+                "source": self.__configuration["link"]["a"]["node-edge-point-uuid"],
+                "target": self.__configuration["link"]["z"]["node-edge-point-uuid"]
+            }
+        }
 
     def data(self) -> dict:
         """
