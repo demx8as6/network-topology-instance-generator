@@ -105,11 +105,12 @@ class TapiTopology(Top):
                 result["elements"].append({
                     "group": "edges",
                     "data": {
-                        "id": "base-" + nep.name(),
+                        "id": "base-" + node.identifier() + "-" + nep.identifier(),
                         "name": "base-" + nep.name(),
                         "source": nep.identifier(),
                         "target": "base-" + node.identifier(),
-                        "hide": "true"
+                        "hide": "true",
+                        "base": node.name()
                     }
                 })
 

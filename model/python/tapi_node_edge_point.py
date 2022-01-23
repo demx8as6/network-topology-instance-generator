@@ -77,7 +77,8 @@ class TapiNodeEdgePoint(Top):
             "group": "nodes",
             "data": {
                 "id": self.identifier(),
-                "parent": self.parent()
+                "parent": self.parent(),
+                "name": self.name()
             }
         }
 

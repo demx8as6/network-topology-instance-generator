@@ -110,12 +110,15 @@ class LinkConfig(Top):
         Getter returning the name of the link.
         :return Link name as string
         """
-        return "|".join([
-            self.__name_prefix.upper(),
-            self.__consumer.name(),
-            "->",
-            self.__provider.name(), ""
-        ])
+        if self.__consumer:
+            return "|".join([
+                self.__name_prefix.upper(),
+                self.__consumer.name(),
+                "->",
+                self.__provider.name(), 
+                ""
+            ])
+        return ""
 
     def json(self) -> dict:
         """
