@@ -16,7 +16,7 @@
 """
 Module containing the main class for this project for a TAPI Topology.
 """
-from typing import Dict, Union
+from typing import Dict, List, Union
 import uuid
 
 from model.python.link_config import LinkConfig
@@ -37,7 +37,7 @@ class TapiTopology(Top):
     Class representing a TAPI Topology
     """
 
-    __data: dict = None
+    __data: Dict[str, Union[str, List[Union[Dict, TapiNode, TapiLink]]]] = None
     __configuration: dict = None
 
     # constructor

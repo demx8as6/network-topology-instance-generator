@@ -60,15 +60,15 @@ class NetworkViewer:
         :type filename: string
         """
         with open(filename, "w", encoding='utf-8') as json_file:
-            json.dump(self.__network.json(), json_file,
+            output = self.__network.json()
+            json.dump(output, json_file,
                       ensure_ascii=False, indent=2)
             for key in ["Node", "Link"]:
-                print(key + "s:", len(self.__network.json()
+                print(key + "s:", len(output
                                       ["tapi-common:context"]
                                       ["tapi-topology:topology-context"]
                                       ["topology"][0][key.lower()])
                       )
-
             print("File '" + filename + "' saved!")
 
     def cytoscape(self, filename: str):
