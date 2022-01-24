@@ -18,7 +18,6 @@
 Module as entry point to generatate a TAPI topology json
 """
 import sys
-
 from controller.parameter_validator import ParameterValidator
 from controller.network_generator import TopologyGenerator
 from view.network_viewer import NetworkViewer
@@ -26,21 +25,20 @@ from view.network_viewer import NetworkViewer
 validator: ParameterValidator = ParameterValidator(sys.argv)
 
 if validator.is_valid():
-    config: dict = validator.configuration()
-    generator: TopologyGenerator = TopologyGenerator(config)
-    generator.generate()
-
-    viewer: NetworkViewer = NetworkViewer(generator.topology())
+    configuration = validator.configuration()
+    generator = TopologyGenerator(configuration)
+    network = generator.generate()
+    viewer = NetworkViewer(network)
 
     filename: str = "output/network.json"
-    if config['network']['name']:
-        filename = "output/" + config['network']['name'] + ".json"
+    if configuration['network']['name']:
+        filename = "output/" + configuration['network']['name'] + ".json"
     viewer.json().save(filename)
     # viewer.json().showAsJson()
 
     filename: str = "output/network.cy.json"
-    if config['network']['name']:
-        filename = "output/" + config['network']['name'] + ".cy.json"
+    if configuration['network']['name']:
+        filename = "output/" + configuration['network']['name'] + ".cy.json"
     viewer.json().cytoscape(filename)
 
 else:

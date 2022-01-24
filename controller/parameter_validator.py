@@ -19,6 +19,7 @@ Module containing a class for parameter validation
 import os
 import os.path
 import json
+from typing import Dict, Union
 import jsonschema
 
 
@@ -63,7 +64,7 @@ class ParameterValidator:
         """
         return self.__config_file
 
-    def configuration(self) -> dict:
+    def configuration(self) -> Dict[str, Union[str, Dict[str, int]]]:
         """
         Getter for the configuration as input parameter.
         :return Init configuration as Dict.

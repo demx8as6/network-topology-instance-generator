@@ -115,7 +115,7 @@ class LinkConfig(Top):
                 self.__name_prefix.upper(),
                 self.__consumer.name(),
                 "->",
-                self.__provider.name(), 
+                self.__provider.name(),
                 ""
             ])
         return ""

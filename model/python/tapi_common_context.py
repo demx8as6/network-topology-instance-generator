@@ -18,7 +18,7 @@
 """
 Module for a class representing a TAPI Common Context
 """
-from typing import Dict
+from typing import Dict, Union
 import uuid
 from model.python.tapi_topology_context import TapiTopologyContext
 from model.python.top import Top
@@ -36,6 +36,11 @@ class TapiCommonContext(Top):
             "uuid": str(uuid.uuid4()),
             "name": [{"value-name": "context-name",
                       "value": "Generated Topology"}]}}
+
+    # constructor
+    def __init__(self, configuration: Dict[str, Union[str, Dict[str, int]]]):
+        super().__init__(configuration)
+        self.__context = TapiTopologyContext(configuration)
 
     # getter
     def configuration(self) -> Dict[str, Dict]:
@@ -91,19 +96,23 @@ class TapiCommonContext(Top):
         result.update(self.__context.cytoscape())
         return result
 
-    def data(self) -> dict:
+    def data(self) -> Dict:
         """
         Getter for a json object representing the TAPI Common Context.
         :return TAPI Common Context as json object.
         """
         return self.__data
 
-    def json(self) -> dict:
+    def json(self) -> Dict:
         """
         Getter for a json object representing the TAPI Topology Context.
         :return TAPI Common Context as json object.
         """
-        return self.data()
+        result = self.data().copy()
+        if self.__context is not None:
+            result["tapi-common:context"].update(self.__context.json())
+
+        return result
 
     def identifier(self) -> str:
         """
@@ -119,14 +128,9 @@ class TapiCommonContext(Top):
         """
         return self.data()["tapi-common:context"]["name"][0]["value"]
 
-    # methods
-
-    def add(self, configuration: dict):
+    def topology_context(self) -> TapiTopologyContext:
         """
-        Adds a TAPI Topology Context to the TAPI Common Context
-        :param configuration: An input parameter as json object.
-        :return This object.
+        Getter for next level object (TapiTopologyContext).
+        :return TAPI Topology Context
         """
-        self.__context = TapiTopologyContext({}).add(configuration)
-        self.data()["tapi-common:context"].update(self.__context.json())
-        return self
+        return self.__context

@@ -26,18 +26,17 @@ class NetworkViewer:
     """
     This class contains all functions converting the Network into different formats
     """
-    __network: TapiCommonContext
+    __network: TapiCommonContext = None
 
     # constructor
     def __init__(self, network: TapiCommonContext):
         self.__network = network
 
-
     # json format
+
     def json(self) -> 'NetworkViewer':
         """
         Getter returns the class as json object
-
         :return The class itsself, as it is json serializable
         """
         return self
@@ -50,14 +49,13 @@ class NetworkViewer:
 
     def show(self):
         """
-        Method printing the newtwork
+        Method printing the network
         """
-        print(self.__network())
+        print(self.__network)
 
     def save(self, filename: str):
         """
         Method saving the class content to a file in json format.
-
         :param filename: A valid path to a file on the system.
         :type filename: string
         """
@@ -68,7 +66,9 @@ class NetworkViewer:
                 print(key + "s:", len(self.__network.json()
                                       ["tapi-common:context"]
                                       ["tapi-topology:topology-context"]
-                                      ["topology"][0][key.lower()]))
+                                      ["topology"][0][key.lower()])
+                      )
+
             print("File '" + filename + "' saved!")
 
     def cytoscape(self, filename: str):

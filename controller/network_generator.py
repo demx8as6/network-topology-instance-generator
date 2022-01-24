@@ -25,7 +25,6 @@ class TopologyGenerator:
     """
 
     __configuration: dict = {}
-    __topology: dict = {}
 
     # constructor
     def __init__(self, configuration: dict):
@@ -39,18 +38,10 @@ class TopologyGenerator:
         """
         return self.__configuration
 
-    def topology(self) -> TapiCommonContext:
-        """
-        Getter returning the topology
-        :return A TapiCommonContext Object
-        """
-        return self.__topology
-
     # returns a JSON serializable object
     def generate(self) -> TapiCommonContext:
         """
         Method to start the generation process.
         :return The TapiCommonContext object.
         """
-        self.__topology = TapiCommonContext({}).add(self.configuration())
-        return self.__topology
+        return TapiCommonContext(self.configuration())

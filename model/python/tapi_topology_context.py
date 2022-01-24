@@ -16,7 +16,7 @@
 """
 Module for the TAPI Topology Context
 """
-from typing import Dict, List
+from typing import Dict, List, Union
 from model.python.tapi_topology import TapiTopology
 from model.python.top import Top
 
@@ -26,10 +26,16 @@ class TapiTopologyContext(Top):
     Class providing a TAPI Topology Context object
     """
 
-    __data: dict = {
+    __data: Dict[str, Dict[str, List]] = {
         "tapi-topology:topology-context": {
             "topology": []}}
-    __tapi_topology = []
+    __tapi_topology: List = []
+
+    # constructor
+    def __init__(self, configuration: Dict[str, Union[str, Dict[str, int]]]):
+        super().__init__(configuration)
+        topology = TapiTopology(configuration)
+        self.__tapi_topology.append(topology)
 
     # getter
     def configuration(self) -> dict:
@@ -77,17 +83,8 @@ class TapiTopologyContext(Top):
         Getter for a json object representing the TAPI Topology Context.
         :return TAPI Topology Context as json object.
         """
-        return self.data()
-
-    # methods
-    def add(self, configuration) -> 'TapiTopologyContext':
-        """
-        Adds a TAPI Topology to the TAPI Topology Context
-        :param configuration: An input parameter as json object.
-        :return This object.
-        """
-        topology = TapiTopology(configuration)
-        self.__tapi_topology.append(topology)
-        self.__data["tapi-topology:topology-context"]["topology"].append(
-            topology.json())
-        return self
+        result = self.__data.copy()
+        for topology in self.__tapi_topology:
+            result["tapi-topology:topology-context"]["topology"].append(
+                topology.json())
+        return result
