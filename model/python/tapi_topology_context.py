@@ -29,7 +29,7 @@ class TapiTopologyContext(Top):
     __data: Dict[str, Dict[str, List]] = {
         "tapi-topology:topology-context": {
             "topology": []}}
-    __tapi_topology: List = []
+    __tapi_topology: List[TapiTopology] = []
 
     # constructor
     def __init__(self, configuration: Dict[str, Union[str, Dict[str, int]]]):
