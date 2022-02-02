@@ -36,10 +36,15 @@ if validator.is_valid():
     viewer.json().save(filename)
     # viewer.json().showAsJson()
 
-    filename: str = "output/network.cy.json"
+    filename: str = "output/network.cy.js"
     if configuration['network']['name']:
-        filename = "output/" + configuration['network']['name'] + ".cy.json"
-    viewer.json().cytoscape(filename)
+        filename = "../network-topology-instance-viewer/dist/network.cy.js"
+    viewer.cytoscape(filename)
+
+    filename: str = "output/network.svg"
+    if configuration['network']['name']:
+        filename = "output/" + configuration['network']['name'] + ".svg"
+    viewer.svg(filename)
 
 else:
     print(validator.error_message())

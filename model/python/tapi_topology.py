@@ -30,6 +30,7 @@ from model.python.tapi_node_o_du import TapiNodeODu
 from model.python.tapi_node_o_ru import TapiNodeORu
 from model.python.tapi_node_user_equipment import TapiNodeUserEquipment
 from model.python.tapi_link import TapiLink
+from lxml import etree
 
 
 class TapiTopology(Top):
@@ -137,7 +138,7 @@ class TapiTopology(Top):
     def name(self) -> str:
         """
         Getter for TAPI Topology name. The TAPI topology is a representation of
-        the network. Therefor, the TAPI Topology name has the same value as the
+        the network. Therefore, the TAPI Topology name has the same value as the
         Network name.
         :return TAPI Topology name as string.
         """
@@ -161,6 +162,33 @@ class TapiTopology(Top):
             result["link"].append(link.json())
 
         return result
+
+    def svg(self, x, y) -> etree.Element:
+        """
+        Getter for a xml Element object representing the TAPI Topology Context.
+        :return TAPI Topology Context as svg object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n TAPI Topology \n id: " + \
+            self.identifier()  # + "\n name: " + self.name()
+        group.append(desc)
+
+        # nodes handling
+        index = 0
+        for node in self.__data["node"]:
+            print(type(node), isinstance(node, TapiNodeUserEquipment))
+            node_x = x + index
+            node_y = y
+            group.append(node.svg(node_x, node_y))
+            index = index + 100
+
+        # # link handling
+        # result["link"] = []
+        # for link in self.__data["link"]:
+        #     result["link"].append(link.json())
+
+        return group
 
     # methods
     def add_node(self, node: TapiNode):

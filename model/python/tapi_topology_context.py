@@ -17,6 +17,7 @@
 Module for the TAPI Topology Context
 """
 from typing import Dict, List, Union
+from lxml import etree
 from model.python.tapi_topology import TapiTopology
 from model.python.top import Top
 
@@ -88,3 +89,17 @@ class TapiTopologyContext(Top):
             result["tapi-topology:topology-context"]["topology"].append(
                 topology.json())
         return result
+
+    def svg(self, x, y) -> etree.Element:
+        """
+        Getter for a xml Element object representing the TAPI Topology Context.
+        :return TAPI Topology Context as svg object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
+        group.append(desc)
+
+        for topology in self.__tapi_topology:
+            group.append(topology.svg(x, y))
+        return group

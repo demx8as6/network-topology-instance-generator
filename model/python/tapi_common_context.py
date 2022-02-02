@@ -20,6 +20,8 @@ Module for a class representing a TAPI Common Context
 """
 from typing import Dict, Union
 import uuid
+from xml.dom.minidom import Element
+from lxml import etree
 from model.python.tapi_topology_context import TapiTopologyContext
 from model.python.top import Top
 
@@ -65,6 +67,18 @@ class TapiCommonContext(Top):
                     }
                 },
                 {
+                    "selector": "node[name]",
+                    "style": {
+                        "label": "data(name)"
+                    }
+                },
+                {
+                    "selector": "node[hide]",
+                    "style": {
+                        "visibility": "hidden"
+                    }
+                },
+                {
                     "selector": ":parent",
                     "style": {
                         "background-opacity": 0.333,
@@ -78,6 +92,11 @@ class TapiCommonContext(Top):
                     }
                 },
                 {
+                    "selector": "edge[hide]",
+                    "style": {
+                        "visibility": "visible"
+                    }
+                },              {
                     "selector": "node:selected",
                     "style": {
                         "background-color": "#F08080",
@@ -94,7 +113,7 @@ class TapiCommonContext(Top):
             "elements": []
         }
         result.update(self.__context.cytoscape())
-        return result
+        return "network = " + str(result)
 
     def data(self) -> Dict:
         """
@@ -111,7 +130,6 @@ class TapiCommonContext(Top):
         result = self.data().copy()
         if self.__context is not None:
             result["tapi-common:context"].update(self.__context.json())
-
         return result
 
     def identifier(self) -> str:
@@ -127,6 +145,19 @@ class TapiCommonContext(Top):
         :return Human readable string as name.
         """
         return self.data()["tapi-common:context"]["name"][0]["value"]
+
+    def svg(self, x, y) -> etree.Element:
+        """
+        Getter for a xml/svg Element object representing the TAPI Topology Context.
+        :return TAPI Common Context as SVG object.
+        """
+        root: Element = etree.Element(
+            "svg", width="100%", height="100%", xmlns="http://www.w3.org/2000/svg")
+        desc = etree.Element("desc")
+        desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
+        root.append(desc)
+        root.append(self.__context.svg(x, y))
+        return root
 
     def topology_context(self) -> TapiTopologyContext:
         """

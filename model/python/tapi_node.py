@@ -20,6 +20,7 @@ from typing import Dict, Union
 import uuid
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
+from lxml import etree
 
 
 class TapiNode(Top):
@@ -182,6 +183,24 @@ class TapiNode(Top):
         :return TAPI Node configuration as json object.
         """
         return self.__parent
+
+    def svg(self, x, y) -> etree.Element:
+        """
+        Getter for a xml Element object representing the TAPI Node.
+        :return TAPI Node as svg object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n TAPI Node \n id: " + \
+            self.identifier() + "\n name: " + self.name()
+        group.append(desc)
+        index = 0
+        for nep in self.__data['owned-node-edge-point']:
+            nep_x = x + index
+            nep_y = y
+            group.append(nep.svg(nep_x, nep_y))
+            index = index + 30
+        return group
 
     # methods
     def add(self, nep: TapiNodeEdgePoint) -> 'TapiNode':

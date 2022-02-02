@@ -17,12 +17,14 @@
 Module for an abstract class called "Top".
 This calls should be inherited for common functions
 """
-
+from lxml import etree
 
 class Top:
     """
     The abstract "Top" class adds common functions
     """
+
+    FONTSIZE: int = 14 # see svg.style.css file
     __configuration: dict
     __data: dict
 
@@ -42,12 +44,6 @@ class Top:
         """
         raise NotImplementedError('subclasses must override cytoscape()!')
 
-    def json(self) -> dict:
-        """
-        Returns the class content in json format.
-        """
-        raise NotImplementedError('subclasses must override json()!')
-
     def data(self) -> dict:
         """
         Returns the class data.
@@ -60,9 +56,21 @@ class Top:
         """
         raise NotImplementedError('subclasses must override identifier()!')
 
+    def json(self) -> dict:
+        """
+        Returns the class content in json format.
+        """
+        raise NotImplementedError('subclasses must override json()!')
+
     def name(self) -> str:
         """
         Returns the identifier of the class object.
         It is preferred a UUID according to RFC4122.
         """
         raise NotImplementedError('subclasses must override name()!')
+
+    def svg(self) -> etree.Element:
+        """
+        Returns an lxml.etree.Element object.
+        """
+        raise NotImplementedError('subclasses must override svg()!')

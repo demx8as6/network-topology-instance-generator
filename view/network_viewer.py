@@ -17,8 +17,9 @@
 Provides functions to convert the Network into different formats
 """
 
+import encodings
 import json
-
+from lxml import etree
 from model.python.tapi_common_context import TapiCommonContext
 
 
@@ -82,3 +83,26 @@ class NetworkViewer:
             json.dump(self.__network.cytoscape(), json_file,
                       ensure_ascii=False, indent=2)
             print("File '" + filename + "' saved!")
+
+    def svg(self, filename: str):
+        """
+        Method saving the class content to a file in xml/svg format.
+
+        :param filename: A valid path to a file on the system.
+        :type filename: string
+        """
+        root = self.__network.svg(60, 60)
+        root.addprevious(
+            etree.ProcessingInstruction("xml-stylesheet",
+                                        'href="svg.style.css" type="text/css"')
+        )
+        etree.ElementTree(root).write(filename,
+                                      encoding="utf-8",
+                                      xml_declaration=True,
+                                      doctype=(
+                                          '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"\n'
+                                          '  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">'
+                                      ),
+                                      pretty_print=True
+                                      )
+        print("File '" + filename + "' saved!")

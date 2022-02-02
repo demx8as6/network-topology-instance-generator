@@ -19,6 +19,7 @@ Module containing a class representing a TAPI Node Edge Point
 from typing import Dict, Union
 import uuid
 from model.python.top import Top
+from lxml import etree
 
 
 class TapiNodeEdgePoint(Top):
@@ -108,10 +109,31 @@ class TapiNodeEdgePoint(Top):
         Getter a human readable identifier of the TAPI Node Edge Point.
         :return TAPI Node Edge Point name as String.
         """
-        items = (self.__configuration['nodeEdgePoint']['interface'],
-                 self.__configuration['nodeEdgePoint']['protocol'],
-                 self.__configuration['nodeEdgePoint']['role'])
+        items = (self.interface(),
+                 self.protocol(),
+                 self.role())
         return "-".join(items).lower()
+
+    def interface(self) -> str:
+        """
+        Getter a human readable identifier of the TAPI Node Edge Point interface.
+        :return Interface label.
+        """
+        return self.__configuration['nodeEdgePoint']['interface'].lower()
+
+    def protocol(self) -> str:
+        """
+        Getter a human readable identifier of the TAPI Node Edge Point protocol.
+        :return Interface label.
+        """
+        return self.__configuration['nodeEdgePoint']['protocol'].lower()
+
+    def role(self) -> str:
+        """
+        Getter a human readable identifier of the TAPI Node Edge Point role.
+        :return Interface label.
+        """
+        return self.__configuration['nodeEdgePoint']['role'].lower()
 
     def parent(self) -> str:
         """
@@ -120,6 +142,31 @@ class TapiNodeEdgePoint(Top):
         :return Identifier of the TAPI Node containing this NEP.
         """
         return self.__configuration["parent"]
+
+    def svg(self, x, y) -> dict:
+        """
+        Getter for a xml Element object representing the TAPI Node Edge Point.
+        :return TAPI Node Edge Point as SVG object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n TAPI Node Edge Point \n id: " + \
+            self.identifier() + "\n name: " + self.name()
+        group.append(desc)
+
+        circle = etree.Element("circle")
+        circle.attrib['cx'] = str(x)
+        circle.attrib['cy'] = str(y)
+        circle.attrib['r'] = str(super().FONTSIZE)
+        group.append(circle)
+
+        label = etree.Element('text')
+        label.attrib['x'] = str(x)
+        label.attrib['y'] = str(y + 4) # +4px for font-size 14px (think of chars like 'gjy')
+        label.text = self.interface().upper()
+        group.append(label)
+
+        return group
 
     def termination_direction(self) -> str:
         """
