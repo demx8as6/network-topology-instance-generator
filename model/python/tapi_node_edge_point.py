@@ -124,14 +124,14 @@ class TapiNodeEdgePoint(Top):
     def protocol(self) -> str:
         """
         Getter a human readable identifier of the TAPI Node Edge Point protocol.
-        :return Interface label.
+        :return protocol label.
         """
         return self.__configuration['nodeEdgePoint']['protocol'].lower()
 
     def role(self) -> str:
         """
         Getter a human readable identifier of the TAPI Node Edge Point role.
-        :return Interface label.
+        :return role label.
         """
         return self.__configuration['nodeEdgePoint']['role'].lower()
 

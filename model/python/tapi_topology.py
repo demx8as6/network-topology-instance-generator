@@ -163,6 +163,24 @@ class TapiTopology(Top):
 
         return result
 
+    def __svg_y_offset_by_node_type(self, node_type) -> int:
+        """
+        Mapping function from node types to y position in svg
+        return: int value
+        """
+        y = 0
+        y_mapping: Dict[type, int] = {
+            TapiNodeSmo: 100,
+            TapiNodeNearRtRic: 200,
+            TapiNodeOCuCp: 300,
+            TapiNodeOCuUp: 300,
+            TapiNodeODu: 400,
+            TapiNodeORu: 500,
+            TapiNodeUserEquipment: 600
+        }
+        y = y_mapping[node_type]
+        return y
+
     def svg(self, x, y) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Topology Context.
@@ -177,9 +195,8 @@ class TapiTopology(Top):
         # nodes handling
         index = 0
         for node in self.__data["node"]:
-            print(type(node), isinstance(node, TapiNodeUserEquipment))
             node_x = x + index
-            node_y = y
+            node_y = y + self.__svg_y_offset_by_node_type(type(node))
             group.append(node.svg(node_x, node_y))
             index = index + 100
 
@@ -498,7 +515,7 @@ class TapiTopology(Top):
             # O1 NETCONF
             link_configuration = LinkConfig(
                 topology_reference=self.data()["uuid"],
-                name_prefix="open-fronthaul-m-plane-netconf",
+                name_prefix="ofh-netconf",
                 provider=node,
                 consumer=parent.parent().parent().parent()
             )

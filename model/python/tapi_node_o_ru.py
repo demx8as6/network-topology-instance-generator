@@ -16,6 +16,9 @@
 """
 Module containing a class representing an O-RAN Radio Unit as TAPI Node.
 """
+from typing import Dict
+from lxml import etree
+from model.python.svg_rounded_rect import RoundedRectangel
 from model.python.tapi_node import TapiNode
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 
@@ -25,15 +28,21 @@ class TapiNodeORu(TapiNode):
     Class representing a O-RAN Radio Unit as TAPI Node.
     """
 
+    __nep_x_offset = 0
+    __nep_y_offest = 0
+
+
     # constructor
     def __init__(self, parent, config):
         super().__init__(parent, config)
+
+        self.__nep_x_offset = 0
 
         # add OpenFronthaul Management Plane/OAM NetConf Provider interface
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "open-fronthaul-m-plane", "protocol": "NETCONF", "role": "provider"
+                "interface": "ofh", "protocol": "NETCONF", "role": "provider"
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -46,3 +55,41 @@ class TapiNodeORu(TapiNode):
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
+
+    def svg(self, x: int, y: int) -> etree.Element:
+        """
+        Getter for a xml Element object representing the TAPI Node.
+        :return TAPI Node as svg object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n TAPI Node User Equipment\n id: " + \
+            self.identifier() + "\n name: " + self.name()
+        group.append(desc)
+
+        width = 1 * (2*self.FONTSIZE) + 1*(2*self.FONTSIZE)
+        height = 2 * (2*self.FONTSIZE)
+        rect = RoundedRectangel(
+            {'x': x, 'y': y, 'width': width, 'height': height, 'radius': super().FONTSIZE})
+        group.append(rect.svg())
+
+        label = etree.Element('text')
+        label.attrib['x'] = str(x)
+        # +4px for font-size 14px (think of chars like 'gjy')
+        label.attrib['y'] = str(y + 4)
+        label.text = self.function_label()
+        group.append(label)
+
+        index = 0
+        y_offset_by_name: Dict[str, int] = {
+            "ofh-netconf-provider": -2*self.FONTSIZE,
+            "uu-unknown-provider": 2*self.FONTSIZE,
+        }
+
+        for nep in super().data()['owned-node-edge-point']:
+            nep_x = x + (self.__nep_x_offset * index)
+            nep_y = y + y_offset_by_name[nep.name()]
+            group.append(nep.svg(nep_x, nep_y))
+            index = index + 1
+
+        return group
