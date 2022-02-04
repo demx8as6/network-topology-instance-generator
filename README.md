@@ -66,3 +66,11 @@ network
 ```
 python tapi_topology_generator.py config.json
 ```
+
+## Validation
+
+The generated json file can be validated against the yang models using 'yanglint'.
+
+```
+yanglint -f json model/yang/o1-interface/ntsimulator/deploy/smo-nts-ng-topology-server/yang/o-ran-*.yang model/yang/TAPI/YANG/*.yang output/TestNetwork.json
+```
