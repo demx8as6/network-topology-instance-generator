@@ -39,6 +39,7 @@ class TapiLink(Top):
                 "value-name": "topology-link-name",
                 "value": configuration['link']['name']
             }],
+            "transitioned-layer-protocol-name": ["inETH", "outETH"],
             "administrative-state": "LOCKED",
             "operational-state": "ENABLED",
             "direction": "BIDIRECTIONAL",
@@ -66,9 +67,7 @@ class TapiLink(Top):
             "cost-characteristic": [{
                 "cost-name": "cost",
                 "cost-algorithm": "alg1",
-                "cost-value": "value-1"}],
-            "transitioned-layer-protocol-name": ["ETH"]
-        }
+                "cost-value": "value-1"}]}
 
     # getter
     def configuration(self) -> Dict[str, Dict]:

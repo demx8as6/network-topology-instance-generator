@@ -1,7 +1,7 @@
 # Network Topology Instance Generator 
 
 This python project generates a network topology according 
-[TAPI-Topology yang - v2.3.1](https://github.com/OpenNetworkingFoundation/TAPI/blob/v2.3.1/YANG/tapi-topology.yang).
+[TAPI-Topology yang - v2.1.3](https://github.com/OpenNetworkingFoundation/TAPI/blob/v2.1.3/YANG/tapi-topology.yang).
 
 Please note: The generator does not need to implement streaming or notification 
 functions. The dependencies to tapi-notification and tapi-streaming were 
