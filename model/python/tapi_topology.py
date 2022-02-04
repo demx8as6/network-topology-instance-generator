@@ -49,6 +49,7 @@ class TapiTopology(Top):
             "name": [{
                 "value-name": "network-name",
                 "value": configuration['network']['name']}],
+            "layer-protocol-name":["ETH"],
             "node": [],
             "link": []}
 
@@ -169,14 +170,16 @@ class TapiTopology(Top):
         return: int value
         """
         y = 0
+        start = 0
+        offset = 140
         y_mapping: Dict[type, int] = {
-            TapiNodeSmo: 100,
-            TapiNodeNearRtRic: 200,
-            TapiNodeOCuCp: 300,
-            TapiNodeOCuUp: 300,
-            TapiNodeODu: 400,
-            TapiNodeORu: 500,
-            TapiNodeUserEquipment: 600
+            TapiNodeSmo: start + 0 * offset,
+            TapiNodeNearRtRic: start + 1 * offset,
+            TapiNodeOCuCp: start + 2 * offset - 20,
+            TapiNodeOCuUp: start + 2 * offset + 20,
+            TapiNodeODu: start + 3 * offset,
+            TapiNodeORu: start + 4 * offset,
+            TapiNodeUserEquipment: start + 5 * offset
         }
         y = y_mapping[node_type]
         return y
@@ -195,10 +198,10 @@ class TapiTopology(Top):
         # nodes handling
         index = 0
         for node in self.__data["node"]:
-            node_x = x + index
+            node_x = x + 50 + index*13*self.FONTSIZE
             node_y = y + self.__svg_y_offset_by_node_type(type(node))
             group.append(node.svg(node_x, node_y))
-            index = index + 100
+            index = index + 1
 
         # # link handling
         # result["link"] = []
@@ -518,6 +521,15 @@ class TapiTopology(Top):
                 name_prefix="ofh-netconf",
                 provider=node,
                 consumer=parent.parent().parent().parent()
+            )
+            self.add_link(TapiLink(link_configuration.json()))
+
+            # OFH M-Plane to O-DU
+            link_configuration = LinkConfig(
+                topology_reference=self.data()["uuid"],
+                name_prefix="ofh-netconf",
+                provider=node,
+                consumer=parent
             )
             self.add_link(TapiLink(link_configuration.json()))
 

@@ -16,10 +16,10 @@
 """
 Module containing a class representing a TAPI Node Edge Point
 """
-from typing import Dict, Union
 import uuid
-from model.python.top import Top
+from typing import Dict, Union
 from lxml import etree
+from model.python.top import Top
 
 
 class TapiNodeEdgePoint(Top):
@@ -114,6 +114,19 @@ class TapiNodeEdgePoint(Top):
                  self.role())
         return "-".join(items).lower()
 
+    def __label_by_name(self, name) -> str:
+        mapping: Dict[str, str] = {
+            "o1-netconf-provider": "NC",
+            "o1-ves-consumer": "VES",
+            "o1-file-provider": "FTP",
+            "o1-netconf-consumer": "NC",
+            "o1-ves-provider": "VES",
+            "o1-file-consumer": "FTP",
+        }
+        if name in mapping:
+            return mapping[name]
+        return self.interface().upper()
+
     def interface(self) -> str:
         """
         Getter a human readable identifier of the TAPI Node Edge Point interface.
@@ -143,7 +156,7 @@ class TapiNodeEdgePoint(Top):
         """
         return self.__configuration["parent"]
 
-    def svg(self, x, y) -> dict:
+    def svg(self, x: int, y: int) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Node Edge Point.
         :return TAPI Node Edge Point as SVG object.
@@ -162,8 +175,9 @@ class TapiNodeEdgePoint(Top):
 
         label = etree.Element('text')
         label.attrib['x'] = str(x)
-        label.attrib['y'] = str(y + 4) # +4px for font-size 14px (think of chars like 'gjy')
-        label.text = self.interface().upper()
+        # +4px for font-size 14px (think of chars like 'gjy')
+        label.attrib['y'] = str(y + 4)
+        label.text = self.__label_by_name(self.name())
         group.append(label)
 
         return group
@@ -187,4 +201,4 @@ class TapiNodeEdgePoint(Top):
         Getter returning the TAPI Node Edge Point state.
         :return TAPI Node Edge Point state as String.
         """
-        return "PERMANENTLY_TERMINATED"
+        return "LT_PERMENANTLY_TERMINATED"

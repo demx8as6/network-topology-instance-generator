@@ -16,11 +16,12 @@
 """
 Module containing the class for a TAPI Node.
 """
-from typing import Dict, Union
 import uuid
+from typing import Dict, Union
+from lxml import etree
+from model.python.svg_rounded_rect import RoundedRectangel
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
-from lxml import etree
 
 
 class TapiNode(Top):
@@ -31,12 +32,14 @@ class TapiNode(Top):
     __data: dict = {}
     __configuration: dict = {}
     __parent: 'TapiNode' = None
+    __width: int = 0  # default SVG width, should be overritten by constructor
 
     # constructor
     def __init__(self, parent: 'TapiNode', configuration: dict):
         super().__init__(configuration)
         self.__parent = parent
         self.__configuration = configuration
+        self.width(4 * (2*self.FONTSIZE) + 1*(2*self.FONTSIZE))  # 4x nep
         self.__data = {
             "uuid": str(uuid.uuid4()),
             "name": [
@@ -77,6 +80,76 @@ class TapiNode(Top):
         }
 
     # getter
+    def __x_offset_by_name(self, name) -> int:
+        mapping: Dict[str, int] = {
+            "a1-rest-consumer": -3*self.FONTSIZE,
+            "o1-netconf-consumer": -1*self.FONTSIZE,
+            "o1-ves-provider": 1*self.FONTSIZE,
+            "o1-file-consumer": 3*self.FONTSIZE,
+
+            "a1-rest-provider": -3*self.FONTSIZE,
+            "e2-rest-consumer": 0*self.FONTSIZE,
+
+            "f1-c-unknown-consumer": -3*self.FONTSIZE,
+            "f1-u-unknown-consumer": -1*self.FONTSIZE,
+
+            "e1-unknown-provider": -5*self.FONTSIZE,
+            "e1-unknown-consumer": 5*self.FONTSIZE,
+
+            "e2-rest-provider": -5*self.FONTSIZE,
+            "f1-c-unknown-provider": -3*self.FONTSIZE,
+            "f1-u-unknown-provider": -1*self.FONTSIZE,
+            "o1-netconf-provider": 1*self.FONTSIZE,
+            "o1-ves-consumer": 3*self.FONTSIZE,
+            "o1-file-provider": 5*self.FONTSIZE,
+            "ofh-netconf-consumer": 0*self.FONTSIZE,
+
+            "ofh-netconf-provider": 0*self.FONTSIZE,
+            "uu-unknown-provider": 0*self.FONTSIZE,
+
+            "uu-unknown-consumer": 0*self.FONTSIZE
+        }
+        if name in mapping:
+            return mapping[name]
+
+        print("NEP name", name, "for y postion calculation not found")
+        return 0
+
+    def __y_offset_by_name(self, name: str) -> int:
+        mapping: Dict[str, int] = {
+            "a1-rest-consumer": 2*self.FONTSIZE,
+            "o1-netconf-consumer": 2*self.FONTSIZE,
+            "o1-ves-provider": 2*self.FONTSIZE,
+            "o1-file-consumer": 2*self.FONTSIZE,
+
+            "a1-rest-provider": -2*self.FONTSIZE,
+            "e2-rest-consumer": 2*self.FONTSIZE,
+
+            "e1-unknown-provider": 0*self.FONTSIZE,
+            "e1-unknown-consumer": 0*self.FONTSIZE,
+
+            "f1-c-unknown-consumer": 2*self.FONTSIZE,
+            "f1-u-unknown-consumer": 2*self.FONTSIZE,
+
+            "e2-rest-provider": -2*self.FONTSIZE,
+            "f1-c-unknown-provider": -2*self.FONTSIZE,
+            "f1-u-unknown-provider": -2*self.FONTSIZE,
+            "o1-netconf-provider": -2*self.FONTSIZE,
+            "o1-ves-consumer": -2*self.FONTSIZE,
+            "o1-file-provider": -2*self.FONTSIZE,
+            "ofh-netconf-consumer": 2*self.FONTSIZE,
+
+            "ofh-netconf-provider": -2*self.FONTSIZE,
+            "uu-unknown-provider": 2*self.FONTSIZE,
+
+            "uu-unknown-consumer": -2*self.FONTSIZE
+        }
+        if name in mapping:
+            return mapping[name]
+
+        print("NEP name", name, "for y postion calculation not found")
+        return 0
+
     def configuration(self) -> dict:
         """
         Getter for a json object representing the TAPI Node configuration.
@@ -184,25 +257,46 @@ class TapiNode(Top):
         """
         return self.__parent
 
-    def svg(self, x, y) -> etree.Element:
+    def svg(self, x: int, y: int) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Node.
         :return TAPI Node as svg object.
         """
         group = etree.Element("g")
         desc = etree.Element("desc")
-        desc.text = "\n TAPI Node \n id: " + \
+        desc.text = "\n TAPI Node User Equipment\n id: " + \
             self.identifier() + "\n name: " + self.name()
         group.append(desc)
-        index = 0
-        for nep in self.__data['owned-node-edge-point']:
-            nep_x = x + index
-            nep_y = y
+
+        width = self.__width
+        height = 2 * (2*self.FONTSIZE)
+        rect = RoundedRectangel(
+            {'x': x, 'y': y, 'width': width, 'height': height, 'radius': super().FONTSIZE})
+        group.append(rect.svg())
+
+        label = etree.Element('text')
+        label.attrib['x'] = str(x)
+        # +4px for font-size 14px (think of chars like 'gjy')
+        label.attrib['y'] = str(y + 4)
+        label.text = self.function_label()
+        group.append(label)
+
+        for nep in self.data()['owned-node-edge-point']:
+            nep_x = x + self.__x_offset_by_name(nep.name())
+            nep_y = y + self.__y_offset_by_name(nep.name())
             group.append(nep.svg(nep_x, nep_y))
-            index = index + 30
+
         return group
 
+    def width(self, width: int) -> None:
+        """
+        Setter for the SVG width in px.
+        :param width as integer with unit "px" (pixel)
+        """
+        self.__width = width
+
     # methods
+
     def add(self, nep: TapiNodeEdgePoint) -> 'TapiNode':
         """
         Method adding a TAPI Node Edge Point object.

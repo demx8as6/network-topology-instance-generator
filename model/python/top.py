@@ -19,12 +19,13 @@ This calls should be inherited for common functions
 """
 from lxml import etree
 
+
 class Top:
     """
     The abstract "Top" class adds common functions
     """
 
-    FONTSIZE: int = 14 # see svg.style.css file
+    FONTSIZE: int = 14  # see svg.style.css file
     __configuration: dict
     __data: dict
 
@@ -69,7 +70,7 @@ class Top:
         """
         raise NotImplementedError('subclasses must override name()!')
 
-    def svg(self) -> etree.Element:
+    def svg(self, x: int, y: int) -> etree.Element:
         """
         Returns an lxml.etree.Element object.
         """

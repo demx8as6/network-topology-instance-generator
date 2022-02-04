@@ -48,7 +48,8 @@ class LinkConfig(Top):
 
         # exception for O-RAN Fronthaul Management plane to SMO
         consumer_name_prefix = name_prefix
-        if consumer_name_prefix == "ofh-netconf": # "open-fronthaul-m-plane-netconf":
+        if self.__consumer.function() == "o-ran-common-identity-refs:smo-function" and \
+                consumer_name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
             consumer_name_prefix = "o1-netconf"
 
         self.data = {"link": {

@@ -24,8 +24,8 @@ class TapiNodeODu(TapiNode):
     """
     Class representing a O-RAN Distributed Unit as TAPI Node.
     """
-
     # constructor
+
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
@@ -79,6 +79,15 @@ class TapiNodeODu(TapiNode):
             "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "f1-u", "protocol": "unknown", "role": "provider"
+            }
+        }
+        self.add(TapiNodeEdgePoint(nep_configuration))
+
+        # add OpenFronthaul Consumer interface
+        nep_configuration = {
+            "parent": self.identifier(),
+            "nodeEdgePoint": {
+                "interface": "ofh", "protocol": "netconf", "role": "consumer"
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
