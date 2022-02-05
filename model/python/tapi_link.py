@@ -18,6 +18,7 @@ Module for the class representing a TAPI Link
 """
 from typing import Dict, Union
 import uuid
+from lxml import etree
 from model.python.top import Top
 
 
@@ -119,3 +120,16 @@ class TapiLink(Top):
         :return TAPI Link as json object.
         """
         return self.__configuration['link']['name']
+
+    def svg(self) -> etree.Element:
+        """
+        Getter for a xml Element object representing the TAPI Link.
+        :return TAPI Link as svg object.
+        """
+        group = etree.Element("g")
+        desc = etree.Element("desc")
+        desc.text = "\n TAPI Link\n id: " + \
+            self.identifier() + "\n name: " + self.name()
+        group.append(desc)
+
+        return group

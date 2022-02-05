@@ -264,7 +264,7 @@ class TapiNode(Top):
         """
         group = etree.Element("g")
         desc = etree.Element("desc")
-        desc.text = "\n TAPI Node User Equipment\n id: " + \
+        desc.text = "\n TAPI Node\n id: " + \
             self.identifier() + "\n name: " + self.name()
         group.append(desc)
 

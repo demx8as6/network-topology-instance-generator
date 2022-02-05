@@ -42,6 +42,7 @@ class TapiCommonContext(Top):
     # constructor
     def __init__(self, configuration: Dict[str, Union[str, Dict[str, int]]]):
         super().__init__(configuration)
+        self.__configuration = configuration
         self.__context = TapiTopologyContext(configuration)
 
     # getter
@@ -146,13 +147,30 @@ class TapiCommonContext(Top):
         """
         return self.data()["tapi-common:context"]["name"][0]["value"]
 
+    def __svg_width(self) -> int:
+        pattern = self.configuration()['network']['pattern']
+        return 300 + 6 * self.FONTSIZE * \
+            pattern['smo'] * \
+            pattern['near-rt-ric'] * \
+            pattern['o-cu'] * \
+            pattern['o-du'] * \
+            pattern['o-ru'] * \
+            pattern['user-equipment']
+
+    def __svg_height(self) -> int:
+        return 300 + 5 * 140
+
     def svg(self, x, y) -> etree.Element:
         """
         Getter for a xml/svg Element object representing the TAPI Topology Context.
         :return TAPI Common Context as SVG object.
         """
         root: Element = etree.Element(
-            "svg", width="100%", height="100%", xmlns="http://www.w3.org/2000/svg")
+            "svg",
+            width=str(self.__svg_width()),
+            height=str(self.__svg_height()),
+            xmlns="http://www.w3.org/2000/svg"
+        )
         desc = etree.Element("desc")
         desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
         root.append(desc)

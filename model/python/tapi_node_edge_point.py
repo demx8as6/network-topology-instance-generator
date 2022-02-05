@@ -156,11 +156,19 @@ class TapiNodeEdgePoint(Top):
         """
         return self.__configuration["parent"]
 
+    def svg_x(self) -> int:
+        return self.__svg_x
+
+    def svg_y(self) -> int:
+        return self.__svg_y
+
     def svg(self, x: int, y: int) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Node Edge Point.
         :return TAPI Node Edge Point as SVG object.
         """
+        self.__svg_x = x
+        self.__svg_y = y
         group = etree.Element("g")
         desc = etree.Element("desc")
         desc.text = "\n TAPI Node Edge Point \n id: " + \

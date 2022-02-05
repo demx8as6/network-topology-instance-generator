@@ -44,12 +44,13 @@ class TapiTopology(Top):
     # constructor
     def __init__(self, configuration: dict):
         super().__init__(configuration)
+        self.__configuration = configuration
         self.__data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "network-name",
                 "value": configuration['network']['name']}],
-            "layer-protocol-name":["ETH"],
+            "layer-protocol-name": ["ETH"],
             "node": [],
             "link": []}
 
@@ -164,26 +165,6 @@ class TapiTopology(Top):
 
         return result
 
-    def __svg_y_offset_by_node_type(self, node_type) -> int:
-        """
-        Mapping function from node types to y position in svg
-        return: int value
-        """
-        y = 0
-        start = 0
-        offset = 140
-        y_mapping: Dict[type, int] = {
-            TapiNodeSmo: start + 0 * offset,
-            TapiNodeNearRtRic: start + 1 * offset,
-            TapiNodeOCuCp: start + 2 * offset - 20,
-            TapiNodeOCuUp: start + 2 * offset + 20,
-            TapiNodeODu: start + 3 * offset,
-            TapiNodeORu: start + 4 * offset,
-            TapiNodeUserEquipment: start + 5 * offset
-        }
-        y = y_mapping[node_type]
-        return y
-
     def svg(self, x, y) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Topology Context.
@@ -196,19 +177,85 @@ class TapiTopology(Top):
         group.append(desc)
 
         # nodes handling
-        index = 0
+        index_per_type: Dict = {}
         for node in self.__data["node"]:
-            node_x = x + 50 + index*13*self.FONTSIZE
+            if type(node) in index_per_type:
+                index_per_type[type(node)] = index_per_type[type(node)] + 1
+            else:
+                index_per_type[type(node)] = 0
+            index = index_per_type[type(node)]
+            node_x = x + \
+                index*self.__svg_dynamic_x_offset_by_node_type(type(node)) + \
+                self.__svg_static_x_offset_by_node_type(type(node))
             node_y = y + self.__svg_y_offset_by_node_type(type(node))
             group.append(node.svg(node_x, node_y))
-            index = index + 1
 
-        # # link handling
-        # result["link"] = []
-        # for link in self.__data["link"]:
-        #     result["link"].append(link.json())
+        # handling
+        for link in self.__data["link"]:
+            group.append(link.svg())
 
         return group
+
+    def __svg_static_x_offset_by_node_type(self, node_type) -> int:
+        """
+        Mapping function from node types to y position in svg
+        return: int value
+        """
+        x = 0
+        start = 0
+        offset = 3*self.FONTSIZE
+        x_mapping: Dict[type, int] = {
+            TapiNodeSmo: start + 0 * offset,
+            TapiNodeNearRtRic: start + 0 * offset,
+            TapiNodeOCuCp: start - 3 * offset,
+            TapiNodeOCuUp: start + 2 * offset,
+            TapiNodeODu: start + 0 * offset,
+            TapiNodeORu: start + 0 * offset,
+            TapiNodeUserEquipment: start + 0 * offset
+        }
+        if node_type in x_mapping:
+            x = x_mapping[node_type]
+        return x
+
+    def __svg_dynamic_x_offset_by_node_type(self, node_type) -> int:
+        """
+        Mapping function from node types to y position in svg
+        return: int value
+        """
+        start = 0
+        pattern = self.configuration()['network']['pattern']
+        x_mapping: Dict[type, int] = {
+            TapiNodeSmo: start + 3 * self.FONTSIZE * pattern['smo'] * pattern['near-rt-ric'] * pattern['o-cu'] * pattern['o-du'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeNearRtRic: start + 3 * self.FONTSIZE * pattern['near-rt-ric'] * pattern['o-cu'] * pattern['o-du'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeOCuCp: start + 3 * self.FONTSIZE * pattern['o-cu'] * pattern['o-du'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeOCuUp: start + 3 * self.FONTSIZE * pattern['o-cu'] * pattern['o-du'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeODu: start + 3 * self.FONTSIZE * pattern['o-du'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeORu: start + 3 * self.FONTSIZE * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeUserEquipment: start + 2 * self.FONTSIZE * pattern['user-equipment']
+        }
+        if node_type in x_mapping:
+            return x_mapping[node_type]
+        return 0
+
+    def __svg_y_offset_by_node_type(self, node_type) -> int:
+        """
+        Mapping function from node types to y position in svg
+        return: int value
+        """
+        start = 0
+        offset = 140
+        y_mapping: Dict[type, int] = {
+            TapiNodeSmo: start + 0 * offset,
+            TapiNodeNearRtRic: start + 1 * offset,
+            TapiNodeOCuCp: start + 2 * offset - 20,
+            TapiNodeOCuUp: start + 2 * offset + 20,
+            TapiNodeODu: start + 3 * offset,
+            TapiNodeORu: start + 4 * offset,
+            TapiNodeUserEquipment: start + 5 * offset
+        }
+        if node_type in y_mapping:
+            return y_mapping[node_type]
+        return 0
 
     # methods
     def add_node(self, node: TapiNode):
