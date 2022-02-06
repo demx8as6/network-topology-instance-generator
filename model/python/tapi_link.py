@@ -19,6 +19,7 @@ Module for the class representing a TAPI Link
 from typing import Dict, Union
 import uuid
 from lxml import etree
+from model.python.link_config import LinkConfig
 from model.python.top import Top
 
 
@@ -34,11 +35,18 @@ class TapiLink(Top):
     def __init__(self, configuration: dict):
         super().__init__(configuration)
         self.__configuration = configuration
+        self.__link_configuration = LinkConfig(
+            topology_reference=configuration["topology_reference"],
+            name_prefix=configuration["name_prefix"],
+            provider=configuration["provider"],
+            consumer=configuration["consumer"]
+        )
+        link_data = self.__link_configuration.json()
         self.__data = {
             "uuid": str(uuid.uuid4()),
             "name": [{
                 "value-name": "topology-link-name",
-                "value": configuration['link']['name']
+                "value": link_data['link']['name']
             }],
             "transitioned-layer-protocol-name": ["inETH", "outETH"],
             "administrative-state": "LOCKED",
@@ -46,8 +54,8 @@ class TapiLink(Top):
             "direction": "BIDIRECTIONAL",
             "lifecycle-state": "INSTALLED",
             "node-edge-point": [
-                configuration['link']['a'],
-                configuration['link']['z']
+                link_data['link']['a'],
+                link_data['link']['z']
             ],
             "latency-characteristic": [{
                 "traffic-property-name": "property-1",
@@ -83,13 +91,14 @@ class TapiLink(Top):
         Getter returning the object for topology visualization.
         :return Cytoscape Element.
         """
+        link_data = self.__link_configuration.json()
         return {
             "group": "edges",
             "data": {
                 "id": self.identifier(),
                 "name": self.name(),
-                "source": self.__configuration["link"]["a"]["node-edge-point-uuid"],
-                "target": self.__configuration["link"]["z"]["node-edge-point-uuid"]
+                "source": link_data["link"]["a"]["node-edge-point-uuid"],
+                "target": link_data["link"]["z"]["node-edge-point-uuid"]
             }
         }
 
@@ -119,17 +128,27 @@ class TapiLink(Top):
         Getter for TAPI Link name.
         :return TAPI Link as json object.
         """
-        return self.__configuration['link']['name']
+        return self.__link_configuration.json()['link']['name']
 
     def svg(self) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Link.
         :return TAPI Link as svg object.
         """
+        cx = str(self.__link_configuration.consumer_node_edge_point().svg_x())
+        cy = str(self.__link_configuration.consumer_node_edge_point().svg_y())
+        px = str(self.__link_configuration.provider_node_edge_point().svg_x())
+        py = str(self.__link_configuration.provider_node_edge_point().svg_y())
+        
         group = etree.Element("g")
         desc = etree.Element("desc")
         desc.text = "\n TAPI Link\n id: " + \
             self.identifier() + "\n name: " + self.name()
         group.append(desc)
+
+        path = etree.Element("path")
+        d="M" + " ".join([cx, cy, px, py])
+        path.attrib["d"] =  d
+        group.append(path)
 
         return group

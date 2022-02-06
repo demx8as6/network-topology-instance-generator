@@ -18,6 +18,7 @@ Module to construct the input configuration for a TAPI link object.
 """
 from typing import Dict
 from model.python.tapi_node import TapiNode
+from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
 
 
@@ -46,27 +47,20 @@ class LinkConfig(Top):
         self.__consumer = consumer
         self.__provider = provider
 
-        # exception for O-RAN Fronthaul Management plane to SMO
-        consumer_name_prefix = name_prefix
-        if self.__consumer.function() == "o-ran-common-identity-refs:smo-function" and \
-                consumer_name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
-            consumer_name_prefix = "o1-netconf"
-
         self.data = {"link": {
             "name": self.name(),
             "a": {
                 "topology-uuid": topology_reference,
                 "node-uuid": consumer.data()["uuid"],
                 "node-edge-point-uuid":
-                    consumer.node_edge_point_by_interface_name(
-                        consumer_name_prefix.lower() + "-consumer")
+                    self.consumer_node_edge_point().identifier()
+                    
             },
             "z": {
                 "topology-uuid": topology_reference,
                 "node-uuid": provider.data()["uuid"],
                 "node-edge-point-uuid":
-                    provider.node_edge_point_by_interface_name(
-                        name_prefix.lower() + "-provider")
+                    self.provider_node_edge_point().identifier()
             }
         }}
 
@@ -127,3 +121,17 @@ class LinkConfig(Top):
         :return JSON object of link configuration
         """
         return self.data
+
+    def consumer_node_edge_point(self) -> TapiNodeEdgePoint:
+        # exception for O-RAN Fronthaul Management plane to SMO
+        consumer_name_prefix = self.__name_prefix
+        if self.__consumer.function() == "o-ran-common-identity-refs:smo-function" and \
+                consumer_name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
+            consumer_name_prefix = "o1-netconf"
+        interface_name = consumer_name_prefix.lower() + "-consumer"
+
+        return self.__consumer.node_edge_point_by_interface_name(interface_name)
+
+    def provider_node_edge_point(self) -> TapiNodeEdgePoint:
+        interface_name= self.__name_prefix.lower() + "-provider"
+        return self.__provider.node_edge_point_by_interface_name(interface_name)

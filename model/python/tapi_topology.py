@@ -176,8 +176,10 @@ class TapiTopology(Top):
             self.identifier()  # + "\n name: " + self.name()
         group.append(desc)
 
+
         # nodes handling
         index_per_type: Dict = {}
+        svg_nodes = []
         for node in self.__data["node"]:
             if type(node) in index_per_type:
                 index_per_type[type(node)] = index_per_type[type(node)] + 1
@@ -188,11 +190,16 @@ class TapiTopology(Top):
                 index*self.__svg_dynamic_x_offset_by_node_type(type(node)) + \
                 self.__svg_static_x_offset_by_node_type(type(node))
             node_y = y + self.__svg_y_offset_by_node_type(type(node))
-            group.append(node.svg(node_x, node_y))
+            svg_nodes.append(node.svg(node_x, node_y))
+            # group.append(node.svg(node_x, node_y))
 
-        # handling
+        # handling and drawing links 
         for link in self.__data["link"]:
             group.append(link.svg())
+
+        # drawing nodes
+        for svg_node in svg_nodes:
+            group.append(svg_node)
 
         return group
 
@@ -326,40 +333,40 @@ class TapiTopology(Top):
 
             # add links
             # A1
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="a1-rest",
-                provider=node,
-                consumer=parent
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"a1-rest",
+                "provider": node,
+                "consumer":parent
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # O1 NETCONF
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="o1-netconf",
-                provider=node,
-                consumer=parent
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"o1-netconf",
+                "provider": node,
+                "consumer":parent
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # O1 FILE
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="o1-file",
-                provider=node,
-                consumer=parent
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"o1-file",
+                "provider": node,
+                "consumer":parent
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # O1 VES
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="o1-ves",
-                provider=parent,
-                consumer=node
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"o1-ves",
+                "provider":parent,
+                "consumer":node
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # continue
             if next_type in topology_structure:
@@ -410,50 +417,50 @@ class TapiTopology(Top):
 
                 # add links
                 # E2
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="e2-rest",
-                    provider=node[plane],
-                    consumer=parent
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"e2-rest",
+                    "provider": node[plane],
+                    "consumer":parent
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 NETCONF
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-netconf",
-                    provider=node[plane],
-                    consumer=parent.parent()
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-netconf",
+                    "provider": node[plane],
+                    "consumer":parent.parent()
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 FILE
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-file",
-                    provider=node[plane],
-                    consumer=parent.parent()
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-file",
+                    "provider": node[plane],
+                    "consumer":parent.parent()
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 VES
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-ves",
-                    provider=parent.parent(),
-                    consumer=node[plane]
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-ves",
+                    "provider":parent.parent(),
+                    "consumer":node[plane]
+                }
+                self.add_link(TapiLink(link_configuration))
 
             # continue
             # E1 Interface between O-CU-UP and O-CU-CP
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="e1-unknown",
-                provider=node["up"],
-                consumer=node["cp"]
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"e1-unknown",
+                "provider": node["up"],
+                "consumer":node["cp"]
+            }
+            self.add_link(TapiLink(link_configuration))
 
             if next_type in topology_structure:
                 structure = topology_structure.copy()
@@ -487,50 +494,50 @@ class TapiTopology(Top):
 
                 # add links
                 # E2
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="e2-rest",
-                    provider=node,
-                    consumer=parent.parent()
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"e2-rest",
+                    "provider": node,
+                    "consumer":parent.parent()
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 NETCONF
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-netconf",
-                    provider=node,
-                    consumer=parent.parent().parent()
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-netconf",
+                    "provider": node,
+                    "consumer":parent.parent().parent()
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 FILE
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-file",
-                    provider=node,
-                    consumer=parent.parent().parent()
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-file",
+                    "provider": node,
+                    "consumer":parent.parent().parent()
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # O1 VES
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix="o1-ves",
-                    provider=parent.parent().parent(),
-                    consumer=node
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":"o1-ves",
+                    "provider":parent.parent().parent(),
+                    "consumer":node
+                }
+                self.add_link(TapiLink(link_configuration))
 
                 # F1 User Plane or Control Plane
                 interfaces: Dict[str, str] = {"cp": "f1-c", "up": "f1-u"}
-                link_configuration = LinkConfig(
-                    topology_reference=self.data()["uuid"],
-                    name_prefix=interfaces[plane]+"-unknown",
-                    provider=node,
-                    consumer=parent
-                )
-                self.add_link(TapiLink(link_configuration.json()))
+                link_configuration = {
+                    "topology_reference":self.data()["uuid"],
+                    "name_prefix":interfaces[plane]+"-unknown",
+                    "provider": node,
+                    "consumer":parent
+                }
+                self.add_link(TapiLink(link_configuration))
 
             # continue
             if next_type in topology_structure:
@@ -563,22 +570,22 @@ class TapiTopology(Top):
             # add links
 
             # O1 NETCONF
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="ofh-netconf",
-                provider=node,
-                consumer=parent.parent().parent().parent()
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"ofh-netconf",
+                "provider": node,
+                "consumer":parent.parent().parent().parent()
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # OFH M-Plane to O-DU
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="ofh-netconf",
-                provider=node,
-                consumer=parent
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"ofh-netconf",
+                "provider": node,
+                "consumer":parent
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # continue
             if next_type in topology_structure:
@@ -609,13 +616,13 @@ class TapiTopology(Top):
 
             # add links
             # Uu unknown
-            link_configuration = LinkConfig(
-                topology_reference=self.data()["uuid"],
-                name_prefix="uu-unknown",
-                provider=parent,
-                consumer=node
-            )
-            self.add_link(TapiLink(link_configuration.json()))
+            link_configuration = {
+                "topology_reference":self.data()["uuid"],
+                "name_prefix":"uu-unknown",
+                "provider":parent,
+                "consumer":node
+            }
+            self.add_link(TapiLink(link_configuration))
 
             if "key" in topology_structure:
                 print("Implement missing topology level.")
