@@ -130,25 +130,31 @@ class TapiLink(Top):
         """
         return self.__link_configuration.json()['link']['name']
 
-    def svg(self) -> etree.Element:
+    def svg(self, svg_x: int, svg_y: int) -> etree.Element:
         """
         Getter for a xml Element object representing the TAPI Link.
         :return TAPI Link as svg object.
         """
-        cx = str(self.__link_configuration.consumer_node_edge_point().svg_x())
-        cy = str(self.__link_configuration.consumer_node_edge_point().svg_y())
-        px = str(self.__link_configuration.provider_node_edge_point().svg_x())
-        py = str(self.__link_configuration.provider_node_edge_point().svg_y())
-        
+
         group = etree.Element("g")
         desc = etree.Element("desc")
         desc.text = "\n TAPI Link\n id: " + \
             self.identifier() + "\n name: " + self.name()
         group.append(desc)
 
+        # cubic bezier curves
+        source_x = self.__link_configuration.consumer_node_edge_point().svg_x()
+        source_y = self.__link_configuration.consumer_node_edge_point().svg_y()
+        target_x = self.__link_configuration.provider_node_edge_point().svg_x()
+        target_y = self.__link_configuration.provider_node_edge_point().svg_y()
+
+        control_y = int(source_y + 2*(target_y-source_y)/3)
         path = etree.Element("path")
-        d="M" + " ".join([cx, cy, px, py])
-        path.attrib["d"] =  d
+        path.attrib["d"] = " ".join(["M", str(source_x), str(source_y),
+                                     "C", str(source_x), str(control_y),
+                                     str(target_x), str(control_y),
+                                     str(target_x), str(target_y)])
+        path.attrib["class"] = "link"
         group.append(path)
 
         return group

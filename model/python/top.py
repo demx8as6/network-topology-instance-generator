@@ -70,7 +70,7 @@ class Top:
         """
         raise NotImplementedError('subclasses must override name()!')
 
-    def svg(self, x: int, y: int) -> etree.Element:
+    def svg(self, svg_x: int, svg_y: int) -> etree.Element:
         """
         Returns an lxml.etree.Element object.
         """

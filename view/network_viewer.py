@@ -91,7 +91,7 @@ class NetworkViewer:
         :param filename: A valid path to a file on the system.
         :type filename: string
         """
-        root = self.__network.svg(80, 40)
+        root = self.__network.svg(0, 40)
         root.addprevious(
             etree.ProcessingInstruction("xml-stylesheet",
                                         'href="svg.style.css" type="text/css"')
