@@ -170,6 +170,7 @@ class TapiNodeEdgePoint(Top):
         self.__svg_x = x
         self.__svg_y = y
         group = etree.Element("g")
+        group.attrib["class"] = "nep"
         desc = etree.Element("desc")
         desc.text = "\n TAPI Node Edge Point \n id: " + \
             self.identifier() + "\n name: " + self.name()
@@ -179,6 +180,7 @@ class TapiNodeEdgePoint(Top):
         circle.attrib['cx'] = str(x)
         circle.attrib['cy'] = str(y)
         circle.attrib['r'] = str(super().FONTSIZE)
+        circle.attrib['class'] = " ".join(["nep", self.role()])
         group.append(circle)
 
         label = etree.Element('text')

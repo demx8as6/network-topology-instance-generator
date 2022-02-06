@@ -263,6 +263,7 @@ class TapiNode(Top):
         :return TAPI Node as svg object.
         """
         group = etree.Element("g")
+        group.attrib["class"] = "node"
         desc = etree.Element("desc")
         desc.text = "\n TAPI Node\n id: " + \
             self.identifier() + "\n name: " + self.name()
@@ -271,13 +272,15 @@ class TapiNode(Top):
         width = self.__width
         height = 2 * (2*self.FONTSIZE)
         rect = RoundedRectangel(
-            {'x': x, 'y': y, 'width': width, 'height': height, 'radius': super().FONTSIZE})
+            {'x': x, 'y': y, 'width': width, 'height': height, 'radius': super().FONTSIZE,
+             'function': self.function_label().lower()})
         group.append(rect.svg())
 
         label = etree.Element('text')
         label.attrib['x'] = str(x)
         # +4px for font-size 14px (think of chars like 'gjy')
         label.attrib['y'] = str(y + 4)
+        label.attrib['class'] = " ".join(["node", self.function_label().lower()])
         label.text = self.function_label()
         group.append(label)
 

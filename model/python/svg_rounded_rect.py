@@ -30,6 +30,7 @@ class RoundedRectangel():
     __width = 100
     __height = 100
     __radius = 10
+    __function = ""
 
     # constructor
     def __init__(self, configuration: Dict[str, int]):
@@ -38,6 +39,7 @@ class RoundedRectangel():
         self.__width = configuration['width']
         self.__height = configuration['height']
         self.__radius = configuration['radius']
+        self. __function  = configuration['function']
 
     def svg(self) -> etree.Element:
         """
@@ -73,4 +75,5 @@ class RoundedRectangel():
             "v-" + H + " " + \
             "a" + R + "," + R + " 0 0 1 " + R + ",-" + R + " " + \
             "z"
+        path.attrib["class"] = " ".join(["node", self.__function])
         return path
