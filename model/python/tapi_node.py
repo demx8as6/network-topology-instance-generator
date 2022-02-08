@@ -19,7 +19,6 @@ Module containing the class for a TAPI Node.
 import uuid
 from typing import Dict, Union
 from lxml import etree
-from model.python.svg_rounded_rect import RoundedRectangel
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
 
@@ -71,8 +70,8 @@ class TapiNode(Top):
                 "jitter-characteristic": "jitter-1",
                 "wander-characteristic": "wander-1"
             }],
-            "o-ran-topology:function": configuration['node']['function'],
-            "o-ran-topology:geolocation": {
+            "o-ran-sc-topology:function": configuration['node']['function'],
+            "o-ran-sc-topology:geolocation": {
                 "longitude": "0",
                 "latitude": "0",
                 "altitude": "20000"
@@ -191,14 +190,14 @@ class TapiNode(Top):
         :return The type of the network-function as human readable string.
         """
         mapping = {
-            "o-ran-common-identity-refs:smo-function": "SMO",
-            "o-ran-common-identity-refs:near-rt-ric-function": "Near-RT-RIC",
-            "o-ran-common-identity-refs:o-cu-function": "O-CU",
-            "o-ran-common-identity-refs:o-cu-cp-function": "O-CU-CP",
-            "o-ran-common-identity-refs:o-cu-up-function": "O-CU-UP",
-            "o-ran-common-identity-refs:o-du-function": "O-DU",
-            "o-ran-common-identity-refs:o-ru-function": "O-RU",
-            "o-ran-common-identity-refs:user-equipment-function": "UE"
+            "o-ran-sc-topology-common:smo": "SMO",
+            "o-ran-sc-topology-common:near-rt-ric": "Near-RT-RIC",
+            "o-ran-sc-topology-common:o-cu": "O-CU",
+            "o-ran-sc-topology-common:o-cu-cp": "O-CU-CP",
+            "o-ran-sc-topology-common:o-cu-up": "O-CU-UP",
+            "o-ran-sc-topology-common:o-du": "O-DU",
+            "o-ran-sc-topology-common:o-ru": "O-RU",
+            "o-ran-sc-topology-common:user-equipment": "UE"
         }
         if mapping[self.function()]:
             return mapping[self.function()]
@@ -264,17 +263,22 @@ class TapiNode(Top):
         """
         group = etree.Element("g")
         group.attrib["class"] = "node"
-        desc = etree.Element("desc")
-        desc.text = "\n TAPI Node\n id: " + \
+        title = etree.Element("title")
+        title.text = "\n TAPI Node\n id: " + \
             self.identifier() + "\n name: " + self.name()
-        group.append(desc)
+        group.append(title)
 
         width = self.__width
         height = 2 * (2*self.FONTSIZE)
-        rect = RoundedRectangel(
-            {'x': x, 'y': y, 'width': width, 'height': height, 'radius': super().FONTSIZE,
-             'function': self.function_label().lower()})
-        group.append(rect.svg())
+
+        rect = etree.Element("rect")
+        rect.attrib["x"] = str(x - width/2)
+        rect.attrib["y"] = str(y - height/2)
+        rect.attrib["width"] = str(width)
+        rect.attrib["height"] = str(height)
+        rect.attrib["rx"] = str(self.FONTSIZE)
+        rect.attrib["class"] = " ".join(["node", self.function_label().lower()])
+        group.append(rect)
 
         label = etree.Element('text')
         label.attrib['x'] = str(x)

@@ -138,10 +138,10 @@ class TapiLink(Top):
 
         group = etree.Element("g")
         group.attrib["class"] = "link"
-        desc = etree.Element("desc")
-        desc.text = "\n TAPI Link\n id: " + \
+        title = etree.Element("title")
+        title.text = "\n TAPI Link\n id: " + \
             self.identifier() + "\n name: " + self.name()
-        group.append(desc)
+        group.append(title)
 
         # cubic bezier curves
         source_x = self.__link_configuration.consumer_node_edge_point().svg_x()

@@ -16,8 +16,6 @@
 """
 Module containing a class representing a User Equipment as TAPI Node.
 """
-from lxml import etree
-from model.python.svg_rounded_rect import RoundedRectangel
 from model.python.tapi_node import TapiNode
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 

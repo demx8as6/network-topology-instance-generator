@@ -296,7 +296,7 @@ class TapiTopology(Top):
                 prefix = parent.data()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(local_id),
                                "type": current_type,
-                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+                               "function": "o-ran-sc-topology-common:"+current_type}}
             node = TapiNodeSmo(parent, config)
             self.add_node(node)
             if next_type in topology_structure:
@@ -322,7 +322,7 @@ class TapiTopology(Top):
             prefix = ""
             if parent is not None:
                 prefix = parent.json()["name"][1]["value"]
-            function = "o-ran-common-identity-refs:"+current_type+"-function"
+            function = "o-ran-sc-topology-common:"+current_type
             node_configuration = {"node": {"localId": prefix + str(local_id),
                                            "type": current_type,
                                            "function": function}}
@@ -380,11 +380,10 @@ class TapiTopology(Top):
         Method to calculate the Function IDENTITY
         """
         return "".join([
-            "o-ran-common-identity-refs:",
+            "o-ran-sc-topology-common:",
             function_type,
             "-",
-            plane,
-            "-function"
+            plane
         ])
 
     def __create_o_cus(self, parent: TapiNode, topology_structure: dict, count: int):
@@ -484,7 +483,7 @@ class TapiTopology(Top):
                 prefix = parents["cp"].data()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(local_id),
                                "type": current_type,
-                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+                               "function": "o-ran-sc-topology-common:"+current_type}}
             node = TapiNodeODu(parents["cp"], config)
             self.add_node(node)
 
@@ -561,7 +560,7 @@ class TapiTopology(Top):
                 prefix = parent.data()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(local_id),
                                "type": current_type,
-                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+                               "function": "o-ran-sc-topology-common:"+current_type}}
             node = TapiNodeORu(parent, config)
             self.add_node(node)
 
@@ -608,7 +607,7 @@ class TapiTopology(Top):
                 prefix = parent.data()["name"][1]["value"]
             config = {"node": {"localId": prefix + str(local_id),
                                "type": current_type,
-                               "function": "o-ran-common-identity-refs:"+current_type+"-function"}}
+                               "function": "o-ran-sc-topology-common:"+current_type}}
             node = TapiNodeUserEquipment(parent, config)
             self.add_node(node)
 

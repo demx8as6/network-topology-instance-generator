@@ -28,6 +28,22 @@ layer-protocol-name).
 sudo pip install jsonschema
 ```
 
+Steps to import TAPI yang data models and O-RAN-SC extensions:
+
+``` bash
+# TAPI v2.1.3
+cd model
+mkdir yang
+cd yang
+git clone https://github.com/OpenNetworkingFoundation/TAPI.git
+cd TAPI
+git checkout v2.1.3
+
+# O-RAN-SC extensions
+cd ..
+git clone "https://gerrit.o-ran-sc.org/r/scp/oam/modeling"
+```
+
 ## Generation Input
 
 The generator consumes a json as input. The json defines the hierarchy of 
@@ -72,5 +88,10 @@ python tapi_topology_generator.py config.json
 The generated json file can be validated against the yang models using 'yanglint'.
 
 ```
-yanglint -f json model/yang/o1-interface/ntsimulator/deploy/smo-nts-ng-topology-server/yang/o-ran-*.yang model/yang/TAPI/YANG/*.yang output/TestNetwork.json
+yanglint -f json \
+-p model/yang/modeling/data-model/yang/published/ietf \
+-p model/yang/TAPI/YANG \
+model/yang/modeling/data-model/yang/working/o-ran-sc/o-ran-sc-topology/o-ran-sc-topology*.yang \
+model/yang/TAPI/YANG/*.yang \
+output/TestNetwork.json
 ```
