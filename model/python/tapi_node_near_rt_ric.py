@@ -32,7 +32,7 @@ class TapiNodeNearRtRic(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "a1", "protocol": "REST", "role": "provider"
+                "interface": "a1", "cep":[{"protocol": "REST", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -41,7 +41,7 @@ class TapiNodeNearRtRic(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "e2", "protocol": "REST", "role": "consumer"
+                "interface": "e2", "cep":[{"protocol": "REST", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -50,7 +50,7 @@ class TapiNodeNearRtRic(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "NETCONF", "role": "Provider"
+                "interface": "o1", "cep":[{"protocol": "NETCONF", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -59,7 +59,7 @@ class TapiNodeNearRtRic(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "VES", "role": "consumer"
+                "interface": "o1", "cep":[{"protocol": "VES", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -68,7 +68,7 @@ class TapiNodeNearRtRic(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "FILE", "role": "provider"
+                "interface": "o1", "cep":[{"protocol": "FILE", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))

@@ -35,7 +35,7 @@ class TapiNodeUserEquipment(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "uu", "protocol": "unknown", "role": "consumer"
+                "interface": "uu", "cep":[{"protocol": "unknown", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))

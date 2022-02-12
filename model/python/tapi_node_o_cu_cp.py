@@ -33,7 +33,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "e2", "protocol": "REST", "role": "provider"
+                "interface": "e2", "cep":[{"protocol": "REST", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -42,7 +42,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "NETCONF", "role": "provider"
+                "interface": "o1", "cep":[{"protocol": "NETCONF", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -51,7 +51,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "VES", "role": "consumer"
+                "interface": "o1", "cep":[{"protocol": "VES", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -60,7 +60,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "protocol": "FILE", "role": "provider"
+                "interface": "o1", "cep":[{"protocol": "FILE", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -69,7 +69,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "f1-c", "protocol": "unknown", "role": "consumer"
+                "interface": "f1-c", "cep":[{"protocol": "unknown", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -78,7 +78,7 @@ class TapiNodeOCuCp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "e1", "protocol": "unknown", "role": "consumer"
+                "interface": "e1", "cep":[{"protocol": "unknown", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
