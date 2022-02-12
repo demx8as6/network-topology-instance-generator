@@ -219,7 +219,7 @@ class TapiNode(Top):
             str(self.__configuration['node']['localId'])
         ])
 
-    def node_edge_point_by_interface_name(self, interface_name) -> TapiNodeEdgePoint:
+    def node_edge_point_by_cep_name(self, cep_name) -> TapiNodeEdgePoint:
         """
         Method returning a NEP based on a given interface name
         :param interface_name: Search string
@@ -227,10 +227,10 @@ class TapiNode(Top):
         """
         result = None
         for nep in self.__data["owned-node-edge-point"]:
-            if nep.name() == interface_name:
-                result = nep
+            for cep in nep.connection_edge_points():
+                if cep.name() == cep_name:
+                    result = nep
         if result is None:
-            print(interface_name, result)
             for nep in self.__data["owned-node-edge-point"]:
                 print(nep.json())
         return result

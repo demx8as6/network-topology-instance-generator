@@ -110,24 +110,7 @@ class TapiNodeEdgePoint(Top):
         Getter a human readable identifier of the TAPI Node Edge Point.
         :return TAPI Node Edge Point name as String.
         """
-        items = (self.interface(),
-                 self.protocol(),
-                 self.role()
-                 )
-        return "-".join(items).lower()
-
-    def __label_by_name(self, name) -> str:
-        mapping: Dict[str, str] = {
-            "o1-netconf-provider": "NC",
-            "o1-ves-consumer": "VES",
-            "o1-file-provider": "FTP",
-            "o1-netconf-consumer": "NC",
-            "o1-ves-provider": "VES",
-            "o1-file-consumer": "FTP",
-        }
-        if name in mapping:
-            return mapping[name]
-        return self.interface().upper()
+        return self.interface().lower()
 
     def interface(self) -> str:
         """
@@ -142,22 +125,6 @@ class TapiNodeEdgePoint(Top):
         :return Interface label.
         """
         return self.__ceps
-
-    def protocol(self) -> str:
-        """
-        Getter a human readable identifier of the TAPI Node Edge Point protocol.
-        :return protocol label.
-        """
-        # TODO: to be deleted
-        return self.__configuration['nodeEdgePoint']['cep'][0]['protocol'].lower()
-
-    def role(self) -> str:
-        """
-        Getter a human readable identifier of the TAPI Node Edge Point role.
-        :return role label.
-        """
-        # TODO: to be deleted
-        return self.__configuration['nodeEdgePoint']['cep'][0]['role'].lower()
 
     def parent(self) -> str:
         """
