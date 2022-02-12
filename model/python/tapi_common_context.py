@@ -86,7 +86,7 @@ class TapiCommonContext(Top):
 
     def __svg_width(self) -> int:
         pattern = self.configuration()['network']['pattern']
-        result = 300 + 6*self.FONTSIZE
+        result = 7*self.FONTSIZE
         if "smo" in pattern:
             result = result * pattern['smo']
         if "near-rt-ric" in pattern:
@@ -102,7 +102,7 @@ class TapiCommonContext(Top):
         return result 
 
     def __svg_height(self) -> int:
-        return 300 + 5 * 140
+        return 80 + 5 * 11*self.FONTSIZE
 
     def svg(self, x, y) -> etree.Element:
         """

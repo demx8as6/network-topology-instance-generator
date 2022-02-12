@@ -84,8 +84,8 @@ class TapiNodeEdgePoint(Top):
             "f1-c-unknown-consumer": 0*self.FONTSIZE,
             "f1-u-unknown-consumer": 0*self.FONTSIZE,
 
-            "e1-unknown-provider": 0*self.FONTSIZE,
-            "e1-unknown-consumer": 0*self.FONTSIZE,
+            "e1-unknown-provider": +1.5*self.FONTSIZE,
+            "e1-unknown-consumer": -1.5*self.FONTSIZE,
 
             "e2-rest-provider": 0*self.FONTSIZE,
             "f1-c-unknown-provider": 0*self.FONTSIZE,

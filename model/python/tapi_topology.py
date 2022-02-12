@@ -168,10 +168,10 @@ class TapiTopology(Top):
         pattern = self.configuration()['network']['pattern']
         x_mapping: Dict[type, int] = {
             TapiNodeSmo: 3 * self.FONTSIZE ,
-            TapiNodeNearRtRic: - 3 * self.FONTSIZE + 3 * self.FONTSIZE,
-            TapiNodeOCuCp: - 3 * offset + 3 * self.FONTSIZE,
-            TapiNodeOCuUp: + 2 * offset + 3 * self.FONTSIZE,
-            TapiNodeODu: 3 * self.FONTSIZE + 2 * self.FONTSIZE,
+            TapiNodeNearRtRic: 3 * self.FONTSIZE,
+            TapiNodeOCuCp: 3 * self.FONTSIZE,
+            TapiNodeOCuUp: 3 * self.FONTSIZE,
+            TapiNodeODu: 2 * self.FONTSIZE,
             TapiNodeORu: 2 * self.FONTSIZE,
             TapiNodeUserEquipment: 0
         }
@@ -217,10 +217,10 @@ class TapiTopology(Top):
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
 
-        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] - 3 * self.FONTSIZE
-        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] - 3 * self.FONTSIZE
-        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +2 * self.FONTSIZE
-        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] + 3 * self.FONTSIZE
+        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -3 * 2*self.FONTSIZE
+        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -4 * 2* self.FONTSIZE
+        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +4 * 2* self.FONTSIZE
+        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] +2 * 2*self.FONTSIZE
 
         if node_type in x_mapping:
             return x_mapping[node_type]
@@ -239,7 +239,7 @@ class TapiTopology(Top):
             TapiNodeOCuUp: 3 * self.FONTSIZE,
             TapiNodeODu: 3 * self.FONTSIZE,
             TapiNodeORu: 3 * self.FONTSIZE,
-            TapiNodeUserEquipment: 2 * self.FONTSIZE 
+            TapiNodeUserEquipment: 2 * self.FONTSIZE
         }
         if "smo" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * pattern['smo']
@@ -294,7 +294,7 @@ class TapiTopology(Top):
                 pattern['user-equipment']
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
-            x_mapping[TapiNodeUserEquipment] = x_mapping[TapiNodeORu] * \
+            x_mapping[TapiNodeUserEquipment] = x_mapping[TapiNodeUserEquipment] * \
                 pattern['user-equipment']
 
         if node_type in x_mapping:
@@ -306,7 +306,7 @@ class TapiTopology(Top):
         Mapping function from node types to y position in svg
         return: int value
         """
-        offset = 10*self.FONTSIZE
+        offset = 11*self.FONTSIZE
         y_mapping: Dict[type, int] = {
             TapiNodeSmo: 0 * offset,
             TapiNodeNearRtRic: 1 * offset,

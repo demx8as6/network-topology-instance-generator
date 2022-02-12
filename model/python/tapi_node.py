@@ -86,21 +86,21 @@ class TapiNode(Top):
             "o1-ves-provider": 1*6*self.FONTSIZE,
             "o1-file-consumer": 3*6*self.FONTSIZE,
 
-            "a1-rest-provider": -3*self.FONTSIZE,
+            "a1-rest-provider": -3.2*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
 
-            "f1-c-unknown-consumer": -3*self.FONTSIZE,
-            "f1-u-unknown-consumer": -1*self.FONTSIZE,
+            "f1-c-unknown-consumer": 0*self.FONTSIZE,
+            "f1-u-unknown-consumer": 0*self.FONTSIZE,
 
             "e1-unknown-provider": -5*self.FONTSIZE,
             "e1-unknown-consumer": 5*self.FONTSIZE,
 
-            "e2-rest-provider": -5*self.FONTSIZE,
+            "e2-rest-provider": -3.2*self.FONTSIZE,
             "f1-c-unknown-provider": -3*self.FONTSIZE,
             "f1-u-unknown-provider": -1*self.FONTSIZE,
-            "o1-netconf-provider": 1*self.FONTSIZE,
-            "o1-ves-consumer": 3*self.FONTSIZE,
-            "o1-file-provider": 5*self.FONTSIZE,
+            "o1-netconf-provider": 1.6*self.FONTSIZE,
+            "o1-ves-consumer": 1.6*self.FONTSIZE,
+            "o1-file-provider": 1.6*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
@@ -124,8 +124,8 @@ class TapiNode(Top):
             "a1-rest-provider": -3*self.FONTSIZE,
             "e2-rest-consumer": 3*self.FONTSIZE,
 
-            "e1-unknown-provider": 0*self.FONTSIZE,
-            "e1-unknown-consumer": 0*self.FONTSIZE,
+            "e1-unknown-provider": 1*self.FONTSIZE,
+            "e1-unknown-consumer": 1*self.FONTSIZE,
 
             "f1-c-unknown-consumer": 3*self.FONTSIZE,
             "f1-u-unknown-consumer": 3*self.FONTSIZE,
