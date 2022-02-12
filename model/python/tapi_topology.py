@@ -164,7 +164,6 @@ class TapiTopology(Top):
         Mapping function from node types to y position in svg
         return: int value
         """
-        offset = 3*self.FONTSIZE
         pattern = self.configuration()['network']['pattern']
         x_mapping: Dict[type, int] = {
             TapiNodeSmo: 3 * self.FONTSIZE ,
@@ -217,6 +216,7 @@ class TapiTopology(Top):
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
 
+        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] -3 * 2*self.FONTSIZE
         x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -3 * 2*self.FONTSIZE
         x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -4 * 2* self.FONTSIZE
         x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +4 * 2* self.FONTSIZE

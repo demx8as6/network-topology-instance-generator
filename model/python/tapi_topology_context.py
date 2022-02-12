@@ -90,5 +90,5 @@ class TapiTopologyContext(Top):
         group.append(desc)
 
         for topology in self.__tapi_topology:
-            group.append(topology.svg(x+10*self.FONTSIZE, y))
+            group.append(topology.svg(x+4*self.FONTSIZE, y+3*self.FONTSIZE))
         return group

@@ -133,11 +133,10 @@ class TapiLink(Top):
         target_x = self.__link_configuration.provider_node_edge_point().svg_x()
         target_y = self.__link_configuration.provider_node_edge_point().svg_y()
 
-        control_y = int(source_y + 2*(target_y-source_y)/3)
         path = etree.Element("path")
         path.attrib["d"] = " ".join(["M", str(source_x), str(source_y),
-                                     "C", str(source_x), str(control_y),
-                                     str(target_x), str(control_y),
+                                     "C", str(source_x), str(target_y),
+                                     str(target_x), str(source_y),
                                      str(target_x), str(target_y)])
         path.attrib["class"] = "link"
         group.append(path)
