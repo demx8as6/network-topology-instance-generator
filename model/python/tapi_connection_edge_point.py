@@ -115,7 +115,7 @@ class TapiConnectionEdgePoint(Top):
         :return TAPI Node Edge Point name as String.
         """
         items = (self.parent()["interface"],
-                 self.protocol(),
+                 self.protocol().split(":")[1],
                  self.role())
         return "-".join(items).lower()
 
@@ -123,11 +123,15 @@ class TapiConnectionEdgePoint(Top):
         mapping: Dict[str, str] = {
             "netconf": "NC",
             "ves": "VES",
-            "file": "FTP"
+            "file": "FTP",
+            "rest":"REST",
+            "restconf":"RC",
+            "unknown":"-"
         }
-        if protocol in mapping:
-            return mapping[protocol]
-        return self.parent()["interface"].upper()
+        search = protocol.split(":")[1]
+        if search in mapping:
+            return mapping[search]
+        return self.protocol()
 
     def protocol(self) -> str:
         """
@@ -167,7 +171,7 @@ class TapiConnectionEdgePoint(Top):
         group = etree.Element("g")
         group.attrib["class"] = "cep"
         title = etree.Element("title")
-        title.text = "\n TAPI Connetion Edge Point \n id: " + \
+        title.text = "\n TAPI Connection Edge Point \n id: " + \
             self.identifier() + "\n name: " + self.name()
         group.append(title)
 
@@ -183,7 +187,7 @@ class TapiConnectionEdgePoint(Top):
         label.attrib['x'] = str(x)
         # +4px for font-size 14px (think of chars like 'gjy')
         label.attrib['y'] = str(y + 4)
-        label.text = self.__label_by_protocol(self.name())
+        label.text = self.__label_by_protocol(self.protocol())
         group.append(label)
 
         return group
