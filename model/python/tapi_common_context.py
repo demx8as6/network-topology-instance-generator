@@ -53,69 +53,6 @@ class TapiCommonContext(Top):
         """
         return self.__configuration
 
-    def cytoscape(self) -> Dict[str, str]:
-        """
-        Getter returning the object for topology visualization.
-        :return Cytoscape root.
-        """
-        result = {
-            "layout": {"name": "grid"},
-            "style": [
-                {
-                    "selector": "node",
-                    "style": {
-                        "background-color": "#2B65EC"
-                    }
-                },
-                {
-                    "selector": "node[name]",
-                    "style": {
-                        "label": "data(name)"
-                    }
-                },
-                {
-                    "selector": "node[hide]",
-                    "style": {
-                        "visibility": "hidden"
-                    }
-                },
-                {
-                    "selector": ":parent",
-                    "style": {
-                        "background-opacity": 0.333,
-                        "border-color": "#2B65EC"
-                    }
-                },
-                {
-                    "selector": "edge",
-                    "style": {
-                        "line-color": "#2B65EC"
-                    }
-                },
-                {
-                    "selector": "edge[hide]",
-                    "style": {
-                        "visibility": "visible"
-                    }
-                },              {
-                    "selector": "node:selected",
-                    "style": {
-                        "background-color": "#F08080",
-                        "border-color": "red"
-                    }
-                },
-                {
-                    "selector": "edge:selected",
-                    "style": {
-                        "line-color": "#F08080"
-                    }
-                }
-            ],
-            "elements": []
-        }
-        result.update(self.__context.cytoscape())
-        return "network = " + str(result)
-
     def data(self) -> Dict:
         """
         Getter for a json object representing the TAPI Common Context.

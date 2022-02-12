@@ -47,17 +47,6 @@ class TapiTopologyContext(Top):
         """
         return self.__configuration
 
-    def cytoscape(self) -> Dict[str, List]:
-        """
-        Getter returning the object for topology visualization.
-        :return Link configuration.
-        """
-        result = {"elements": []}
-        for instance in self.__tapi_topology:
-            # well, results in a singel topology only
-            result.update(instance.cytoscape())
-        return result
-
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Topology Context.

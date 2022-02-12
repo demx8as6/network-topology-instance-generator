@@ -86,22 +86,6 @@ class TapiLink(Top):
         """
         return self.__configuration
 
-    def cytoscape(self) -> Dict[str, Union[str, Dict]]:
-        """
-        Getter returning the object for topology visualization.
-        :return Cytoscape Element.
-        """
-        link_data = self.__link_configuration.json()
-        return {
-            "group": "edges",
-            "data": {
-                "id": self.identifier(),
-                "name": self.name(),
-                "source": link_data["link"]["a"]["node-edge-point-uuid"],
-                "target": link_data["link"]["z"]["node-edge-point-uuid"]
-            }
-        }
-
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Link.

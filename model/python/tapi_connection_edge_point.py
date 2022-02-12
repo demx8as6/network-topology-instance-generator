@@ -74,20 +74,6 @@ class TapiConnectionEdgePoint(Top):
         """
         return self.__configuration
 
-    def cytoscape(self) -> Dict[str, Union[str, Dict]]:
-        """
-        Getter returning the object for topology visualization.
-        :return Cytoscape Element.
-        """
-        return {
-            "group": "nodes",
-            "data": {
-                "id": self.identifier(),
-                "parent": self.parent()["node"],
-                "name": self.name()
-            }
-        }
-
     def data(self) -> dict:
         """
         Getter for a json object representing the TAPI Node Edge Point.

@@ -38,13 +38,6 @@ class Top:
         """
         raise NotImplementedError('subclasses must override configuration()!')
 
-    def cytoscape(self) -> dict:
-        """
-        Returns the object content in json format for topology representation
-        for cytoscape platform.
-        """
-        raise NotImplementedError('subclasses must override cytoscape()!')
-
     def data(self) -> dict:
         """
         Returns the class data.
