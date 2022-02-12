@@ -29,7 +29,7 @@ class TapiNodeUserEquipment(TapiNode):
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
-        super().width( (1 + 1) * (2.2*self.FONTSIZE) )  # 1x nep
+        super().width( (1 + 1) * (2*self.FONTSIZE) )  # 1x nep
 
         # add air consumer interface
         nep_configuration = {

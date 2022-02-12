@@ -90,9 +90,9 @@ class TapiNodeEdgePoint(Top):
             "e2-rest-provider": 0*self.FONTSIZE,
             "f1-c-unknown-provider": 0*self.FONTSIZE,
             "f1-u-unknown-provider": 0*self.FONTSIZE,
-            "o1-netconf-provider": 0*self.FONTSIZE,
+            "o1-netconf-provider": -2*self.FONTSIZE,
             "o1-ves-consumer": 0*self.FONTSIZE,
-            "o1-file-provider": 0*self.FONTSIZE,
+            "o1-file-provider": +2*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
@@ -140,7 +140,6 @@ class TapiNodeEdgePoint(Top):
 
         print("CEP name", name, "for y postion calculation not found")
         return 0
-
 
     def configuration(self) -> dict:
         """
@@ -226,15 +225,15 @@ class TapiNodeEdgePoint(Top):
             self.identifier() + "\n name: " + self.name()
         group.append(title)
 
-        height = 2 * self.FONTSIZE
-        width = 2 * self.FONTSIZE * (1 + len(self.connection_edge_points()))
+        height = 2.2 * self.FONTSIZE
+        width = 2.2 * self.FONTSIZE * len(self.connection_edge_points())
 
         rect = etree.Element("rect")
-        rect.attrib["x"] = str(x - width/2)
-        rect.attrib["y"] = str(y - height/2)
-        rect.attrib["width"] = str(width)
-        rect.attrib["height"] = str(height)
-        rect.attrib["rx"] = str(self.FONTSIZE / 2)
+        rect.attrib["x"] = str(int(x - width/2))
+        rect.attrib["y"] = str(int(y - height/2))
+        rect.attrib["width"] = str(int(width))
+        rect.attrib["height"] = str(int(height))
+        rect.attrib["rx"] = str(int(self.FONTSIZE / 2))
         rect.attrib["class"] = " ".join(["nep", self.name().lower()])
         group.append(rect)
 

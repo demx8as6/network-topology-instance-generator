@@ -17,7 +17,7 @@
 Module containing the class for a TAPI Node.
 """
 import uuid
-from typing import Dict, Union
+from typing import Dict
 from lxml import etree
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
@@ -79,12 +79,12 @@ class TapiNode(Top):
         }
 
     # getter
-    def __x_offset_by_cep_name(self, name) -> int:
+    def x_offset_by_cep_name(self, name) -> int:
         mapping: Dict[str, int] = {
-            "a1-rest-consumer": -3*self.FONTSIZE,
-            "o1-netconf-consumer": -1*self.FONTSIZE,
-            "o1-ves-provider": 1*self.FONTSIZE,
-            "o1-file-consumer": 3*self.FONTSIZE,
+            "a1-rest-consumer": -3*6*self.FONTSIZE,
+            "o1-netconf-consumer": -1*6*self.FONTSIZE,
+            "o1-ves-provider": 1*6*self.FONTSIZE,
+            "o1-file-consumer": 3*6*self.FONTSIZE,
 
             "a1-rest-provider": -3*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
@@ -114,7 +114,7 @@ class TapiNode(Top):
         print("CEP name", name, "for x postion calculation not found")
         return 0
 
-    def __y_offset_by_cep_name(self, name: str) -> int:
+    def y_offset_by_cep_name(self, name: str) -> int:
         mapping: Dict[str, int] = {
             "a1-rest-consumer": 3*self.FONTSIZE,
             "o1-netconf-consumer": 3*self.FONTSIZE,
@@ -255,7 +255,7 @@ class TapiNode(Top):
         group.append(title)
 
         width = self.__width
-        height = 2 * (2.2*self.FONTSIZE)
+        height = 2 * (2*self.FONTSIZE)
 
         rect = etree.Element("rect")
         rect.attrib["x"] = str(int(x - width/2))
@@ -275,8 +275,8 @@ class TapiNode(Top):
         group.append(label)
 
         for nep in self.data()['owned-node-edge-point']:
-            nep_x = x + self.__x_offset_by_cep_name(nep.connection_edge_points()[0].name())
-            nep_y = y + self.__y_offset_by_cep_name(nep.connection_edge_points()[0].name())
+            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[0].name())
+            nep_y = y + self.y_offset_by_cep_name(nep.connection_edge_points()[0].name())
             group.append(nep.svg(nep_x, nep_y))
 
         return group

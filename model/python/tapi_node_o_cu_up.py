@@ -42,25 +42,11 @@ class TapiNodeOCuUp(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "cep":[{"protocol": "NETCONF", "role": "provider"}]
-            }
-        }
-        self.add(TapiNodeEdgePoint(nep_configuration))
-
-        # add O1 VES Consumer interface
-        nep_configuration = {
-            "parent": self.identifier(),
-            "nodeEdgePoint": {
-                "interface": "o1", "cep":[{"protocol": "VES", "role": "consumer"}]
-            }
-        }
-        self.add(TapiNodeEdgePoint(nep_configuration))
-
-        # add O1 File Transfer Provider interface
-        nep_configuration = {
-            "parent": self.identifier(),
-            "nodeEdgePoint": {
-                "interface": "o1", "cep":[{"protocol": "FILE", "role": "provider"}]
+                "interface": "o1", "cep": [
+                    {"protocol": "NETCONF", "role": "provider"},
+                    {"protocol": "VES", "role": "consumer"},
+                    {"protocol": "FILE", "role": "provider"}
+                ]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
