@@ -59,7 +59,7 @@ class TapiConnectionEdgePoint(Top):
             "connection-port-direction": "BIDIRECTIONAL",
 
             "parent-node-edge-point": {
-#  TODO              "topology-uuid": "?",
+                #  TODO              "topology-uuid": "?",
                 "node-uuid": self.parent()["node"],
                 "node-edge-point-uuid": self.parent()["node-edge-point"]
             }
@@ -131,11 +131,10 @@ class TapiConnectionEdgePoint(Top):
 
     def protocol(self) -> str:
         """
-        Getter a human readable identifier of the TAPI Node Edge Point protocol.
+        Getter a human readable identifier of the TAPI Connection Edge Point protocol.
         :return protocol label.
         """
-        #return self.__configuration['protocol'].lower()
-        return "tapi-common:LAYER_PROTOCOL_QUALIFIER_UNSPECIFIED"
+        return ":".join(["o-ran-sc-topology-common", self.__configuration['protocol'].lower()])
 
     def role(self) -> str:
         """
