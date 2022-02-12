@@ -38,7 +38,7 @@ class TapiNode(Top):
         super().__init__(configuration)
         self.__parent = parent
         self.__configuration = configuration
-        self.width(4 * (2*self.FONTSIZE) + 1*(2*self.FONTSIZE))  # 4x nep
+        self.width((4 + 1) * (2.2*self.FONTSIZE))  # 4x nep
         self.__data = {
             "uuid": str(uuid.uuid4()),
             "name": [
@@ -79,7 +79,7 @@ class TapiNode(Top):
         }
 
     # getter
-    def __x_offset_by_name(self, name) -> int:
+    def __x_offset_by_cep_name(self, name) -> int:
         mapping: Dict[str, int] = {
             "a1-rest-consumer": -3*self.FONTSIZE,
             "o1-netconf-consumer": -1*self.FONTSIZE,
@@ -111,42 +111,42 @@ class TapiNode(Top):
         if name in mapping:
             return mapping[name]
 
-        print("NEP name", name, "for y postion calculation not found")
+        print("CEP name", name, "for x postion calculation not found")
         return 0
 
-    def __y_offset_by_name(self, name: str) -> int:
+    def __y_offset_by_cep_name(self, name: str) -> int:
         mapping: Dict[str, int] = {
-            "a1-rest-consumer": 2*self.FONTSIZE,
-            "o1-netconf-consumer": 2*self.FONTSIZE,
-            "o1-ves-provider": 2*self.FONTSIZE,
-            "o1-file-consumer": 2*self.FONTSIZE,
+            "a1-rest-consumer": 3*self.FONTSIZE,
+            "o1-netconf-consumer": 3*self.FONTSIZE,
+            "o1-ves-provider": 3*self.FONTSIZE,
+            "o1-file-consumer": 3*self.FONTSIZE,
 
-            "a1-rest-provider": -2*self.FONTSIZE,
-            "e2-rest-consumer": 2*self.FONTSIZE,
+            "a1-rest-provider": -3*self.FONTSIZE,
+            "e2-rest-consumer": 3*self.FONTSIZE,
 
             "e1-unknown-provider": 0*self.FONTSIZE,
             "e1-unknown-consumer": 0*self.FONTSIZE,
 
-            "f1-c-unknown-consumer": 2*self.FONTSIZE,
-            "f1-u-unknown-consumer": 2*self.FONTSIZE,
+            "f1-c-unknown-consumer": 3*self.FONTSIZE,
+            "f1-u-unknown-consumer": 3*self.FONTSIZE,
 
-            "e2-rest-provider": -2*self.FONTSIZE,
-            "f1-c-unknown-provider": -2*self.FONTSIZE,
-            "f1-u-unknown-provider": -2*self.FONTSIZE,
-            "o1-netconf-provider": -2*self.FONTSIZE,
-            "o1-ves-consumer": -2*self.FONTSIZE,
-            "o1-file-provider": -2*self.FONTSIZE,
-            "ofh-netconf-consumer": 2*self.FONTSIZE,
+            "e2-rest-provider": -3*self.FONTSIZE,
+            "f1-c-unknown-provider": -3*self.FONTSIZE,
+            "f1-u-unknown-provider": -3*self.FONTSIZE,
+            "o1-netconf-provider": -3*self.FONTSIZE,
+            "o1-ves-consumer": -3*self.FONTSIZE,
+            "o1-file-provider": -3*self.FONTSIZE,
+            "ofh-netconf-consumer": 3*self.FONTSIZE,
 
-            "ofh-netconf-provider": -2*self.FONTSIZE,
-            "uu-unknown-provider": 2*self.FONTSIZE,
+            "ofh-netconf-provider": -3*self.FONTSIZE,
+            "uu-unknown-provider": 3*self.FONTSIZE,
 
-            "uu-unknown-consumer": -2*self.FONTSIZE
+            "uu-unknown-consumer": -3*self.FONTSIZE
         }
         if name in mapping:
             return mapping[name]
 
-        print("NEP name", name, "for y postion calculation not found")
+        print("CEP name", name, "for y postion calculation not found")
         return 0
 
     def configuration(self) -> dict:
@@ -255,13 +255,13 @@ class TapiNode(Top):
         group.append(title)
 
         width = self.__width
-        height = 2 * (2*self.FONTSIZE)
+        height = 2 * (2.2*self.FONTSIZE)
 
         rect = etree.Element("rect")
-        rect.attrib["x"] = str(x - width/2)
-        rect.attrib["y"] = str(y - height/2)
-        rect.attrib["width"] = str(width)
-        rect.attrib["height"] = str(height)
+        rect.attrib["x"] = str(int(x - width/2))
+        rect.attrib["y"] = str(int(y - height/2))
+        rect.attrib["width"] = str(int(width))
+        rect.attrib["height"] = str(int(height))
         rect.attrib["rx"] = str(self.FONTSIZE)
         rect.attrib["class"] = " ".join(["node", self.function_label().lower()])
         group.append(rect)
@@ -275,8 +275,8 @@ class TapiNode(Top):
         group.append(label)
 
         for nep in self.data()['owned-node-edge-point']:
-            nep_x = x + self.__x_offset_by_name(nep.name())
-            nep_y = y + self.__y_offset_by_name(nep.name())
+            nep_x = x + self.__x_offset_by_cep_name(nep.connection_edge_points()[0].name())
+            nep_y = y + self.__y_offset_by_cep_name(nep.connection_edge_points()[0].name())
             group.append(nep.svg(nep_x, nep_y))
 
         return group

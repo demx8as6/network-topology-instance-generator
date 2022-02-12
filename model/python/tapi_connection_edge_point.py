@@ -165,7 +165,7 @@ class TapiConnectionEdgePoint(Top):
         circle.attrib['cx'] = str(x)
         circle.attrib['cy'] = str(y)
         circle.attrib['r'] = str(super().FONTSIZE)
-        circle.attrib['class'] = " ".join(["nep", self.role()])
+        circle.attrib['class'] = " ".join(["cep", self.role()])
 
         group.append(circle)
 

@@ -71,6 +71,77 @@ class TapiNodeEdgePoint(Top):
             self.__ceps.append(TapiConnectionEdgePoint(cep))
 
     # getter
+    def __x_offset_by_cep_name(self, name) -> int:
+        mapping: Dict[str, int] = {
+            "a1-rest-consumer": 0*self.FONTSIZE,
+            "o1-netconf-consumer": 0*self.FONTSIZE,
+            "o1-ves-provider": 0*self.FONTSIZE,
+            "o1-file-consumer": 0*self.FONTSIZE,
+
+            "a1-rest-provider": 0*self.FONTSIZE,
+            "e2-rest-consumer": 0*self.FONTSIZE,
+
+            "f1-c-unknown-consumer": 0*self.FONTSIZE,
+            "f1-u-unknown-consumer": 0*self.FONTSIZE,
+
+            "e1-unknown-provider": 0*self.FONTSIZE,
+            "e1-unknown-consumer": 0*self.FONTSIZE,
+
+            "e2-rest-provider": 0*self.FONTSIZE,
+            "f1-c-unknown-provider": 0*self.FONTSIZE,
+            "f1-u-unknown-provider": 0*self.FONTSIZE,
+            "o1-netconf-provider": 0*self.FONTSIZE,
+            "o1-ves-consumer": 0*self.FONTSIZE,
+            "o1-file-provider": 0*self.FONTSIZE,
+            "ofh-netconf-consumer": 0*self.FONTSIZE,
+
+            "ofh-netconf-provider": 0*self.FONTSIZE,
+            "uu-unknown-provider": 0*self.FONTSIZE,
+
+            "uu-unknown-consumer": 0*self.FONTSIZE
+        }
+        if name in mapping:
+            return mapping[name]
+
+        print("CEP name", name, "for x postion calculation not found")
+        return 0
+
+    def __y_offset_by_cep_name(self, name: str) -> int:
+        mapping: Dict[str, int] = {
+            "a1-rest-consumer": -1.5*self.FONTSIZE,
+            "o1-netconf-consumer": -1.5*self.FONTSIZE,
+            "o1-ves-provider": -1.5*self.FONTSIZE,
+            "o1-file-consumer": -1.5*self.FONTSIZE,
+
+            "a1-rest-provider": +1.5*self.FONTSIZE,
+            "e2-rest-consumer": -1.5*self.FONTSIZE,
+
+            "e1-unknown-provider": 0*self.FONTSIZE,
+            "e1-unknown-consumer": 0*self.FONTSIZE,
+
+            "f1-c-unknown-consumer": -1.5*self.FONTSIZE,
+            "f1-u-unknown-consumer": -1.5*self.FONTSIZE,
+
+            "e2-rest-provider": +1.5*self.FONTSIZE,
+            "f1-c-unknown-provider": +1.5*self.FONTSIZE,
+            "f1-u-unknown-provider": +1.5*self.FONTSIZE,
+            "o1-netconf-provider": +1.5*self.FONTSIZE,
+            "o1-ves-consumer": +1.5*self.FONTSIZE,
+            "o1-file-provider": +1.5*self.FONTSIZE,
+            "ofh-netconf-consumer": -1.5*self.FONTSIZE,
+
+            "ofh-netconf-provider": +1.5*self.FONTSIZE,
+            "uu-unknown-provider": -1.5*self.FONTSIZE,
+
+            "uu-unknown-consumer": +1.5*self.FONTSIZE
+        }
+        if name in mapping:
+            return mapping[name]
+
+        print("CEP name", name, "for y postion calculation not found")
+        return 0
+
+
     def configuration(self) -> dict:
         """
         Getter for a json object representing the TAPI Node Edge Point intiail
@@ -102,7 +173,8 @@ class TapiNodeEdgePoint(Top):
         result['tapi-connectivity:cep-list'] = {}
         result['tapi-connectivity:cep-list']['connection-end-point'] = []
         for cep in self.connection_edge_points():
-            result['tapi-connectivity:cep-list']['connection-end-point'].append(cep.json())
+            result['tapi-connectivity:cep-list']['connection-end-point'].append(
+                cep.json())
         return result
 
     def name(self) -> str:
@@ -174,7 +246,9 @@ class TapiNodeEdgePoint(Top):
         group.append(label)
 
         for cep in self.connection_edge_points():
-            group.append(cep.svg(x, y))
+            cep_x = x + self.__x_offset_by_cep_name(cep.name())
+            cep_y = y + self.__y_offset_by_cep_name(cep.name())
+            group.append(cep.svg(cep_x, cep_y))
 
         return group
 

@@ -122,7 +122,6 @@ class LinkConfig(Top):
                 consumer_name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
             consumer_name_prefix = "o1-netconf"
         cep_name = consumer_name_prefix.lower() + "-consumer"
-        print("###", cep_name)
         return self.__consumer.node_edge_point_by_cep_name(cep_name)
 
     def provider_node_edge_point(self) -> TapiNodeEdgePoint:
