@@ -104,9 +104,10 @@ class TapiNode(Top):
             "o1-netconf-provider": 1.6*self.FONTSIZE,
             "o1-ves-consumer": 1.6*self.FONTSIZE,
             "o1-file-provider": 1.6*self.FONTSIZE,
-            "ofh-netconf-consumer": 0*self.FONTSIZE,
+            "ofh-netconf-consumer": -1.2*self.FONTSIZE,
 
-            "eth-ofh-provider": 0*self.FONTSIZE,
+            "eth-ofh-provider": -1.2*self.FONTSIZE,
+            "oam-netconf-provider": 1.2*self.FONTSIZE,
             "eth-ofh-consumer": 0*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
@@ -149,6 +150,7 @@ class TapiNode(Top):
             "ofh-netconf-consumer": 3*self.FONTSIZE,
 
             "eth-ofh-provider": -3*self.FONTSIZE,
+            "oam-netconf-provider": -3*self.FONTSIZE,
             "eth-ofh-consumer": +3*self.FONTSIZE,
 
             "ofh-netconf-provider": -3*self.FONTSIZE,

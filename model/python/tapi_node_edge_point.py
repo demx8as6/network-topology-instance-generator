@@ -98,7 +98,8 @@ class TapiNodeEdgePoint(Top):
             "o1-file-provider": +2*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
-            "eth-ofh-provider": 0*self.FONTSIZE,
+            "eth-ofh-provider": -1*self.FONTSIZE,
+            "oam-netconf-provider": 1*self.FONTSIZE,
             "eth-ofh-consumer": 0*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
@@ -109,7 +110,7 @@ class TapiNodeEdgePoint(Top):
         if name in mapping:
             return mapping[name]
 
-        print("NEP: CEP name", name, "for x postion calculation not found")
+        print(" NEP: CEP name", name, "for x postion calculation not found")
         return 0
 
     def __y_offset_by_cep_name(self, name: str) -> int:
@@ -140,6 +141,7 @@ class TapiNodeEdgePoint(Top):
             "ofh-netconf-consumer": -1.5*self.FONTSIZE,
 
             "eth-ofh-provider": +1.5*self.FONTSIZE,
+            "oam-netconf-provider": +1.5*self.FONTSIZE,
             "eth-ofh-consumer": -1.5*self.FONTSIZE,
 
             "ofh-netconf-provider": +1.5*self.FONTSIZE,
@@ -150,7 +152,7 @@ class TapiNodeEdgePoint(Top):
         if name in mapping:
             return mapping[name]
 
-        print("NEP: CEP name", name, "for y postion calculation not found")
+        print(" NEP: CEP name", name, "for y postion calculation not found")
         return 0
 
     def configuration(self) -> dict:

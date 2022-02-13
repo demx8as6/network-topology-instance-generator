@@ -29,7 +29,7 @@ class TapiNodeFronthaulGateway(TapiNode):
     def __init__(self, parent, config):
         super().__init__(parent, config)
 
-        super().width( (1 + 1) * (2*self.FONTSIZE) ) # 1x nep
+        super().width( (2 + 1) * (2*self.FONTSIZE) ) # 1x nep
 
         # add Ethernet Northbound provider
         nep_configuration = {
@@ -45,6 +45,15 @@ class TapiNodeFronthaulGateway(TapiNode):
             "parent": self.identifier(),
             "nodeEdgePoint": {
                 "interface": "eth", "cep":[{"protocol": "ofh", "role": "consumer"}]
+            }
+        }
+        self.add(TapiNodeEdgePoint(nep_configuration))
+
+        # add OAM provider
+        nep_configuration = {
+            "parent": self.identifier(),
+            "nodeEdgePoint": {
+                "interface": "oam", "cep":[{"protocol": "netconf", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
