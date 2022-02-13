@@ -73,6 +73,7 @@ class TapiNodeEdgePoint(Top):
     # getter
     def __x_offset_by_cep_name(self, name) -> int:
         mapping: Dict[str, int] = {
+            "o2-rest-consumer": 0*self.FONTSIZE,
             "a1-rest-consumer": 0*self.FONTSIZE,
             "o1-netconf-consumer": 0*self.FONTSIZE,
             "o1-ves-provider": 0*self.FONTSIZE,
@@ -109,6 +110,7 @@ class TapiNodeEdgePoint(Top):
 
     def __y_offset_by_cep_name(self, name: str) -> int:
         mapping: Dict[str, int] = {
+            "o2-rest-consumer": -1.5*self.FONTSIZE,
             "a1-rest-consumer": -1.5*self.FONTSIZE,
             "o1-netconf-consumer": -1.5*self.FONTSIZE,
             "o1-ves-provider": -1.5*self.FONTSIZE,

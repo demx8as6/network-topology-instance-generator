@@ -31,7 +31,16 @@ class TapiNodeSmo(TapiNode):
     # constructor
     def __init__(self, parent: TapiNode, config):
         super().__init__(parent, config)
-        super().width((8 + 1) * (2.2*self.FONTSIZE))
+
+        # add O2 consumer interface
+        nep_configuration = {
+            "parent": self.identifier(),
+            "nodeEdgePoint": {
+                "interface": "o2", "cep": [{"protocol": "REST", "role": "consumer"}]
+            }
+        }
+        self.add(TapiNodeEdgePoint(nep_configuration))
+
         # add A1 consumer interface
         nep_configuration = {
             "parent": self.identifier(),
@@ -99,6 +108,10 @@ class TapiNodeSmo(TapiNode):
         :return TAPI Node as svg object.
         """
         super().svg(x, y)
+
+        components = ["o2-controller", "non-rt-ric", "oam-controller",
+                      "ves-collector", "file-server"]
+
         group = etree.Element("g")
         group.attrib["class"] = "node"
         title = etree.Element("title")
@@ -106,7 +119,7 @@ class TapiNodeSmo(TapiNode):
             self.identifier() + "\n name: " + self.name()
         group.append(title)
 
-        width = 21 * (2.2*self.FONTSIZE)
+        width = (len(components)*5 +1) * (2.2*self.FONTSIZE)
         height = 2 * (2.2*self.FONTSIZE)
 
         rect = etree.Element("rect")
@@ -128,14 +141,13 @@ class TapiNodeSmo(TapiNode):
         label.text = self.function_label()
         group.append(label)
 
-        components = ["non-rt-ric", "oam-controller",
-                      "ves-collector", "file-server"]
         for component in components:
             x_mapping = {
-                "non-rt-ric": -3*6*self.FONTSIZE,
-                "oam-controller": -1*6*self.FONTSIZE,
-                "ves-collector": +1*6*self.FONTSIZE,
-                "file-server": +3*6*self.FONTSIZE
+                "o2-controller": -4*6*self.FONTSIZE,
+                "non-rt-ric": -2*6*self.FONTSIZE,
+                "oam-controller": -0*6*self.FONTSIZE,
+                "ves-collector": +2*6*self.FONTSIZE,
+                "file-server": +4*6*self.FONTSIZE
             }
             comp_x = x + x_mapping[component]
             comp_y = y-0*self.FONTSIZE
