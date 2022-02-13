@@ -85,9 +85,9 @@ class TapiTopologyContext(Top):
         :return TAPI Topology Context as svg object.
         """
         group = etree.Element("g")
-        desc = etree.Element("desc")
-        desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
-        group.append(desc)
+        title = etree.Element("title")
+        title.text = "\n context: " + self.identifier() + "\n name: " + self.name()
+        group.append(title)
 
         for topology in self.__tapi_topology:
             group.append(topology.svg(x+4*self.FONTSIZE, y+3*self.FONTSIZE))

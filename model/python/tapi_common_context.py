@@ -120,6 +120,11 @@ class TapiCommonContext(Top):
         desc = etree.Element("desc")
         desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
         root.append(desc)
+
+        title = etree.Element("title")
+        title.text = self.configuration()["network"]["name"]
+        root.append(title)
+
         root.append(self.__context.svg(x, y))
         return root
 

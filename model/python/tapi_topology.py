@@ -130,10 +130,10 @@ class TapiTopology(Top):
         :return TAPI Topology Context as svg object.
         """
         group = etree.Element("g")
-        desc = etree.Element("desc")
-        desc.text = "\n TAPI Topology \n id: " + \
+        title = etree.Element("title")
+        title.text = "\n TAPI Topology \n id: " + \
             self.identifier()  # + "\n name: " + self.name()
-        group.append(desc)
+        group.append(title)
 
         # nodes handling
         index_per_type: Dict = {}
