@@ -95,9 +95,10 @@ class TapiNode(Top):
             "e1-unknown-provider": -5*self.FONTSIZE,
             "e1-unknown-consumer": 5*self.FONTSIZE,
 
-            "e2-rest-provider": -3.2*self.FONTSIZE,
+            "e2-rest-provider": -5*self.FONTSIZE,
             "f1-c-unknown-provider": -3*self.FONTSIZE,
             "f1-u-unknown-provider": -1*self.FONTSIZE,
+            "f1-unknown-provider": -2.8*self.FONTSIZE,
             "o1-netconf-provider": 1.6*self.FONTSIZE,
             "o1-ves-consumer": 1.6*self.FONTSIZE,
             "o1-file-provider": 1.6*self.FONTSIZE,
@@ -111,7 +112,7 @@ class TapiNode(Top):
         if name in mapping:
             return mapping[name]
 
-        print("CEP name", name, "for x postion calculation not found")
+        print("Node: CEP name", name, "for x postion calculation not found")
         return 0
 
     def y_offset_by_cep_name(self, name: str) -> int:
@@ -129,10 +130,12 @@ class TapiNode(Top):
 
             "f1-c-unknown-consumer": 3*self.FONTSIZE,
             "f1-u-unknown-consumer": 3*self.FONTSIZE,
+            "f1-unknown-consumer": 3*self.FONTSIZE,
 
             "e2-rest-provider": -3*self.FONTSIZE,
             "f1-c-unknown-provider": -3*self.FONTSIZE,
             "f1-u-unknown-provider": -3*self.FONTSIZE,
+            "f1-unknown-provider": -3*self.FONTSIZE,
             "o1-netconf-provider": -3*self.FONTSIZE,
             "o1-ves-consumer": -3*self.FONTSIZE,
             "o1-file-provider": -3*self.FONTSIZE,
@@ -146,7 +149,7 @@ class TapiNode(Top):
         if name in mapping:
             return mapping[name]
 
-        print("CEP name", name, "for y postion calculation not found")
+        print("Node: CEP name", name, "for y postion calculation not found")
         return 0
 
     def configuration(self) -> dict:

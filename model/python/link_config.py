@@ -54,7 +54,7 @@ class LinkConfig(Top):
                 "node-uuid": consumer.data()["uuid"],
                 "node-edge-point-uuid":
                     self.consumer_node_edge_point().identifier()
-                    
+
             },
             "z": {
                 "topology-uuid": topology_reference,
@@ -125,5 +125,11 @@ class LinkConfig(Top):
         return self.__consumer.node_edge_point_by_cep_name(cep_name)
 
     def provider_node_edge_point(self) -> TapiNodeEdgePoint:
-        cep_name= self.__name_prefix.lower() + "-provider"
+        cep_name = self.__name_prefix.lower() + "-provider"
+
+        # exception for f1-c and f1-u
+        split = self.__name_prefix.lower().split("-")
+        if len(split) == 3:
+            cep_name = "-".join([split[0], split[2], "provider"])
+
         return self.__provider.node_edge_point_by_cep_name(cep_name)

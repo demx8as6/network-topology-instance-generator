@@ -55,16 +55,7 @@ class TapiNodeODu(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "f1-c", "cep":[{"protocol": "unknown", "role": "provider"}]
-            }
-        }
-        self.add(TapiNodeEdgePoint(nep_configuration))
-
-        # add F1 UP Provider interface
-        nep_configuration = {
-            "parent": self.identifier(),
-            "nodeEdgePoint": {
-                "interface": "f1-u", "cep":[{"protocol": "unknown", "role": "provider"}]
+                "interface": "f1", "cep":[{"protocol": "unknown", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
