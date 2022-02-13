@@ -79,6 +79,7 @@ class TapiNodeEdgePoint(Top):
             "o1-ves-provider": 0*self.FONTSIZE,
             "o1-file-consumer": 0*self.FONTSIZE,
 
+            "o2-rest-provider": 0*self.FONTSIZE,
             "a1-rest-provider": 0*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
 
@@ -116,6 +117,7 @@ class TapiNodeEdgePoint(Top):
             "o1-ves-provider": -1.5*self.FONTSIZE,
             "o1-file-consumer": -1.5*self.FONTSIZE,
 
+            "o2-rest-provider": +1.5*self.FONTSIZE,
             "a1-rest-provider": +1.5*self.FONTSIZE,
             "e2-rest-consumer": -1.5*self.FONTSIZE,
 

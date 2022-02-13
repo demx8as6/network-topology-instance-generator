@@ -87,6 +87,7 @@ class TapiNode(Top):
             "o1-ves-provider": 2*6*self.FONTSIZE,
             "o1-file-consumer": 4*6*self.FONTSIZE,
 
+            "o2-rest-provider": 0*self.FONTSIZE,
             "a1-rest-provider": -3.2*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
 
@@ -124,6 +125,7 @@ class TapiNode(Top):
             "o1-ves-provider": 3*self.FONTSIZE,
             "o1-file-consumer": 3*self.FONTSIZE,
 
+            "o2-rest-provider": -3*self.FONTSIZE,
             "a1-rest-provider": -3*self.FONTSIZE,
             "e2-rest-consumer": 3*self.FONTSIZE,
 
@@ -182,6 +184,7 @@ class TapiNode(Top):
         """
         mapping = {
             "o-ran-sc-topology-common:smo": "SMO",
+            "o-ran-sc-topology-common:o-cloud": "O-Cloud",
             "o-ran-sc-topology-common:near-rt-ric": "Near-RT-RIC",
             "o-ran-sc-topology-common:o-cu": "O-CU",
             "o-ran-sc-topology-common:o-cu-cp": "O-CU-CP",

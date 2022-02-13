@@ -102,7 +102,7 @@ class TapiCommonContext(Top):
         return result 
 
     def __svg_height(self) -> int:
-        return 80 + 5 * 11*self.FONTSIZE
+        return 80 + 6 * 11*self.FONTSIZE
 
     def svg(self, x, y) -> etree.Element:
         """

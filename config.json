@@ -3,6 +3,7 @@
     "name": "TestNetwork",
     "pattern": {
       "smo": 1,
+      "o-cloud": 2,
       "near-rt-ric": 2,
       "o-cu": 2,
       "o-du": 2,

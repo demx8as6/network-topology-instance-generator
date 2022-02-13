@@ -20,9 +20,10 @@ import uuid
 from typing import Dict, List, Union
 from lxml import etree
 
-from model.python.tapi_node import TapiNode
 from model.python.top import Top
+from model.python.tapi_node import TapiNode
 from model.python.tapi_node_smo import TapiNodeSmo
+from model.python.tapi_node_o_cloud import TapiNodeOCloud
 from model.python.tapi_node_near_rt_ric import TapiNodeNearRtRic
 from model.python.tapi_node_o_cu_cp import TapiNodeOCuCp
 from model.python.tapi_node_o_cu_up import TapiNodeOCuUp
@@ -167,6 +168,7 @@ class TapiTopology(Top):
         pattern = self.configuration()['network']['pattern']
         x_mapping: Dict[type, int] = {
             TapiNodeSmo: 3 * self.FONTSIZE ,
+            TapiNodeOCloud: 3 * self.FONTSIZE ,
             TapiNodeNearRtRic: 3 * self.FONTSIZE,
             TapiNodeOCuCp: 3 * self.FONTSIZE,
             TapiNodeOCuUp: 3 * self.FONTSIZE,
@@ -180,10 +182,14 @@ class TapiTopology(Top):
         if "o-cu" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['o-cu']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
+                pattern['o-cu']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-cu']
         if "o-du" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['o-du']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['o-du']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-du']
@@ -193,6 +199,8 @@ class TapiTopology(Top):
                 pattern['o-du']
         if "o-ru" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['o-ru']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['o-ru']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-ru']
@@ -205,6 +213,8 @@ class TapiTopology(Top):
         if "user-equipment" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['user-equipment']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
+                pattern['user-equipment']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['user-equipment']
             x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
@@ -216,11 +226,12 @@ class TapiTopology(Top):
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
 
-        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] -3 * 2*self.FONTSIZE
-        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -3 * 2*self.FONTSIZE
-        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -4 * 2* self.FONTSIZE
-        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +4 * 2* self.FONTSIZE
-        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] +2 * 2*self.FONTSIZE
+        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] -1.5 * 2*self.FONTSIZE
+        x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] - 1 * 2*self.FONTSIZE
+        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -1 * 2*self.FONTSIZE
+        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -6 * 2* self.FONTSIZE
+        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +2 * 2* self.FONTSIZE
+        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] +1.5 * 2*self.FONTSIZE
 
         if node_type in x_mapping:
             return x_mapping[node_type]
@@ -234,6 +245,7 @@ class TapiTopology(Top):
         pattern = self.configuration()['network']['pattern']
         x_mapping: Dict[type, int] = {
             TapiNodeSmo: 3 * self.FONTSIZE,
+            TapiNodeOCloud: 3 * self.FONTSIZE,
             TapiNodeNearRtRic: 3 * self.FONTSIZE,
             TapiNodeOCuCp: 3 * self.FONTSIZE,
             TapiNodeOCuUp: 3 * self.FONTSIZE,
@@ -243,6 +255,9 @@ class TapiTopology(Top):
         }
         if "smo" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * pattern['smo']
+        if "o-cloud" in pattern:
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
+                pattern['o-cloud']
         if "near-rt-ric" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['near-rt-ric']
@@ -250,6 +265,8 @@ class TapiTopology(Top):
                 pattern['near-rt-ric']
         if "o-cu" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['o-cu']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['o-cu']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-cu']
@@ -259,6 +276,8 @@ class TapiTopology(Top):
                 pattern['o-cu']
         if "o-du" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['o-du']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['o-du']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-du']
@@ -270,6 +289,8 @@ class TapiTopology(Top):
                 pattern['o-du']
         if "o-ru" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['o-ru']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['o-ru']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['o-ru']
@@ -283,6 +304,8 @@ class TapiTopology(Top):
                 pattern['o-ru']
         if "user-equipment" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['user-equipment']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
                 pattern['user-equipment']
             x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
                 pattern['user-equipment']
@@ -309,12 +332,13 @@ class TapiTopology(Top):
         offset = 11*self.FONTSIZE
         y_mapping: Dict[type, int] = {
             TapiNodeSmo: 0 * offset,
-            TapiNodeNearRtRic: 1 * offset,
-            TapiNodeOCuCp: 2 * offset - 20,
-            TapiNodeOCuUp: 2 * offset + 20,
-            TapiNodeODu: 3 * offset,
-            TapiNodeORu: 4 * offset,
-            TapiNodeUserEquipment: 5 * offset
+            TapiNodeOCloud: 1 * offset,
+            TapiNodeNearRtRic: 2 * offset,
+            TapiNodeOCuCp: 3 * offset - 20,
+            TapiNodeOCuUp: 3 * offset + 20,
+            TapiNodeODu: 4 * offset,
+            TapiNodeORu: 5 * offset,
+            TapiNodeUserEquipment: 6 * offset
         }
         if node_type in y_mapping:
             return y_mapping[node_type]
@@ -357,12 +381,54 @@ class TapiTopology(Top):
                                "function": "o-ran-sc-topology-common:"+current_type}}
             node = TapiNodeSmo(parent, config)
             self.add_node(node)
+
+            # add O-Clouds
+            if "o-cloud" in topology_structure:
+                structure = topology_structure.copy()
+                self.__create_o_clouds(
+                    node, structure, structure["o-cloud"])
+
             if next_type in topology_structure:
                 structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure["o-cloud"]
                 if current_type in structure:
                     del structure[current_type]
                 self.__create_near_rt_rics(
                     node, structure, structure[next_type])
+
+        return self
+
+    def __create_o_clouds(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "o-cloud"
+        for local_id in range(count):
+            # add node
+            prefix = ""
+            if parent is not None:
+                prefix = parent.json()["name"][1]["value"]
+            function = "o-ran-sc-topology-common:"+current_type
+            node_configuration = {"node": {"localId": prefix + str(local_id),
+                                           "type": current_type,
+                                           "function": function}}
+            node = TapiNodeOCloud(parent, node_configuration)
+            self.add_node(node)
+
+            # add links
+            # O2
+            link_configuration = {
+                "topology_reference": self.data()["uuid"],
+                "name_prefix": "o2-rest",
+                "provider": node,
+                "consumer": parent
+            }
+            self.add_link(TapiLink(link_configuration))
         return self
 
     def __create_near_rt_rics(self, parent: TapiNode, topology_structure: dict, count: int):
