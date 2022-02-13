@@ -110,6 +110,7 @@ class TapiConnectionEdgePoint(Top):
             "netconf": "NC",
             "ves": "VES",
             "file": "FTP",
+            "ofh":"OFH",
             "rest":"REST",
             "restconf":"RC",
             "unknown":"-"

@@ -98,6 +98,9 @@ class TapiNodeEdgePoint(Top):
             "o1-file-provider": +2*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
+            "eth-ofh-provider": 0*self.FONTSIZE,
+            "eth-ofh-consumer": 0*self.FONTSIZE,
+
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
 
@@ -135,6 +138,9 @@ class TapiNodeEdgePoint(Top):
             "o1-ves-consumer": +1.5*self.FONTSIZE,
             "o1-file-provider": +1.5*self.FONTSIZE,
             "ofh-netconf-consumer": -1.5*self.FONTSIZE,
+
+            "eth-ofh-provider": +1.5*self.FONTSIZE,
+            "eth-ofh-consumer": -1.5*self.FONTSIZE,
 
             "ofh-netconf-provider": +1.5*self.FONTSIZE,
             "uu-unknown-provider": -1.5*self.FONTSIZE,

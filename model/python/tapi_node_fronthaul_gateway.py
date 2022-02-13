@@ -35,7 +35,7 @@ class TapiNodeFronthaulGateway(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "ofh", "cep":[{"protocol": "netconf", "role": "provider"}]
+                "interface": "eth", "cep":[{"protocol": "ofh", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -44,7 +44,7 @@ class TapiNodeFronthaulGateway(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "ofh", "cep":[{"protocol": "netconf", "role": "consumer"}]
+                "interface": "eth", "cep":[{"protocol": "ofh", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))

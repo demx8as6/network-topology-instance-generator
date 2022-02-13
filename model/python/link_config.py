@@ -117,18 +117,31 @@ class LinkConfig(Top):
 
     def consumer_node_edge_point(self) -> TapiNodeEdgePoint:
         # exception for O-RAN Fronthaul Management plane to SMO
-        consumer_name_prefix = self.__name_prefix
+        name_prefix = self.__name_prefix
         if self.__consumer.function() == "o-ran-sc-topology-common:smo" and \
-                consumer_name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
-            consumer_name_prefix = "o1-netconf"
-        cep_name = consumer_name_prefix.lower() + "-consumer"
+           self.__provider.function() == "o-ran-sc-topology-common:o-ru" and \
+                name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
+            name_prefix = "o1-netconf"
+        
+        # exception for O-RU to FHGW
+        if self.__provider.function() == "o-ran-sc-topology-common:fronthaul-gateway" and \
+                name_prefix == "eth-ofh":  # "open-fronthaul-m-plane-netconf":
+            name_prefix = "ofh-netconf"
+
+        # exception for O-RU to FHGW
+        if self.__consumer.function() == "o-ran-sc-topology-common:fronthaul-gateway" and \
+                name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
+            name_prefix = "eth-ofh"
+
+        cep_name = name_prefix.lower() + "-consumer"
         return self.__consumer.node_edge_point_by_cep_name(cep_name)
 
     def provider_node_edge_point(self) -> TapiNodeEdgePoint:
-        cep_name = self.__name_prefix.lower() + "-provider"
-
+        name_prefix = self.__name_prefix
+        
+        cep_name = name_prefix.lower() + "-provider"
         # exception for f1-c and f1-u
-        split = self.__name_prefix.lower().split("-")
+        split = name_prefix.lower().split("-")
         if len(split) == 3:
             cep_name = "-".join([split[0], split[2], "provider"])
 

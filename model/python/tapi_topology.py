@@ -732,18 +732,18 @@ class TapiTopology(Top):
             # add links
 
             # Eth NBI
-            link_configuration = {
-                "topology_reference": self.data()["uuid"],
-                "name_prefix": "ofh-netconf",
-                "provider": node,
-                "consumer": parent.parent().parent().parent()
-            }
-            self.add_link(TapiLink(link_configuration))
+            # link_configuration = {
+            #     "topology_reference": self.data()["uuid"],
+            #     "name_prefix": "ofh-netconf",
+            #     "provider": node,
+            #     "consumer": parent.parent().parent().parent()
+            # }
+            # self.add_link(TapiLink(link_configuration))
 
             # Eth SBI
             link_configuration = {
                 "topology_reference": self.data()["uuid"],
-                "name_prefix": "ofh-netconf",
+                "name_prefix": "eth-ofh",
                 "provider": node,
                 "consumer": parent
             }

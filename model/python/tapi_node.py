@@ -106,6 +106,9 @@ class TapiNode(Top):
             "o1-file-provider": 1.6*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
+            "eth-ofh-provider": 0*self.FONTSIZE,
+            "eth-ofh-consumer": 0*self.FONTSIZE,
+
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
 
@@ -144,6 +147,9 @@ class TapiNode(Top):
             "o1-ves-consumer": -3*self.FONTSIZE,
             "o1-file-provider": -3*self.FONTSIZE,
             "ofh-netconf-consumer": 3*self.FONTSIZE,
+
+            "eth-ofh-provider": -3*self.FONTSIZE,
+            "eth-ofh-consumer": +3*self.FONTSIZE,
 
             "ofh-netconf-provider": -3*self.FONTSIZE,
             "uu-unknown-provider": 3*self.FONTSIZE,
@@ -241,7 +247,7 @@ class TapiNode(Top):
                     result = nep
         if result is None:
             for nep in self.__data["owned-node-edge-point"]:
-                print("check", nep.json()["name"][0]["value"], nep.json()["tapi-connectivity:cep-list"]["connection-end-point"][0]["name"][0]["value"])
+                print("# Check", cep_name, nep.json()["name"][0]["value"], nep.json()["tapi-connectivity:cep-list"]["connection-end-point"][0]["name"][0]["value"])
         return result
 
     def parent(self) -> 'TapiNode':
