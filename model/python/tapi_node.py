@@ -190,6 +190,7 @@ class TapiNode(Top):
             "o-ran-sc-topology-common:o-cu-cp": "O-CU-CP",
             "o-ran-sc-topology-common:o-cu-up": "O-CU-UP",
             "o-ran-sc-topology-common:o-du": "O-DU",
+            "o-ran-sc-topology-common:fronthaul-gateway": "FHGW",
             "o-ran-sc-topology-common:o-ru": "O-RU",
             "o-ran-sc-topology-common:user-equipment": "UE"
         }
@@ -240,7 +241,7 @@ class TapiNode(Top):
                     result = nep
         if result is None:
             for nep in self.__data["owned-node-edge-point"]:
-                print(nep.json())
+                print("check", nep.json()["name"][0]["value"], nep.json()["tapi-connectivity:cep-list"]["connection-end-point"][0]["name"][0]["value"])
         return result
 
     def parent(self) -> 'TapiNode':

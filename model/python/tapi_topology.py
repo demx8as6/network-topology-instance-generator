@@ -28,6 +28,7 @@ from model.python.tapi_node_near_rt_ric import TapiNodeNearRtRic
 from model.python.tapi_node_o_cu_cp import TapiNodeOCuCp
 from model.python.tapi_node_o_cu_up import TapiNodeOCuUp
 from model.python.tapi_node_o_du import TapiNodeODu
+from model.python.tapi_node_fronthaul_gateway import TapiNodeFronthaulGateway
 from model.python.tapi_node_o_ru import TapiNodeORu
 from model.python.tapi_node_user_equipment import TapiNodeUserEquipment
 from model.python.tapi_link import TapiLink
@@ -173,6 +174,7 @@ class TapiTopology(Top):
             TapiNodeOCuCp: 3 * self.FONTSIZE,
             TapiNodeOCuUp: 3 * self.FONTSIZE,
             TapiNodeODu: 2 * self.FONTSIZE,
+            TapiNodeFronthaulGateway: 2 * self.FONTSIZE,
             TapiNodeORu: 2 * self.FONTSIZE,
             TapiNodeUserEquipment: 0
         }
@@ -197,6 +199,19 @@ class TapiTopology(Top):
                 pattern['o-du']
             x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
                 pattern['o-du']
+        if "fronthaul-gateway" in pattern:
+            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
+                pattern['fronthaul-gateway']
         if "o-ru" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['o-ru']
@@ -209,6 +224,8 @@ class TapiTopology(Top):
             x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
                 pattern['o-ru']
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
+                pattern['o-ru']
+            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
                 pattern['o-ru']
         if "user-equipment" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
@@ -223,6 +240,8 @@ class TapiTopology(Top):
                 pattern['user-equipment']
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
                 pattern['user-equipment']
+            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
+                pattern['user-equipment']
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
 
@@ -231,6 +250,7 @@ class TapiTopology(Top):
         x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -1 * 2*self.FONTSIZE
         x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -6 * 2* self.FONTSIZE
         x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +2 * 2* self.FONTSIZE
+        x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] +1.5 * 2*self.FONTSIZE
         x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] +1.5 * 2*self.FONTSIZE
 
         if node_type in x_mapping:
@@ -250,6 +270,7 @@ class TapiTopology(Top):
             TapiNodeOCuCp: 3 * self.FONTSIZE,
             TapiNodeOCuUp: 3 * self.FONTSIZE,
             TapiNodeODu: 3 * self.FONTSIZE,
+            TapiNodeFronthaulGateway: 6 * self.FONTSIZE,
             TapiNodeORu: 3 * self.FONTSIZE,
             TapiNodeUserEquipment: 2 * self.FONTSIZE
         }
@@ -287,6 +308,21 @@ class TapiTopology(Top):
                 pattern['o-du']
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
                 pattern['o-du']
+        if "fronthaul-gateway" in pattern:
+            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
+                pattern['fronthaul-gateway']
+            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
+                pattern['fronthaul-gateway'] 
         if "o-ru" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['o-ru']
@@ -299,6 +335,8 @@ class TapiTopology(Top):
             x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
                 pattern['o-ru']
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
+                pattern['o-ru']
+            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
                 pattern['o-ru']
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['o-ru']
@@ -314,6 +352,8 @@ class TapiTopology(Top):
             x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
                 pattern['user-equipment']
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
+                pattern['user-equipment']
+            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
                 pattern['user-equipment']
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
@@ -337,8 +377,9 @@ class TapiTopology(Top):
             TapiNodeOCuCp: 3 * offset - 20,
             TapiNodeOCuUp: 3 * offset + 20,
             TapiNodeODu: 4 * offset,
-            TapiNodeORu: 5 * offset,
-            TapiNodeUserEquipment: 6 * offset
+            TapiNodeFronthaulGateway: 5 * offset,
+            TapiNodeORu: 6 * offset,
+            TapiNodeUserEquipment: 7 * offset
         }
         if node_type in y_mapping:
             return y_mapping[node_type]
@@ -600,7 +641,7 @@ class TapiTopology(Top):
         :return TAPI Topology object.
         """
         current_type = "o-du"
-        next_type = "o-ru"
+        next_type = "fronthaul-gateway"
         for local_id in range(count):
             prefix = "000"
             if parents["cp"] is not None:
@@ -665,6 +706,54 @@ class TapiTopology(Top):
                 structure = topology_structure.copy()
                 if current_type in structure:
                     del structure[current_type]
+                self.__create_fronthaul_gateways(node, structure, structure[next_type])
+        return self
+
+    def __create_fronthaul_gateways(self, parent: TapiNode, topology_structure: dict, count: int):
+        """
+        Method adding a TAPI node to TAPI Topology.
+        :param parent: A TAPI node which acts a a parent node in the topology.
+        :param topology_structure: Information about the next topology levels.
+        :param count: Number of instance to be created
+        :return TAPI Topology object.
+        """
+        current_type = "fronthaul-gateway"
+        next_type = "o-ru"
+        for local_id in range(count):
+            prefix = ""
+            if parent is not None:
+                prefix = parent.data()["name"][1]["value"]
+            config = {"node": {"localId": prefix + str(local_id),
+                               "type": current_type,
+                               "function": "o-ran-sc-topology-common:"+current_type}}
+            node = TapiNodeFronthaulGateway(parent, config)
+            self.add_node(node)
+
+            # add links
+
+            # Eth NBI
+            link_configuration = {
+                "topology_reference": self.data()["uuid"],
+                "name_prefix": "ofh-netconf",
+                "provider": node,
+                "consumer": parent.parent().parent().parent()
+            }
+            self.add_link(TapiLink(link_configuration))
+
+            # Eth SBI
+            link_configuration = {
+                "topology_reference": self.data()["uuid"],
+                "name_prefix": "ofh-netconf",
+                "provider": node,
+                "consumer": parent
+            }
+            self.add_link(TapiLink(link_configuration))
+
+            # continue
+            if next_type in topology_structure:
+                structure = topology_structure.copy()
+                if current_type in structure:
+                    del structure[current_type]
                 self.__create_o_rus(node, structure, structure[next_type])
         return self
 
@@ -695,11 +784,11 @@ class TapiTopology(Top):
                 "topology_reference": self.data()["uuid"],
                 "name_prefix": "ofh-netconf",
                 "provider": node,
-                "consumer": parent.parent().parent().parent()
+                "consumer": parent.parent().parent().parent().parent()
             }
             self.add_link(TapiLink(link_configuration))
 
-            # OFH M-Plane to O-DU
+            # OFH M-Plane to O-DU via fronthaul-gateway
             link_configuration = {
                 "topology_reference": self.data()["uuid"],
                 "name_prefix": "ofh-netconf",

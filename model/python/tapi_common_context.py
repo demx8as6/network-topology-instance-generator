@@ -97,12 +97,14 @@ class TapiCommonContext(Top):
             result = result * pattern['o-du']
         if "o-ru" in pattern:
             result = result * pattern['o-ru']
+        if "fronthaul-gateway" in pattern:
+            result = result * pattern['fronthaul-gateway']
         if "user-equipment" in pattern:
             result = result * pattern['user-equipment']
         return result 
 
     def __svg_height(self) -> int:
-        return 80 + 6 * 11*self.FONTSIZE
+        return 80 + 7 * 11*self.FONTSIZE
 
     def svg(self, x, y) -> etree.Element:
         """
