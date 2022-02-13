@@ -83,7 +83,7 @@ class TapiNode(Top):
         mapping: Dict[str, int] = {
             "o2-rest-consumer": -4*6*self.FONTSIZE,
             "a1-rest-consumer": -2*6*self.FONTSIZE,
-            "o1-netconf-consumer": -0*6*self.FONTSIZE,
+            "oam-netconf-consumer": -0*6*self.FONTSIZE,
             "o1-ves-provider": 2*6*self.FONTSIZE,
             "o1-file-consumer": 4*6*self.FONTSIZE,
 
@@ -125,7 +125,7 @@ class TapiNode(Top):
         mapping: Dict[str, int] = {
             "o2-rest-consumer": 3*self.FONTSIZE,
             "a1-rest-consumer": 3*self.FONTSIZE,
-            "o1-netconf-consumer": 3*self.FONTSIZE,
+            "oam-netconf-consumer": 3*self.FONTSIZE,
             "o1-ves-provider": 3*self.FONTSIZE,
             "o1-file-consumer": 3*self.FONTSIZE,
 

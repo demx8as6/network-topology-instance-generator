@@ -116,13 +116,19 @@ class LinkConfig(Top):
         return self.data
 
     def consumer_node_edge_point(self) -> TapiNodeEdgePoint:
-        # exception for O-RAN Fronthaul Management plane to SMO
         name_prefix = self.__name_prefix
+
+        # exception for O-RAN Fronthaul Management plane to SMO
         if self.__consumer.function() == "o-ran-sc-topology-common:smo" and \
            self.__provider.function() == "o-ran-sc-topology-common:o-ru" and \
                 name_prefix == "ofh-netconf":  # "open-fronthaul-m-plane-netconf":
-            name_prefix = "o1-netconf"
-        
+            name_prefix = "oam-netconf"
+
+        # exception for O-RAN Gateway plane to SMO
+        if self.__consumer.function() == "o-ran-sc-topology-common:smo" and \
+                name_prefix == "o1-netconf":  # "open-fronthaul-m-plane-netconf":
+            name_prefix = "oam-netconf"
+
         # exception for O-RU to FHGW
         if self.__provider.function() == "o-ran-sc-topology-common:fronthaul-gateway" and \
                 name_prefix == "eth-ofh":  # "open-fronthaul-m-plane-netconf":
@@ -138,7 +144,7 @@ class LinkConfig(Top):
 
     def provider_node_edge_point(self) -> TapiNodeEdgePoint:
         name_prefix = self.__name_prefix
-        
+
         cep_name = name_prefix.lower() + "-provider"
         # exception for f1-c and f1-u
         split = name_prefix.lower().split("-")

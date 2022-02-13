@@ -54,7 +54,7 @@ class TapiNodeSmo(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "o1", "cep": [{"protocol": "NETCONF", "role": "consumer"}]
+                "interface": "oam", "cep": [{"protocol": "NETCONF", "role": "consumer"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))

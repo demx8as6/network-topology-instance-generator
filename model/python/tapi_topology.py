@@ -168,8 +168,8 @@ class TapiTopology(Top):
         """
         pattern = self.configuration()['network']['pattern']
         x_mapping: Dict[type, int] = {
-            TapiNodeSmo: 3 * self.FONTSIZE ,
-            TapiNodeOCloud: 3 * self.FONTSIZE ,
+            TapiNodeSmo: 3 * self.FONTSIZE,
+            TapiNodeOCloud: 3 * self.FONTSIZE,
             TapiNodeNearRtRic: 3 * self.FONTSIZE,
             TapiNodeOCuCp: 3 * self.FONTSIZE,
             TapiNodeOCuUp: 3 * self.FONTSIZE,
@@ -245,13 +245,18 @@ class TapiTopology(Top):
             x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
                 pattern['user-equipment']
 
-        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] -1.5 * 2*self.FONTSIZE
-        x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] - 1 * 2*self.FONTSIZE
-        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] -1 * 2*self.FONTSIZE
-        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] -6 * 2* self.FONTSIZE
-        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] +2 * 2* self.FONTSIZE
-        x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] +1.5 * 2*self.FONTSIZE
-        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] +1.5 * 2*self.FONTSIZE
+        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] - 1.5 * 2*self.FONTSIZE
+        x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] - \
+            1 * 2*self.FONTSIZE
+        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] - \
+            1 * 2*self.FONTSIZE
+        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] - \
+            6 * 2 * self.FONTSIZE
+        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] + \
+            2 * 2 * self.FONTSIZE
+        x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] + \
+            1.5 * 2*self.FONTSIZE
+        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] + 1.5 * 2*self.FONTSIZE
 
         if node_type in x_mapping:
             return x_mapping[node_type]
@@ -322,7 +327,7 @@ class TapiTopology(Top):
             x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
                 pattern['fronthaul-gateway']
             x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['fronthaul-gateway'] 
+                pattern['fronthaul-gateway']
         if "o-ru" in pattern:
             x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
                 pattern['o-ru']
@@ -706,7 +711,8 @@ class TapiTopology(Top):
                 structure = topology_structure.copy()
                 if current_type in structure:
                     del structure[current_type]
-                self.__create_fronthaul_gateways(node, structure, structure[next_type])
+                self.__create_fronthaul_gateways(
+                    node, structure, structure[next_type])
         return self
 
     def __create_fronthaul_gateways(self, parent: TapiNode, topology_structure: dict, count: int):
@@ -732,13 +738,13 @@ class TapiTopology(Top):
             # add links
 
             # Eth NBI
-            # link_configuration = {
-            #     "topology_reference": self.data()["uuid"],
-            #     "name_prefix": "ofh-netconf",
-            #     "provider": node,
-            #     "consumer": parent.parent().parent().parent()
-            # }
-            # self.add_link(TapiLink(link_configuration))
+            link_configuration = {
+                "topology_reference": self.data()["uuid"],
+                "name_prefix": "oam-netconf",
+                "provider": node,
+                "consumer": parent.parent().parent().parent()
+            }
+            self.add_link(TapiLink(link_configuration))
 
             # Eth SBI
             link_configuration = {
