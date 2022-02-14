@@ -26,25 +26,17 @@ class TapiNodeFronthaulGateway(TapiNode):
     """
 
     # constructor
-    def __init__(self, parent, config):
-        super().__init__(parent, config)
+    def __init__(self, parent, configuration):
+        super().__init__(parent, configuration)
 
-        super().width( (2 + 1) * (2*self.FONTSIZE) ) # 1x nep
+        count = max(2, configuration["node"]["southbound-nep-count"])
+        super().width((count + 1) * (2*self.FONTSIZE))
 
         # add Ethernet Northbound provider
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "eth", "cep":[{"protocol": "ofh", "role": "provider"}]
-            }
-        }
-        self.add(TapiNodeEdgePoint(nep_configuration))
-
-        # add Ethernet Southbound consumer
-        nep_configuration = {
-            "parent": self.identifier(),
-            "nodeEdgePoint": {
-                "interface": "eth", "cep":[{"protocol": "ofh", "role": "consumer"}]
+                "interface": "eth", "cep": [{"protocol": "ofh", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
@@ -53,7 +45,19 @@ class TapiNodeFronthaulGateway(TapiNode):
         nep_configuration = {
             "parent": self.identifier(),
             "nodeEdgePoint": {
-                "interface": "oam", "cep":[{"protocol": "netconf", "role": "provider"}]
+                "interface": "oam", "cep": [{"protocol": "netconf", "role": "provider"}]
             }
         }
         self.add(TapiNodeEdgePoint(nep_configuration))
+
+        # add Ethernet Southbound consumer
+        for nep_index in range(configuration["node"]["southbound-nep-count"]):
+            nep_configuration = {
+                "parent": self.identifier(),
+                "nodeEdgePoint": {
+                    "local-id": nep_index,
+                    "interface": "eth",
+                    "cep": [{"protocol": "ofh", "role": "consumer"}]
+                }
+            }
+            self.add(TapiNodeEdgePoint(nep_configuration))

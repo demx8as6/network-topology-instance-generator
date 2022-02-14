@@ -108,7 +108,7 @@ class TapiNode(Top):
 
             "eth-ofh-provider": -1.2*self.FONTSIZE,
             "oam-netconf-provider": 1.2*self.FONTSIZE,
-            "eth-ofh-consumer": 0*self.FONTSIZE,
+            "eth-ofh-consumer": -1.2*self.FONTSIZE, # TODO depend on number of O-RUs - here 2
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
@@ -292,7 +292,11 @@ class TapiNode(Top):
         group.append(label)
 
         for nep in self.data()['owned-node-edge-point']:
-            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[0].name())
+            localId = 0
+            if "local-id" in nep.configuration()["nodeEdgePoint"]:
+                localId = nep.configuration()["nodeEdgePoint"]["local-id"]
+    
+            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[0].name()) + 2.6*self.FONTSIZE * localId
             nep_y = y + self.y_offset_by_cep_name(nep.connection_edge_points()[0].name())
             group.append(nep.svg(nep_x, nep_y))
 

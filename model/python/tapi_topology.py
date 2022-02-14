@@ -729,10 +729,15 @@ class TapiTopology(Top):
             prefix = ""
             if parent is not None:
                 prefix = parent.data()["name"][1]["value"]
-            config = {"node": {"localId": prefix + str(local_id),
-                               "type": current_type,
-                               "function": "o-ran-sc-topology-common:"+current_type}}
-            node = TapiNodeFronthaulGateway(parent, config)
+            node_configuration = {
+                "node": {
+                    "localId": prefix + str(local_id),
+                    "type": current_type,
+                    "function": "o-ran-sc-topology-common:"+current_type,
+                    "southbound-nep-count": topology_structure[next_type]
+                }
+            }
+            node = TapiNodeFronthaulGateway(parent, node_configuration)
             self.add_node(node)
 
             # add links

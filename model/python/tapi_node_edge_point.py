@@ -195,7 +195,10 @@ class TapiNodeEdgePoint(Top):
         Getter a human readable identifier of the TAPI Node Edge Point.
         :return TAPI Node Edge Point name as String.
         """
-        return self.interface().lower()
+        result = self.interface().lower()
+        if "local-id" in self.configuration()["nodeEdgePoint"]:
+            result = "#".join([result, str(self.configuration()["nodeEdgePoint"]["local-id"])])
+        return result
 
     def interface(self) -> str:
         """
@@ -255,7 +258,7 @@ class TapiNodeEdgePoint(Top):
         label.attrib['x'] = str(x)
         # +4px for font-size 14px (think of chars like 'gjy')
         label.attrib['y'] = str(y + 4)
-        label.text = self.interface().upper()
+        label.text = self.name().upper()
         group.append(label)
 
         for cep in self.connection_edge_points():

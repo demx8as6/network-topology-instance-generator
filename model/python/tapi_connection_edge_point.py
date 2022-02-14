@@ -158,6 +158,7 @@ class TapiConnectionEdgePoint(Top):
         """
         self.__svg_x = x
         self.__svg_y = y
+        
         group = etree.Element("g")
         group.attrib["class"] = "cep"
         title = etree.Element("title")
