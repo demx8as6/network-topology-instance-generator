@@ -125,6 +125,9 @@ class TapiConnectionEdgePoint(Top):
         Getter a human readable identifier of the TAPI Connection Edge Point protocol.
         :return protocol label.
         """
+        protocol = self.__configuration['protocol'].lower()
+        if protocol == "otf":
+            protocol = "fronthaul-gateway"
         return ":".join(["o-ran-sc-topology-common", self.__configuration['protocol'].lower()])
 
     def role(self) -> str:
