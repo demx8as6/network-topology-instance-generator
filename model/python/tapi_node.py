@@ -108,7 +108,8 @@ class TapiNode(Top):
 
             "eth-ofh-provider": -1.2*self.FONTSIZE,
             "oam-netconf-provider": 1.2*self.FONTSIZE,
-            "eth-ofh-consumer": -1.2*self.FONTSIZE, # TODO depend on number of O-RUs - here 2
+            # TODO depend on number of O-RUs - here 2
+            "eth-ofh-consumer": -1.2*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
@@ -178,6 +179,9 @@ class TapiNode(Top):
         """
         return self.__data
 
+    def local_id(self) -> int:
+        return self.configuration()["node"]["localId"]
+
     def function(self) -> str:
         """
         Getter returning the network-function type
@@ -236,21 +240,26 @@ class TapiNode(Top):
             str(self.__configuration['node']['localId'])
         ])
 
-    def node_edge_point_by_cep_name(self, cep_name) -> TapiNodeEdgePoint:
+    def node_edge_point_by_cep_name(self, cep_name, local_id) -> TapiNodeEdgePoint:
         """
         Method returning a NEP based on a given interface name
         :param interface_name: Search string
         :return The NEP uuid or "not found"
         """
-        result = None
+        result = []
         for nep in self.__data["owned-node-edge-point"]:
             for cep in nep.connection_edge_points():
                 if cep.name() == cep_name:
-                    result = nep
-        if result is None:
+                    result.append(nep)
+        if len(result) == 0:
             for nep in self.__data["owned-node-edge-point"]:
-                print("# Check", cep_name, nep.json()["name"][0]["value"], nep.json()["tapi-connectivity:cep-list"]["connection-end-point"][0]["name"][0]["value"])
-        return result
+                print("# Check", cep_name, nep.json()["name"][0]["value"], nep.json()[
+                      "tapi-connectivity:cep-list"]["connection-end-point"][0]["name"][0]["value"])
+        if len(result) > 1:
+            for nep in result:
+                if nep.name().endswith(str(local_id[-1])):
+                    return nep
+        return result[0]
 
     def parent(self) -> 'TapiNode':
         """
@@ -280,14 +289,16 @@ class TapiNode(Top):
         rect.attrib["width"] = str(int(width))
         rect.attrib["height"] = str(int(height))
         rect.attrib["rx"] = str(self.FONTSIZE)
-        rect.attrib["class"] = " ".join(["node", self.function_label().lower()])
+        rect.attrib["class"] = " ".join(
+            ["node", self.function_label().lower()])
         group.append(rect)
 
         label = etree.Element('text')
         label.attrib['x'] = str(x)
         # +4px for font-size 14px (think of chars like 'gjy')
         label.attrib['y'] = str(y + 4)
-        label.attrib['class'] = " ".join(["node", self.function_label().lower()])
+        label.attrib['class'] = " ".join(
+            ["node", self.function_label().lower()])
         label.text = self.function_label()
         group.append(label)
 
@@ -295,9 +306,12 @@ class TapiNode(Top):
             localId = 0
             if "local-id" in nep.configuration()["nodeEdgePoint"]:
                 localId = nep.configuration()["nodeEdgePoint"]["local-id"]
-    
-            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[0].name()) + 2.6*self.FONTSIZE * localId
-            nep_y = y + self.y_offset_by_cep_name(nep.connection_edge_points()[0].name())
+
+            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[
+                                                  0].name()) + 2.6*self.FONTSIZE * localId
+            nep_y = y + \
+                self.y_offset_by_cep_name(
+                    nep.connection_edge_points()[0].name())
             group.append(nep.svg(nep_x, nep_y))
 
         return group

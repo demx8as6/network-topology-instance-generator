@@ -140,7 +140,7 @@ class LinkConfig(Top):
             name_prefix = "eth-ofh"
 
         cep_name = name_prefix.lower() + "-consumer"
-        return self.__consumer.node_edge_point_by_cep_name(cep_name)
+        return self.__consumer.node_edge_point_by_cep_name(cep_name,  self.__provider.local_id())
 
     def provider_node_edge_point(self) -> TapiNodeEdgePoint:
         name_prefix = self.__name_prefix
@@ -151,4 +151,4 @@ class LinkConfig(Top):
         if len(split) == 3:
             cep_name = "-".join([split[0], split[2], "provider"])
 
-        return self.__provider.node_edge_point_by_cep_name(cep_name)
+        return self.__provider.node_edge_point_by_cep_name(cep_name, self.__consumer.local_id())

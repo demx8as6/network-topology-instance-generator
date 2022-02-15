@@ -65,6 +65,7 @@ class TapiNodeEdgePoint(Top):
         for cep in configuration['nodeEdgePoint']['cep']:
             cep["parent"] = {
                 "node": self.parent(),
+                "node-local-id": self.local_id(),
                 "node-edge-point": self.__data["uuid"],
                 "interface": self.interface()
             }
@@ -189,6 +190,11 @@ class TapiNodeEdgePoint(Top):
             result['tapi-connectivity:cep-list']['connection-end-point'].append(
                 cep.json())
         return result
+
+    def local_id(self) -> int:
+        if "local-id" in self.configuration()["nodeEdgePoint"]:
+            return self.configuration()["nodeEdgePoint"]["local-id"]
+        return 0
 
     def name(self) -> str:
         """
