@@ -25,7 +25,7 @@ class Top:
     The abstract "Top" class adds common functions
     """
 
-    FONTSIZE: int = 14  # see svg.style.css file
+    FONTSIZE: int = 10  # see svg.style.css file
     __configuration: dict
     __data: dict
 
