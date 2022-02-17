@@ -19,6 +19,7 @@ Module containing a class representing a TAPI Node Edge Point
 import uuid
 from typing import Dict, List, Union
 from lxml import etree
+from model.python.svg.node_edge_point import NodeEdgePoint
 from model.python.tapi_connection_edge_point import TapiConnectionEdgePoint
 from model.python.top import Top
 
@@ -94,9 +95,9 @@ class TapiNodeEdgePoint(Top):
             "f1-c-unknown-provider": 0*self.FONTSIZE,
             "f1-u-unknown-provider": 0*self.FONTSIZE,
             "f1-unknown-provider": 0*self.FONTSIZE,
-            "o1-netconf-provider": -2*self.FONTSIZE,
+            "o1-netconf-provider": -4*self.FONTSIZE,
             "o1-ves-consumer": 0*self.FONTSIZE,
-            "o1-file-provider": +2*self.FONTSIZE,
+            "o1-file-provider": +4*self.FONTSIZE,
             "ofh-netconf-consumer": 0*self.FONTSIZE,
 
             "eth-ofh-provider": 0*self.FONTSIZE,
@@ -203,7 +204,8 @@ class TapiNodeEdgePoint(Top):
         """
         result = self.interface().lower()
         if "local-id" in self.configuration()["nodeEdgePoint"]:
-            result = "#".join([result, str(self.configuration()["nodeEdgePoint"]["local-id"])])
+            result = "#".join(
+                [result, str(self.configuration()["nodeEdgePoint"]["local-id"])])
         return result
 
     def interface(self) -> str:
@@ -241,12 +243,15 @@ class TapiNodeEdgePoint(Top):
         """
         self.__svg_x = x
         self.__svg_y = y
-        group = etree.Element("g")
-        group.attrib["class"] = "nep"
-        title = etree.Element("title")
-        title.text = "\n TAPI Node Edge Point \n id: " + \
-            self.identifier() + "\n name: " + self.name()
-        group.append(title)
+
+        svg_nep = NodeEdgePoint(self, x, y)
+        group: etree.Element = svg_nep.svg_element()
+
+        for cep in self.connection_edge_points():
+            cep_x = x + self.__x_offset_by_cep_name(cep.name())
+            cep_y = y + self.__y_offset_by_cep_name(cep.name())
+            group.append(cep.svg(cep_x, cep_y))
+        return group
 
         height = 2.2 * self.FONTSIZE
         width = 2.2 * self.FONTSIZE * len(self.connection_edge_points())
@@ -266,13 +271,6 @@ class TapiNodeEdgePoint(Top):
         label.attrib['y'] = str(y + 4)
         label.text = self.name().upper()
         group.append(label)
-
-        for cep in self.connection_edge_points():
-            cep_x = x + self.__x_offset_by_cep_name(cep.name())
-            cep_y = y + self.__y_offset_by_cep_name(cep.name())
-            group.append(cep.svg(cep_x, cep_y))
-
-        return group
 
     def termination_direction(self) -> str:
         """

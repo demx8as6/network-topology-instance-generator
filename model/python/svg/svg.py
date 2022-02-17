@@ -38,11 +38,13 @@ class Svg():
     Constructor
     """
 
-    def __init__(self, tapi_object, center_x, center_y) -> None:
+    def __init__(self, tapi_object, center_x: int, center_y: int) -> None:
         self.__center_x = center_x
         self.__center_y = center_y
         self.__tapi_object = tapi_object
-        self.__label = tapi_object.name()
+        self.__label = tapi_object.name().upper()
+        self.__width = 4 * self.FONTSIZE # default for 1 CEP == cep.width()
+        self.__height = 2 * self.FONTSIZE
 
     # getter
     def center_x(self) -> int:
@@ -65,6 +67,13 @@ class Svg():
         :return Width in pixel
         """
         return self.__width
+
+    # def set_width(self, width: int) -> None:
+    #     """
+    #     Setter for width of the SVG Element
+    #     :param Width in pixel
+    #     """
+    #     self.__width = width
 
     def height(self) -> int:
         """
@@ -120,10 +129,9 @@ class Svg():
         main = etree.Element("ellipse")
         main.attrib['cx'] = str(self.center_x())
         main.attrib['cy'] = str(self.center_y())
-        main.attrib['rx'] = str(2 * self.FONTSIZE)
-        main.attrib['ry'] = str(self.FONTSIZE)
-        main.attrib['class'] = " ".join(
-            [self.type_name(), self.tapi_object().role()])
+        main.attrib['rx'] = str(int(self.width()/2))
+        main.attrib['ry'] = str(int(self.height()/2))
+        main.attrib['class'] = " ".join([self.type_name()])
         return main
 
     def svg_label(self) -> etree.Element:

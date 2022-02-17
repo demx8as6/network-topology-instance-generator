@@ -16,15 +16,22 @@
 """
 Module containing a class representing an SVG Element as Connection Node Edge Point
 """
-from typing import Dict
 from lxml import etree
+from model.python.svg.connection_edge_point import ConnectionEdgePoint
 from model.python.svg.svg import Svg
 
 
-class ConnectionEdgePoint(Svg):
+class NodeEdgePoint(Svg):
     """
     Class representing an SVG Element object as Connection Node Edge Point
     """
+    def width(self) -> int:
+        """
+        Getter for width of the SVG Element
+        :return Width in pixel
+        """
+        self.__width = ConnectionEdgePoint.width(self) * len(self.tapi_object().connection_edge_points())
+        return self.__width
 
     # overwrite
     def svg_main(self) -> etree.Element:
@@ -32,34 +39,13 @@ class ConnectionEdgePoint(Svg):
         Mothod generating the main SVG Element shaping the TAPI object
         :return SVG Element as main representations for the TAPI object
         """
-        main = etree.Element("ellipse")
-        main.attrib['cx'] = str(self.center_x())
-        main.attrib['cy'] = str(self.center_y())
-        main.attrib['rx'] = str(2 * self.FONTSIZE)
-        main.attrib['ry'] = str(self.FONTSIZE)
+        main = super().svg_main()
+        main = etree.Element("rect")
+        main.attrib["x"] = str(int(self.center_x() - self.width()/2))
+        main.attrib["y"] = str(int(self.center_y() - self.height()/2))
+        main.attrib["width"] = str(self.width())
+        main.attrib["height"] = str(self.height())
+        main.attrib["rx"] = str(int(self.FONTSIZE / 2))
         main.attrib['class'] = " ".join(
-            [self.type_name(), self.tapi_object().role()])
+            [self.type_name(), self.tapi_object().name().lower()])
         return main
-
-    def svg_label(self) -> etree.Element:
-        label = etree.Element('text')
-        label.attrib['x'] = str(self.center_x())
-        # +4px for font-size 14px (think of chars like 'gjy')
-        label.attrib['y'] = str(self.center_y() + 4)
-        label.text = self.__label_by_protocol(self.tapi_object().protocol())
-        return label
-
-    def __label_by_protocol(self, protocol) -> str:
-        mapping: Dict[str, str] = {
-            "netconf": "NC",
-            "ves": "VES",
-            "file": "FTP",
-            "ofh": "OFH",
-            "rest": "REST",
-            "restconf": "RC",
-            "unknown": "-"
-        }
-        search = protocol.split(":")[1]
-        if search in mapping:
-            return mapping[search]
-        return protocol
