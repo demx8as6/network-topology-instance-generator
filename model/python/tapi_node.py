@@ -19,6 +19,8 @@ Module containing the class for a TAPI Node.
 import uuid
 from typing import Dict
 from lxml import etree
+from model.python.svg.fronthaul_gateway import FronthaulGateway
+from model.python.svg.node import Node
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
 from model.python.top import Top
 
@@ -97,19 +99,18 @@ class TapiNode(Top):
             "e1-unknown-provider": -5*self.FONTSIZE,
             "e1-unknown-consumer": 5*self.FONTSIZE,
 
-            "e2-rest-provider": -4.2*self.FONTSIZE,
+            "e2-rest-provider": -8*self.FONTSIZE,
             "f1-c-unknown-provider": -3*self.FONTSIZE,
             "f1-u-unknown-provider": -1*self.FONTSIZE,
-            "f1-unknown-provider": -2.2*self.FONTSIZE,
-            "o1-netconf-provider": 2.2*self.FONTSIZE,
-            "o1-ves-consumer": 1.6*self.FONTSIZE,
-            "o1-file-provider": 1.6*self.FONTSIZE,
-            "ofh-netconf-consumer": -1.2*self.FONTSIZE,
+            "f1-unknown-provider": -4*self.FONTSIZE,
+            "o1-netconf-provider": 4*self.FONTSIZE,
+            "o1-ves-consumer": 8*self.FONTSIZE,
+            "o1-file-provider": 12*self.FONTSIZE,
+            "ofh-netconf-consumer": -2*self.FONTSIZE,
 
-            "eth-ofh-provider": -1.2*self.FONTSIZE,
-            "oam-netconf-provider": 1.2*self.FONTSIZE,
-            # TODO depend on number of O-RUs - here 2
-            "eth-ofh-consumer": -1.2*self.FONTSIZE,
+            "eth-ofh-provider": -2*self.FONTSIZE,
+            "oam-netconf-provider": 2*self.FONTSIZE,
+            "eth-ofh-consumer": -(len(self.data()['owned-node-edge-point']) - 2)/2 * 2 * self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
@@ -273,34 +274,16 @@ class TapiNode(Top):
         Getter for a xml Element object representing the TAPI Node.
         :return TAPI Node as svg object.
         """
-        group = etree.Element("g")
-        group.attrib["class"] = "node"
-        title = etree.Element("title")
-        title.text = "\n TAPI Node\n id: " + \
-            self.identifier() + "\n name: " + self.name()
-        group.append(title)
+        self.__svg_x = x
+        self.__svg_y = y
 
-        width = self.__width
-        height = 2 * (2*self.FONTSIZE)
+        svg_nep = None
+        if type(self).__name__ == "TapiNodeFronthaulGateway":
+            svg_nep = FronthaulGateway(self, x, y)
+        else:
+            svg_nep = Node(self, x, y)
 
-        rect = etree.Element("rect")
-        rect.attrib["x"] = str(int(x - width/2))
-        rect.attrib["y"] = str(int(y - height/2))
-        rect.attrib["width"] = str(int(width))
-        rect.attrib["height"] = str(int(height))
-        rect.attrib["rx"] = str(self.FONTSIZE)
-        rect.attrib["class"] = " ".join(
-            ["node", self.function_label().lower()])
-        group.append(rect)
-
-        label = etree.Element('text')
-        label.attrib['x'] = str(x)
-        # +4px for font-size 14px (think of chars like 'gjy')
-        label.attrib['y'] = str(y + 4)
-        label.attrib['class'] = " ".join(
-            ["node", self.function_label().lower()])
-        label.text = self.function_label()
-        group.append(label)
+        group: etree.Element = svg_nep.svg_element()
 
         for nep in self.data()['owned-node-edge-point']:
             localId = 0
@@ -308,12 +291,11 @@ class TapiNode(Top):
                 localId = nep.configuration()["nodeEdgePoint"]["local-id"]
 
             nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[
-                                                  0].name()) + 2.6*self.FONTSIZE * localId
+                                                  0].name()) + 4*self.FONTSIZE * localId
             nep_y = y + \
                 self.y_offset_by_cep_name(
                     nep.connection_edge_points()[0].name())
             group.append(nep.svg(nep_x, nep_y))
-
         return group
 
     def width(self, width: int) -> None:

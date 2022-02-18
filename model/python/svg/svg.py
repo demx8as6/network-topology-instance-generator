@@ -68,13 +68,6 @@ class Svg():
         """
         return self.__width
 
-    # def set_width(self, width: int) -> None:
-    #     """
-    #     Setter for width of the SVG Element
-    #     :param Width in pixel
-    #     """
-    #     self.__width = width
-
     def height(self) -> int:
         """
         Getter for height of the SVG Element
@@ -152,6 +145,7 @@ class Svg():
         :return A SVG group element including the main shape and a label
         """
         group: etree.Element = self.svg_group()
+        group.attrib['id'] = self.tapi_object().identifier()
         group.append(self.svg_main())
         group.append(self.svg_label())
         return group

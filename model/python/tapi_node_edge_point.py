@@ -253,25 +253,6 @@ class TapiNodeEdgePoint(Top):
             group.append(cep.svg(cep_x, cep_y))
         return group
 
-        height = 2.2 * self.FONTSIZE
-        width = 2.2 * self.FONTSIZE * len(self.connection_edge_points())
-
-        rect = etree.Element("rect")
-        rect.attrib["x"] = str(int(x - width/2))
-        rect.attrib["y"] = str(int(y - height/2))
-        rect.attrib["width"] = str(int(width))
-        rect.attrib["height"] = str(int(height))
-        rect.attrib["rx"] = str(int(self.FONTSIZE / 2))
-        rect.attrib["class"] = " ".join(["nep", self.name().lower()])
-        group.append(rect)
-
-        label = etree.Element('text')
-        label.attrib['x'] = str(x)
-        # +4px for font-size 14px (think of chars like 'gjy')
-        label.attrib['y'] = str(y + 4)
-        label.text = self.name().upper()
-        group.append(label)
-
     def termination_direction(self) -> str:
         """
         Getter returning the TAPI Node Edge Point direction.
