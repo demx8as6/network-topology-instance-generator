@@ -99,8 +99,8 @@ class TapiNode(Top):
             "a1-rest-provider": -8*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
 
-            "f1-c-unknown-consumer": -4.5*2*self.FONTSIZE,
-            "f1-u-unknown-consumer": 1.5*2*self.FONTSIZE,
+            "f1-c-unknown-consumer": 0*self.FONTSIZE,
+            "f1-u-unknown-consumer": 0*self.FONTSIZE,
 
             "e1-unknown-provider": -5*2*self.FONTSIZE,
             "e1-unknown-consumer": 5*2*self.FONTSIZE,

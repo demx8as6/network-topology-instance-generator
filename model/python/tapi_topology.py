@@ -167,97 +167,18 @@ class TapiTopology(Top):
         return: int value
         """
         pattern = self.configuration()['network']['pattern']
+        width_unit = (2 * 2 * self.FONTSIZE + self.FONTSIZE)
         x_mapping: Dict[type, int] = {
-            TapiNodeSmo: 3 * self.FONTSIZE,
-            TapiNodeOCloud: 3 * self.FONTSIZE,
-            TapiNodeNearRtRic: 3 * self.FONTSIZE,
-            TapiNodeOCuCp: 3 * self.FONTSIZE,
-            TapiNodeOCuUp: 3 * self.FONTSIZE,
-            TapiNodeODu: 2 * self.FONTSIZE,
-            TapiNodeFronthaulGateway: 2 * self.FONTSIZE,
-            TapiNodeORu: 2 * self.FONTSIZE,
+            # TapiNodeSmo: 3 * self.FONTSIZE,
+            # TapiNodeOCloud: 3 * self.FONTSIZE,
+            # TapiNodeNearRtRic: 3 * self.FONTSIZE,
+            TapiNodeOCuCp: ((pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) - 10*self.FONTSIZE,
+            TapiNodeOCuUp: ((pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 15*self.FONTSIZE,
+            TapiNodeODu: ((pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 2.5*self.FONTSIZE,
+            TapiNodeFronthaulGateway: ((pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 2.5*self.FONTSIZE,
+            TapiNodeORu:  (pattern['user-equipment']-1)/2 * width_unit,
             TapiNodeUserEquipment: 0
         }
-        if "near-rt-ric" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['near-rt-ric']
-        if "o-cu" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-cu']
-        if "o-du" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-du']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['o-du']
-        if "fronthaul-gateway" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['fronthaul-gateway']
-        if "o-ru" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['o-ru']
-        if "user-equipment" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
-                pattern['user-equipment']
-
-        x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] - 1.5 * 2*self.FONTSIZE
-        x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] - \
-            1 * 2*self.FONTSIZE
-        x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] - \
-            1 * 2*self.FONTSIZE
-        x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] - \
-            8 * 2 * self.FONTSIZE
-        x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] + \
-            4 * 2 * self.FONTSIZE
-        x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] + \
-            1.5 * 2*self.FONTSIZE
-        x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] + 1.5 * 2*self.FONTSIZE
-
         if node_type in x_mapping:
             return x_mapping[node_type]
         return 0
@@ -268,105 +189,20 @@ class TapiTopology(Top):
         return: int value
         """
         pattern = self.configuration()['network']['pattern']
+        width_unit = (2 * 2 * self.FONTSIZE + self.FONTSIZE)
         x_mapping: Dict[type, int] = {
             TapiNodeSmo: 3 * self.FONTSIZE,
             TapiNodeOCloud: 3 * self.FONTSIZE,
             TapiNodeNearRtRic: 3 * self.FONTSIZE,
-            TapiNodeOCuCp: 3 * self.FONTSIZE,
-            TapiNodeOCuUp: 3 * self.FONTSIZE,
-            TapiNodeODu: 3 * self.FONTSIZE,
-            TapiNodeFronthaulGateway: 6 * self.FONTSIZE,
-            TapiNodeORu: 3 * self.FONTSIZE,
-            TapiNodeUserEquipment: 2 * self.FONTSIZE
+            TapiNodeOCuCp: pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeOCuUp: pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeODu: pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] ,
+            TapiNodeFronthaulGateway: pattern['o-ru'] * pattern['user-equipment'] ,
+            TapiNodeORu: pattern['user-equipment'] ,
+            TapiNodeUserEquipment: 1
         }
-        if "smo" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * pattern['smo']
-        if "o-cloud" in pattern:
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-cloud']
-        if "near-rt-ric" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['near-rt-ric']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['near-rt-ric']
-        if "o-cu" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['o-cu']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['o-cu']
-        if "o-du" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-du']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['o-du']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['o-du']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['o-du']
-        if "fronthaul-gateway" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['fronthaul-gateway']
-            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['fronthaul-gateway']
-        if "o-ru" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['o-ru']
-            x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
-                pattern['o-ru']
-        if "user-equipment" in pattern:
-            x_mapping[TapiNodeSmo] = x_mapping[TapiNodeSmo] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCloud] = x_mapping[TapiNodeOCloud] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeORu] = x_mapping[TapiNodeORu] * \
-                pattern['user-equipment']
-            x_mapping[TapiNodeUserEquipment] = x_mapping[TapiNodeUserEquipment] * \
-                pattern['user-equipment']
-
         if node_type in x_mapping:
-            return x_mapping[node_type]
+            return x_mapping[node_type] * width_unit
         return 0
 
     def __svg_y_offset_by_node_type(self, node_type) -> int:
