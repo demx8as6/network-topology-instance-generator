@@ -19,6 +19,11 @@ Module containing the class for a TAPI Node.
 import uuid
 from typing import Dict
 from lxml import etree
+from model.python.svg.near_tr_ric import NearRtRic
+from model.python.svg.o_cloud import OCloud
+from model.python.svg.o_cu_cp import OCuCp
+from model.python.svg.o_cu_up import OCuUp
+from model.python.svg.o_du import ODu
 from model.python.svg.fronthaul_gateway import FronthaulGateway
 from model.python.svg.node import Node
 from model.python.tapi_node_edge_point import TapiNodeEdgePoint
@@ -90,7 +95,7 @@ class TapiNode(Top):
             "o1-file-consumer": 4*6*self.FONTSIZE,
 
             "o2-rest-provider": 0*self.FONTSIZE,
-            "a1-rest-provider": -3.2*self.FONTSIZE,
+            "a1-rest-provider": -8*self.FONTSIZE,
             "e2-rest-consumer": 0*self.FONTSIZE,
 
             "f1-c-unknown-consumer": 0*self.FONTSIZE,
@@ -278,8 +283,24 @@ class TapiNode(Top):
         self.__svg_y = y
 
         svg_nep = None
-        if type(self).__name__ == "TapiNodeFronthaulGateway":
+        if type(self).__name__ == "TapiNodeSmo":
+            svg_nep = Node(self, x, y)
+        elif type(self).__name__ == "TapiNodeOCloud":
+            svg_nep = OCloud(self, x, y)
+        elif type(self).__name__ == "TapiNodeNearRtRic":
+            svg_nep = NearRtRic(self, x, y)
+        elif type(self).__name__ == "TapiNodeOCuCp":
+            svg_nep = OCuCp(self, x, y)
+        elif type(self).__name__ == "TapiNodeOCuUp":
+            svg_nep = OCuUp(self, x, y)
+        elif type(self).__name__ == "TapiNodeODu":
+            svg_nep = ODu(self, x, y)
+        elif type(self).__name__ == "TapiNodeFronthaulGateway":
             svg_nep = FronthaulGateway(self, x, y)
+        # elif type(self).__name__ == "TapiNodeORu":
+        #     svg_nep = Node(self, x, y)
+        # elif type(self).__name__ == "TapiNodeUserEquipment":
+        #     svg_nep = Node(self, x, y
         else:
             svg_nep = Node(self, x, y)
 
