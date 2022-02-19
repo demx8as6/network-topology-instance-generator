@@ -86,7 +86,8 @@ class TapiNode(Top):
         }
 
     # getter
-    def x_offset_by_cep_name(self, name) -> int:
+    def x_offset_by_cep_name(self, name: str, local_id: int) -> int:
+        cep_of_interest = len(self.data()['owned-node-edge-point'])-2
         mapping: Dict[str, int] = {
             "o2-rest-consumer": -4*6*self.FONTSIZE,
             "a1-rest-consumer": -2*6*self.FONTSIZE,
@@ -115,7 +116,9 @@ class TapiNode(Top):
 
             "eth-ofh-provider": -2*self.FONTSIZE,
             "oam-netconf-provider": 2*self.FONTSIZE,
-            "eth-ofh-consumer": -(len(self.data()['owned-node-edge-point']) - 2)/2 * 2 * self.FONTSIZE,
+            #            "eth-ofh-consumer": -(len(self.data()['owned-node-edg
+            # e-point']) - 2)/2 * 2 * self.FONTSIZE,
+            "eth-ofh-consumer": 0-(cep_of_interest/2)*4*self.FONTSIZE + 2*self.FONTSIZE,
 
             "ofh-netconf-provider": 0*self.FONTSIZE,
             "uu-unknown-provider": 0*self.FONTSIZE,
@@ -123,7 +126,7 @@ class TapiNode(Top):
             "uu-unknown-consumer": 0*self.FONTSIZE
         }
         if name in mapping:
-            return mapping[name]
+            return mapping[name] + 4*self.FONTSIZE * local_id
 
         print("Node: CEP name", name, "for x postion calculation not found")
         return 0
@@ -311,8 +314,9 @@ class TapiNode(Top):
             if "local-id" in nep.configuration()["nodeEdgePoint"]:
                 localId = nep.configuration()["nodeEdgePoint"]["local-id"]
 
-            nep_x = x + self.x_offset_by_cep_name(nep.connection_edge_points()[
-                                                  0].name()) + 4*self.FONTSIZE * localId
+            nep_x = x + \
+                self.x_offset_by_cep_name(
+                    nep.connection_edge_points()[0].name(), localId)
             nep_y = y + \
                 self.y_offset_by_cep_name(
                     nep.connection_edge_points()[0].name())

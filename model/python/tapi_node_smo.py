@@ -156,7 +156,7 @@ class TapiNodeSmo(TapiNode):
         for nep in self.data()['owned-node-edge-point']:
             nep_x = x + \
                 super().x_offset_by_cep_name(
-                    nep.connection_edge_points()[0].name())
+                    nep.connection_edge_points()[0].name(), 0)
             nep_y = y + \
                 super().y_offset_by_cep_name(
                     nep.connection_edge_points()[0].name())
