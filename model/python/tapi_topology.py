@@ -251,9 +251,9 @@ class TapiTopology(Top):
         x_mapping[TapiNodeNearRtRic] = x_mapping[TapiNodeNearRtRic] - \
             1 * 2*self.FONTSIZE
         x_mapping[TapiNodeOCuCp] = x_mapping[TapiNodeOCuCp] - \
-            6 * 2 * self.FONTSIZE
+            8 * 2 * self.FONTSIZE
         x_mapping[TapiNodeOCuUp] = x_mapping[TapiNodeOCuUp] + \
-            2 * 2 * self.FONTSIZE
+            4 * 2 * self.FONTSIZE
         x_mapping[TapiNodeFronthaulGateway] = x_mapping[TapiNodeFronthaulGateway] + \
             1.5 * 2*self.FONTSIZE
         x_mapping[TapiNodeODu] = x_mapping[TapiNodeODu] + 1.5 * 2*self.FONTSIZE
@@ -379,12 +379,12 @@ class TapiTopology(Top):
             TapiNodeSmo: 0 * offset,
             TapiNodeOCloud: 1 * offset,
             TapiNodeNearRtRic: 2 * offset,
-            TapiNodeOCuCp: 3 * offset - 20,
-            TapiNodeOCuUp: 3 * offset + 20,
-            TapiNodeODu: 4 * offset,
-            TapiNodeFronthaulGateway: 5 * offset,
-            TapiNodeORu: 6 * offset,
-            TapiNodeUserEquipment: 7 * offset
+            TapiNodeOCuCp: 3.5 * offset - 2 * self.FONTSIZE,
+            TapiNodeOCuUp: 3.5 * offset + 2 * self.FONTSIZE,
+            TapiNodeODu: 5 * offset,
+            TapiNodeFronthaulGateway: 6 * offset,
+            TapiNodeORu: 7 * offset,
+            TapiNodeUserEquipment: 8 * offset
         }
         if node_type in y_mapping:
             return y_mapping[node_type]
