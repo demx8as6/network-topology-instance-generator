@@ -6,9 +6,9 @@
       "o-cloud": 2,
       "near-rt-ric": 2,
       "o-cu": 2,
-      "o-du": 2,
+      "o-du": 3,
       "fronthaul-gateway": 1,
-      "o-ru": 2,
+      "o-ru": 3,
       "user-equipment": 3
     }
   }

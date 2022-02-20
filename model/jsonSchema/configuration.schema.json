@@ -16,14 +16,18 @@
   "$defs": {
     "count": {
       "type": "number",
-      "minimum": 0,
-      "exclusiveMaximum": 100
+      "minimum": 1,
+      "exclusiveMaximum": 9
     },
     "pattern": {
       "type": "object",
       "properties": {
         "smo": {
           "description": "Number of Service Management and Orchestrion (SMO) instances to be generated. SMO is a root network topology node.",
+          "$ref": "#/$defs/count"
+        },
+        "o-cloud": {
+          "description": "Number of Near real-time RAN Intelligent Controller (Near-RT-RIC) instances to be generated per SMO.",
           "$ref": "#/$defs/count"
         },
         "near-rt-ric": {
@@ -38,8 +42,14 @@
           "description": "Number of O-RAN Distributed Units (O-DU) instances to be generated per O-CU.",
           "$ref": "#/$defs/count"
         },
+        "fronthaul-gateway": {
+          "description": "Number of Fronthaul Gateway instances to be generated per O-DU.",
+          "type": "number",
+          "minimum": 1,
+          "exclusiveMaximum": 2
+        },
         "o-ru": {
-          "description": "Number of O-RAN Radio Units (O-RU) instances to be generated per O-DU.",
+          "description": "Number of O-RAN Radio Units (O-RU) instances to be generated per Fronthaul Gateway.",
           "$ref": "#/$defs/count"
         },
         "ue": {
