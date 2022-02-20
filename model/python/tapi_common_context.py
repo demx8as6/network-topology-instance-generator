@@ -85,26 +85,11 @@ class TapiCommonContext(Top):
         return self.data()["tapi-common:context"]["name"][0]["value"]
 
     def __svg_width(self) -> int:
-        pattern = self.configuration()['network']['pattern']
-        result = 7*self.FONTSIZE
-        if "smo" in pattern:
-            result = result * pattern['smo']
-        if "near-rt-ric" in pattern:
-            result = result * pattern['near-rt-ric']
-        if "o-cu" in pattern:
-            result = result * pattern['o-cu']
-        if "o-du" in pattern:
-            result = result * pattern['o-du']
-        if "o-ru" in pattern:
-            result = result * pattern['o-ru']
-        if "fronthaul-gateway" in pattern:
-            result = result * pattern['fronthaul-gateway']
-        if "user-equipment" in pattern:
-            result = result * pattern['user-equipment']
-        return result 
+        p = self.configuration()['network']['pattern']
+        return (p['smo'] * p['near-rt-ric'] * p['o-cu'] * p['o-du'] * p['fronthaul-gateway'] * p['o-ru'] * p['user-equipment'] + 1) * 2*2*self.FONTSIZE
 
     def __svg_height(self) -> int:
-        return 60 + 8 * 11*self.FONTSIZE
+        return (8 * 11 + 6) * self.FONTSIZE
 
     def svg(self, x, y) -> etree.Element:
         """
@@ -115,14 +100,20 @@ class TapiCommonContext(Top):
             "svg",
             width=str(self.__svg_width()),
             height=str(self.__svg_height()),
+            viewBox=" ".join([
+                str(-3*self.FONTSIZE),
+                str(-3*self.FONTSIZE),
+                str(self.__svg_width()),
+                str(self.__svg_height())]
+            ),
             xmlns="http://www.w3.org/2000/svg"
         )
-        desc = etree.Element("desc")
-        desc.text = "\n context: " + self.identifier() + "\n name: " + self.name()
+        desc=etree.Element("desc")
+        desc.text="\n context: " + self.identifier() + "\n name: " + self.name()
         root.append(desc)
 
-        title = etree.Element("title")
-        title.text = self.configuration()["network"]["name"]
+        title=etree.Element("title")
+        title.text=self.configuration()["network"]["name"]
         root.append(title)
 
         root.append(self.__context.svg(x, y))

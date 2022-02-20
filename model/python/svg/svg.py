@@ -108,8 +108,7 @@ class Svg():
             [
                 self.type_name(),
                 "id:" + self.tapi_object().identifier(),
-                "name: " + self.label(),
-                "x: " + str(self.center_x())
+                "name: " + self.label()
             ]
         )
         group.append(title)
