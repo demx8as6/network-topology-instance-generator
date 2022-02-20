@@ -167,16 +167,30 @@ class TapiTopology(Top):
         return: int value
         """
         pattern = self.configuration()['network']['pattern']
-        width_unit = (2 * 2 * self.FONTSIZE + self.FONTSIZE)
+        padding = 0  # self.FONTSIZE
+        width_unit = (2 * 2 * self.FONTSIZE + padding)
+
+        ru = (pattern['user-equipment']-1) * width_unit / 2
+        fhgw = (pattern['o-ru'] *
+                pattern['user-equipment'] - 1) * width_unit / 2
+        odu = (pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment']
+               - 1) * width_unit/2
+        ocu = (pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment']
+               - 1) * width_unit / 2
+        ric = (pattern['near-rt-ric'] * pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment']
+               - 1) * width_unit / 2
+        smo = (pattern['smo'] * pattern['near-rt-ric'] * pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment']
+               -0.5) * width_unit 
+
         x_mapping: Dict[type, int] = {
-            # TapiNodeSmo: 3 * self.FONTSIZE,
-            # TapiNodeOCloud: 3 * self.FONTSIZE,
-            # TapiNodeNearRtRic: 3 * self.FONTSIZE,
-            TapiNodeOCuCp: ((pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) - 10*self.FONTSIZE,
-            TapiNodeOCuUp: ((pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 15*self.FONTSIZE,
-            TapiNodeODu: ((pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 2.5*self.FONTSIZE,
-            TapiNodeFronthaulGateway: ((pattern['o-ru'] * pattern['user-equipment'] - 2)/2 * width_unit) + 2.5*self.FONTSIZE,
-            TapiNodeORu:  (pattern['user-equipment']-1)/2 * width_unit,
+            TapiNodeSmo: smo,
+            TapiNodeOCloud: ric,
+            TapiNodeNearRtRic: ric,
+            TapiNodeOCuCp: ocu - 12.5*self.FONTSIZE,
+            TapiNodeOCuUp: ocu + 12.5*self.FONTSIZE,
+            TapiNodeODu: odu,
+            TapiNodeFronthaulGateway: fhgw,
+            TapiNodeORu: ru,
             TapiNodeUserEquipment: 0
         }
         if node_type in x_mapping:
@@ -188,17 +202,18 @@ class TapiTopology(Top):
         Mapping function from node types to y position in svg
         return: int value
         """
+        padding = 0
         pattern = self.configuration()['network']['pattern']
-        width_unit = (2 * 2 * self.FONTSIZE + self.FONTSIZE)
+        width_unit = (2 * 2 * self.FONTSIZE + padding)
         x_mapping: Dict[type, int] = {
-            TapiNodeSmo: 3 * self.FONTSIZE,
-            TapiNodeOCloud: 3 * self.FONTSIZE,
-            TapiNodeNearRtRic: 3 * self.FONTSIZE,
+            TapiNodeSmo: pattern['near-rt-ric'] * pattern['o-cu'] * pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeOCloud: pattern['o-cu'] * pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeNearRtRic: pattern['o-cu'] * pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
             TapiNodeOCuCp: pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
             TapiNodeOCuUp: pattern['o-du'] * pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
-            TapiNodeODu: pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'] ,
-            TapiNodeFronthaulGateway: pattern['o-ru'] * pattern['user-equipment'] ,
-            TapiNodeORu: pattern['user-equipment'] ,
+            TapiNodeODu: pattern['fronthaul-gateway'] * pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeFronthaulGateway: pattern['o-ru'] * pattern['user-equipment'],
+            TapiNodeORu: pattern['user-equipment'],
             TapiNodeUserEquipment: 1
         }
         if node_type in x_mapping:
@@ -215,8 +230,8 @@ class TapiTopology(Top):
             TapiNodeSmo: 0 * offset,
             TapiNodeOCloud: 1 * offset,
             TapiNodeNearRtRic: 2 * offset,
-            TapiNodeOCuCp: 3.5 * offset - 2 * self.FONTSIZE,
-            TapiNodeOCuUp: 3.5 * offset + 2 * self.FONTSIZE,
+            TapiNodeOCuCp: 3.5 * offset - 4 * self.FONTSIZE,
+            TapiNodeOCuUp: 3.5 * offset + 4 * self.FONTSIZE,
             TapiNodeODu: 5 * offset,
             TapiNodeFronthaulGateway: 6 * offset,
             TapiNodeORu: 7 * offset,

@@ -30,5 +30,5 @@ class OCloud(Node):
         Getter for width of the SVG Element
         :return Width in pixel
         """
-        self.__width = 24*ConnectionEdgePoint.width(self)
+        self.__width = 16*ConnectionEdgePoint.width(self)
         return self.__width

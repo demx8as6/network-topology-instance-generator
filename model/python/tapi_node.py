@@ -303,7 +303,7 @@ class TapiNode(Top):
         # elif type(self).__name__ == "TapiNodeORu":
         #     svg_nep = Node(self, x, y)
         # elif type(self).__name__ == "TapiNodeUserEquipment":
-        #     svg_nep = Node(self, x, y
+        #     svg_nep = Node(self, x, y)
         else:
             svg_nep = Node(self, x, y)
 

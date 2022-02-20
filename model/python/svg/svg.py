@@ -108,7 +108,8 @@ class Svg():
             [
                 self.type_name(),
                 "id:" + self.tapi_object().identifier(),
-                "name: " + self.label()
+                "name: " + self.label(),
+                "x: " + str(self.center_x())
             ]
         )
         group.append(title)
@@ -139,6 +140,18 @@ class Svg():
         label.text = self.label()
         return label
 
+    def svg_center(self) -> etree.Element:
+        """
+        Mothod generating the SVG Element of the label of the TAPI object
+        :return SVG Element for the label of the TAPI object
+        """
+        dot = etree.Element('circle')
+        dot.attrib['cx'] = str(self.center_x())
+        dot.attrib['cy'] = str(self.center_y())
+        dot.attrib['r'] = "2"
+        dot.attrib['class'] = "dot"
+        return dot
+
     def svg_element(self) -> etree.Element:
         """
         Method generating a SVG Element representing the TAPI Object
@@ -148,4 +161,5 @@ class Svg():
         group.attrib['id'] = self.tapi_object().identifier()
         group.append(self.svg_main())
         group.append(self.svg_label())
+        # group.append(self.svg_center())
         return group
